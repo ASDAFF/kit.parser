@@ -129,8 +129,8 @@ if(isset($_POST['action']) && $_POST['action'] == 'export' && !empty($_POST['par
     
     $APPLICATION->arAuthResult = $arAuthResult;
     
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/helper/export.php");
-    $export = new \Bitrix\Shs\Helper\Export();
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/helper/export.php");
+    $export = new \Bitrix\Kit\Helper\Export();
     $errors = array();
     if($createList['PRICE'])
     {
@@ -203,10 +203,10 @@ if(isset($_POST['action']) && $_POST['action'] == 'export' && !empty($_POST['par
     $parser = $export->correctByIgnoreList($parser, $ignoreList);
     $parser = $export->changeSettings($parser, $changeSettings);
     
-    CModule::includeModule('shs.parser');
+    CModule::includeModule('kit.parser');
     
-    $obParser = new ShsParserContent();
-    RssContentParser::sotbitParserSetSettings($parser['SETTINGS']);
+    $obParser = new KitParserContent();
+    RssContentParser::collectedParserSetSettings($parser['SETTINGS']);
     
     if(isset($parser['ID']))
         unset($parser['ID']);

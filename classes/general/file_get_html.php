@@ -3,7 +3,7 @@ class FileGetHtml{
     public $headerUrl = "";
     public $httpCode = "";
     function file_get_html($path, $proxy=false, $auth=false, $this_=false) {
-        global $shs_ID;
+        global $kit_ID;
         //убираем якорь если он есть. т.к. выдает ошибку 404 если урл с якорем (хотя в документации curl используется урл с якорем)
         $path = str_replace(strrchr($path, "#"), '', $path);
 
@@ -18,26 +18,26 @@ class FileGetHtml{
         curl_setopt($ch, CURLOPT_TIMEOUT, 120);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
         
-        if($auth && $shs_ID)
+        if($auth && $kit_ID)
         {
             if(isset($this_->settings[$this_->typeN]["auth"]["type"]) && $this_->settings[$this_->typeN]["auth"]["type"]=="http")
             {
                 $user = $this_->settings[$this_->typeN]["auth"]["login"];
                 $pass = $this_->settings[$this_->typeN]["auth"]["password"];
                 curl_setopt($ch, CURLOPT_USERPWD, $user.":".$pass);
-                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
-                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
             }
             else{
-                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
-                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
             }
             
         }
-        elseif($shs_ID)
+        elseif($kit_ID)
         {
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/loc".$shs_ID.".txt");
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/loc".$shs_ID.".txt");
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/loc".$kit_ID.".txt");
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/loc".$kit_ID.".txt");
         }
 
         if($proxy && !empty($proxy))
@@ -82,7 +82,7 @@ class FileGetHtml{
 
     function file_get_image($path, $proxy=false, $auth=false, $this_=false, $filename)
     {
-        global $shs_ID;
+        global $kit_ID;
         $fp = fopen ($filename, 'w');
         $ch = curl_init($path);
         //curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:14.0) Gecko/20100101 Firefox/14.0.1');
@@ -98,25 +98,25 @@ class FileGetHtml{
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
         curl_setopt($ch, CURLOPT_FILE, $fp);
 
-        if($auth && $shs_ID)
+        if($auth && $kit_ID)
         {
             if(isset($this_->settings[$this_->typeN]["auth"]["type"]) && $this_->settings[$this_->typeN]["auth"]["type"]=="http")
             {
                 $user = $this_->settings[$this_->typeN]["auth"]["login"];
                 $pass = $this_->settings[$this_->typeN]["auth"]["password"];
                 curl_setopt($ch, CURLOPT_USERPWD, $user.":".$pass);
-                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
-                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
             }else{
-                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
-                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
+                curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt");
             }
 
         }
-        elseif($shs_ID)
+        elseif($kit_ID)
         {
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/loc".$shs_ID.".txt");
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/loc".$shs_ID.".txt");
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/loc".$kit_ID.".txt");
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/loc".$kit_ID.".txt");
         }
 
         if($proxy && !empty($proxy))
@@ -153,8 +153,8 @@ class FileGetHtml{
 
     function auth($path, $proxy=false, $postdata, $check=false)
     {
-        global $shs_ID;
-        $coo = $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/coo".$shs_ID.".txt";
+        global $kit_ID;
+        $coo = $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/coo".$kit_ID.".txt";
 
         if($check && file_exists($coo))
             unlink($coo);

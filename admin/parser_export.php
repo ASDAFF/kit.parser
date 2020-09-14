@@ -1,14 +1,14 @@
 <?php
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
-use Bitrix\Shs\Helper\Export;
+use Bitrix\Kit\Helper\Export;
 
 require_once ($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
 
 if(!empty($_POST))
 {
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/helper/export.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/helper/export.php");
     $errors = array();
     
     if(isset($_POST['export']))
@@ -18,7 +18,7 @@ if(!empty($_POST))
         $ignoreList = $export->initIgnoreList(array_intersect_key($_POST, array_flip(array('PRICE', 'SECTION', 'PROPERTY'))));
         $createList = $export->initCreateList(array_intersect_key($_POST, array_flip(array('PRICE', 'SECTION', 'PROPERTY'))));
 
-        $parser = ShsParserContent::GetByID($_POST['PARSER'])->fetch();
+        $parser = KitParserContent::GetByID($_POST['PARSER'])->fetch();
         $parser['SETTINGS'] = unserialize(base64_decode($parser['SETTINGS']));
 
         $parser_prices = $export->collectPrices($parser['SETTINGS']);
@@ -47,7 +47,7 @@ if(!empty($_POST))
             $export = new Export();
             if(!($checkedData = $export->checkData($_POST, 1)))
             {
-                $errors[] = 'неверно заполнены данные';
+                $errors[] = 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ';
                 break;
             }
             if(!($checkedPage = $export->checkPage($_POST['SITE_API'])))
@@ -85,7 +85,7 @@ if(!empty($_POST))
 
             if(!$checkedData && !$export->checkData($_POST, 1))
             {
-                $errors[] = 'неверно заполнены данные';
+                $errors[] = 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ';
                 break;
             }
 
@@ -107,7 +107,7 @@ if(!empty($_POST))
 
 $parserList = array();
 
-$parser = new ShsParserContent;
+$parser = new KitParserContent;
 $res = $parser->getListShort();
 while($arParser = $res -> fetch())
 {
@@ -120,7 +120,7 @@ if(isset($_POST['connect']))
 
 if(!empty($_POST['PARSER']) && (isset($data['properties']) || isset($data['prices']) || isset($data['sections'])))
 {
-    $parser = ShsParserContent::GetByID($_POST['PARSER'])->fetch();
+    $parser = KitParserContent::GetByID($_POST['PARSER'])->fetch();
     $parser['SETTINGS'] = unserialize(base64_decode($parser['SETTINGS']));
     $export = new Export();
     $parser_prices = $export->collectPrices($parser['SETTINGS']);
@@ -130,7 +130,7 @@ if(!empty($_POST['PARSER']) && (isset($data['properties']) || isset($data['price
 
 require_once ($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_admin.php');
 IncludeModuleLangFile( __FILE__ );
-$id_module ='shs.parser';
+$id_module ='kit.parser';
 $aMenu = array();
 $context = new CAdminContextMenu($aMenu);
 $context->Show();
@@ -144,7 +144,7 @@ $tabControl->Begin( array (
 ) );
 
 if(isset($dataRun['ID']))
-    CAdminMessage::ShowMessage(array("MESSAGE"=>GetMessage("shs.parser_PARSER_SAVED").' '.$dataRun['ID'], "TYPE"=>"OK"));
+    CAdminMessage::ShowMessage(array("MESSAGE"=>GetMessage("kit.parser_PARSER_SAVED").' '.$dataRun['ID'], "TYPE"=>"OK"));
 
 if(!empty($errors))
     CAdminMessage::ShowMessage(implode('<br>', $errors));
@@ -317,8 +317,8 @@ if(isset($data['properties']) || isset($data['prices']) || isset($data['sections
 
 $tabControl->Buttons(array(
     "back_url" => $_REQUEST["back_url"],
-    "btnApply" => false, // не показывать кнопку применить
-    "btnSave" => false,  // не показывать кнопку сохранить
+    "btnApply" => false, // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    "btnSave" => false,  // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 ), '<input type="submit" name="export" class="adm-btn adm-btn-green export" value="'.Loc::getMessage($id_module.'_EXPORT_BUTTON_NAME').'">');
 
 $tabControl->Show();

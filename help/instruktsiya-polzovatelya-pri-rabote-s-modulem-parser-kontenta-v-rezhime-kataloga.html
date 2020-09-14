@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="col-lg-24 sm-padding-no" style="width: 100%;">
+    <div class="news_content">
+        <h1>
+            Инструкция пользователя при работе с модулем «Парсер контента» в режиме каталога
+        </h1>
+
+
+        <p class="MsoNormal"><b>Внимание!!! Чтобы работа с парсером была легкой и простой, необходимо знать азы верстки
+            и css, а именно селектора: классы, идентификаторы, атрибуты. Так же будут полезны базовые знания работы с
+            JQuery, например: .image img:eq(0). Без этих базовых знаний нет смысла читать далее! Если вы еще не знаете
+            таких понятий, то с ними можно легко ознакомиться по ссылке:
+            <noindex><a href="http://habrahabr.ru/post/123949/" rel="nofollow">http://habrahabr.ru/post/123949/</a>
+            </noindex>
+        </b></p>
+
+        <p class="MsoNormal">Парсер в режиме каталога состоит из 13 вкладок при установленном модуле Торговый Каталог, в
+            ином случае - из 11, т.к. вкладка Торговый каталог и Торговые предложения отсутствуют.</p>
+
+        <p class="MsoNormal"><img alt="Сотбит - Битрикс - Парсер каталога"
+                                  src="https://www.sotbit.ru/upload/shs.parser/instruction/1.jpg"
+                                  title="Сотбит - Битрикс - Парсер каталога - Вкладки" width="855" height="27"></p>
+
+        <p class="MsoNormal">Теперь рассмотрим каждую вкладку подробнее.</p>
+
+        <p class="MsoNormal"><b>Основная и вкладка по-умолчанию - Парсер:</b></p>
+
+        <p class="MsoNormal"><b><img alt="Сотбит - Битрикс - Парсер каталога"
+                                     src="https://www.sotbit.ru/upload/shs.parser/instruction/2.jpg"
+                                     title="Сотбит - Битрикс - Парсер каталога - Парсер" width="855" height="483"></b>
+        </p>
+
+        <p class="MsoNormal"><b>Тип парсера</b> – соответственно и есть тип парсера. На данный момент это <span
+                lang="EN-US">rss</span>, <span lang="EN-US">page</span>, <span lang="EN-US">catalog</span>. Нас же
+            интересует <span lang="EN-US">catalog</span>.</p>
+
+        <p class="MsoNormal"><b>Внимание! Если не использовать вкладку Торговый каталог, то парсер будет просто работать
+            в расширенном режиме парсинга без создания товаров. Удобно для парсинга сложных новостных страниц или
+            статей.</b>
+            <br>
+        </p>
+
+        <p class="MsoNormal"><b>Режим парсера</b> – режим, в котором работает парсер. Существует два режима работы:
+            <span lang="EN-US">debug</span><span lang="EN-US"> </span>и <span lang="EN-US">work</span>. По умолчанию для
+            отладки используется <span lang="EN-US">debug</span> режим. Именно в этом режиме необходимо настраивать
+            парсер. В дебаг режиме парсится три страницы и по три товара с каждой страницы. В рабочий режим <span
+                    lang="EN-US">work</span><span lang="EN-US"> </span>парсер необходимо переводить, если он полностью
+            настроен и отлажен.</p>
+
+        <p class="MsoNormal">Стоит отметить, что, если вы используете модуль «Парсер контента» в триал версии, то парсер
+            работает только в дебаг режиме.</p>
+
+        <p class="MsoNormal"><b><span lang="EN-US">URL</span><span lang="EN-US"> </span>раздела каталога</b> – страница,
+            содержащая непосредственно товары.</p>
+
+        <p class="MsoNormal"><b>Дополнительные урлы разделов</b> - вы можете также включить в выгрузку и другие урлы.
+            Для этого просто укажите их с новой строки.
+            <br>
+        </p>
+
+        <p class="MsoNormal"><b>ID инфоблока-каталога</b> – инфоблок, в который будет осуществляться загрузка товаров.
+        </p>
+
+        <p class="MsoNormal"><b>ID раздела</b> – раздел инфоблока, в который будет осуществляться загрузка товаров.</p>
+
+        <p class="MsoNormal"><b>Количество товаров, выгружаемых за один шаг парсера</b> – количество товаров, который
+            парсер обрабатывает за один шаг.</p>
+
+        <p class="MsoNormal"><b>Шаг парсера</b> – понятие, которое имеет место при ручном режиме запуска парсера. В этом
+            случае каждый шаг происходит отключение и новое подключение к каналу выгрузки. Варьируйте это значение в
+            зависимости от возможностей вашего хостинга. Если парсер работает от агента(крон), то шаг парсера
+            игнорируется и выгрузка осуществляется одним запросом.</p>
+
+        <p class="MsoNormal"><b>Активен, Сортировка, Название, Время последнего запуска</b> – интуитивно понятные поля и
+            в комментариях не нуждаются.</p>
+
+        <p class="MsoNormal"><b>Кодировка </b>- кодировка сайт донора. Устаревшее поле. На данный момент кодировка
+            определяется автоматически, но, если возникают какие-то проблемы с кодировкой, то рекомендуется указать в
+            ручную.
+            <br>
+        </p>
+
+        <p class="MsoNormal"><b>Вкладка Постраничная навигация:</b></p>
+
+        <p class="MsoNormal"><b><img alt="Сотбит - Битрикс - Парсер каталога"
+                                     src="https://www.sotbit.ru/upload/shs.parser/instruction/3.jpg"
+                                     title="Сотбит - Битрикс - Парсер каталога - Постраничная навигация" width="855"
+                                     height="485"></b></p>
+
+        <p class="MsoNormal"><b>Селектор навигации – </b>селектор контейнера навигации. </p>
+
+        <p class="MsoNormal"><b>Селектор пункта навигации</b> – селектор пункта навигации, содержащий ссылки на
+            страницы. Как правило это элемент ссылки <b><span lang="EN-US">a</span>. </b>Указывается относительно
+            предыдущего параметра.</p>
+
+        <p class="MsoNormal"><b>Удалить элементы навигации – </b>список элементов, которые необходимо удалить из
+            навигации. Например, иногда нужно удалить лишние элементы из навигации, такие как След, Предыд, Показать все
+            и подобное. Указывается относительно селектора навигации.</p>
+
+        <p class="MsoNormal">На картинке ниже подробная схема селекторов Пагинации.</p>
+
+        <p class="MsoNormal"><img alt="Сотбит - Битрикс - Парсер каталога"
+                                  src="https://www.sotbit.ru/images/img/v2_1.jpg"
+                                  title="Сотбит - Битрикс - Парсер каталога - Постраничная навигация" width="855"
+                                  height="177"></p>
+
+        <p class="MsoNormal">Стоить отметить, что если <b>Селектор навигации</b> не указан, то парсинг осуществляется
+            только по одной странице.</p>
+
+        <p class="MsoNormal"><b>Вкладка превью:</b></p>
+
+        <p class="MsoNormal"><img alt="Сотбит - Битрикс - Парсер каталога"
+                                  src="https://www.sotbit.ru/upload/shs.parser/instruction/4.jpg"
+                                  title="Сотбит - Битрикс - Парсер каталога - Превью" width="855" height="693"></p>
+
+        <p class="MsoNormal"><b>Селектор товара на странице каталога – </b>селектор контейнера товара на странице списка
+            товаров.</p>
+
+        <p class="MsoNormal"><img alt="Сотбит - Битрикс - Парсер каталога"
+                                  src="https://www.sotbit.ru/images/img/v3_1.jpg"
+                                  title="Сотбит - Битрикс - Парсер каталога - Превью" width="855" height="210"></p>
+
+        <p class="MsoNormal"><b>Селектор ссылки товара</b> – как правило, обычная ссылка <b><span lang="EN-US">a</span></b>,
+            содержащая атрибут <span lang="EN-US">href</span>. Если пусто, то используется <b><span
+                    lang="EN-US">a</span>:</b><b><span lang="EN-US">eq</span>(0</b>), то есть первая ссылка. Указывается
+            относительно предыдущего параметра.</p>
+
+        <p class="MsoNormal"><b>Селектор названия товара – </b>селектор, в котором содержится название товара. Если
+            пустое, то равно предыдущему параметру.</p>
+
+        <p class="MsoNormal"><b>Селектор превью описания</b> – селектор, в котором содержится превью описание товара.
+        </p>
+
+        <p class="MsoNormal"><b>Селектор цены</b> – селектор, в котором содержится цена товара.</p>
+
+        <p class="MsoNormal"><b>Удалять элементы </b>– элементы, которые необходимо удалить из описания. Указываются
+            относительно селектора товара на странице каталога.</p>
+
+        <p class="MsoNormal"><b>Удалять атрибуты элементов</b> – атрибуты элементов, которые необходимо удалить. Пример
+            написания: <b><span lang="EN-US">a</span>[</b><b><span lang="EN-US">href</span>], </b><b><span lang="EN-US">a</span>[</b><b><span
+                    lang="EN-US">rel</span>].</b></p>
+
+        <p class="MsoNormal">Селектор-атрибут превью картинки – указывается селектор и атрибут превью картинки. Пример:
+            <b><span lang="EN-US">img[src], a[href]</span></b></p>
+
+        <p class="MsoNormal"><b>Вкладка Детально:</b></p>
+
+        <p class="MsoNormal"><b><img alt="Сотбит - Битрикс - Парсер каталога"
+                                     src="https://www.sotbit.ru/images/img/v4.jpg"
+                                     title="Сотбит - Битрикс - Парсер каталога - Детально" width="855" height="674"></b>
+        </p>
+
+        <p class="MsoNormal">Поля аналогичны полям во вкладке Детально. Поэтому подробно рассматривать не будем.</p>
+
+        <p class="MsoNormal"><b>Вкладка Свойства:</b></p>
+
+        <p class="MsoNormal"><b><img alt="Сотбит - Битрикс - Парсер каталога"
+                                     src="https://www.sotbit.ru/upload/shs.parser/instruction/5.jpg"
+                                     title="Сотбит - Битрикс - Парсер каталога - Свойства" width="855" height="561"></b>
+        </p>
+
+        <p class="MsoNormal"><b>Свойство доп. картинок</b> – если есть доп. картинки, то необходимо указать поля, в
+            которые будет осуществляться выгрузка картинок.</p>
+
+        <p class="MsoNormal"><b>Селектор-атрибут перечисления доп. картинок</b> – указывается селектор и атрибут доп.
+            картинок. Пример .<b><span lang="EN-US">images</span><span lang="EN-US"> </span></b><b><span lang="EN-US">img</span>[</b><b><span
+                    lang="EN-US">src</span>].</b> Указывается относительно селектора товара на детальной странице.</p>
+
+        <p class="MsoNormal"><b>Парсинг свойств по селектору из деталки</b> – производится парсинг свойств по
+            конкретному селектору на детальной странице товара. Поле используется, если свойства имеют свои селектора.
+            <br>
+        </p>
+
+        <p class="MsoNormal"><b>Удалять символы</b> – удаляются символы из свойств, описанных выше. Как правило, это
+            двоеточия, запятые, многоточия и подобное.</p>
+
+        <p class="MsoNormal"><b>Парсинг свойств по названию из деталки </b>– требует более детального описания. Парсинг
+            свойств в этом случае осуществляется по селектору списка свойств и по названию свойства из детальной
+            страницы товара.</p>
+
+        <p class="MsoNormal"><b>Селектор перечисления свойств</b> – общий селектор свойств в списке.</p>
+
+        <p class="MsoNormal"><img alt="Сотбит - Битрикс - Парсер каталога"
+                                  src="https://www.sotbit.ru/images/img/v5_1.jpg"
+                                  title="Сотбит - Битрикс - Парсер каталога - Селектор перечисления свойств" width="855"
+                                  height="262"></p>
+
+        <p class="MsoNormal"><b>Удалять символы</b> – удалять лишние символы, такие как: запятые, двоеточия, многоточия
+            и подобное.</p>
+
+        <p class="MsoNormal">Еще необходимо указать названия свойств. Именно по этому названию и общему селектору будет
+            производиться парсинг свойств.</p>
+
+        <p class="MsoNormal"><b>Парсинг свойств по селектору из превью - </b>поле аналогичное для деталки, но только
+            селектора указываются относительно селектора товара в списке товаров<b>.</b></p>
+
+        <p class="MsoNormal"><b>Парсинг свойств по названию из превью </b>– поле аналогичное для деталки, но только
+            селектора указываются относительно селектора товара в списке товаров<b>.</b></p>
+
+        <p class="MsoNormal"><b>Хочу обратить внимание, что на данный момент возможен парсинг свойств только типов:
+            строка, число, список, привязка к элементам, справочник, html, файлы. Множественность не поддерживается.</b>
+        </p>
+
+        <p class="MsoNormal">Также, возможно создать новое свойство прямо из интерфейса парсера. Для этого необходимо в
+            селекте выбрать значение <b>[Создать] </b>и нажать кнопку добавить.<b>
+                <br>
+            </b></p>
+
+        <p class="MsoNormal"><b>Вкладка Торговый каталог(если установлен модуль Торговый каталог):</b></p>
+
+        <p class="MsoNormal"><b><img alt="Сотбит - Битрикс - Парсер каталога"
+                                     src="https://www.sotbit.ru/upload/shs.parser/instruction/6.jpg"
+                                     title="Сотбит - Битрикс - Парсер каталога - Торговый каталог" width="855"
+                                     height="1078"></b></p>
+
+        <p class="MsoNormal"><b>Тип цены, Ставка НДС, Включать НДС в цену, Валюта, Единица измерения, коэффициент
+            единицы измерения – </b>эти поля интуитивно понятны и не требует дополнительного разъяснения.</p>
+
+        <p class="MsoNormal"><b>Работа с ценами</b> – предоставляется возможность работы с ценами: конвертация,
+            округление цены, формат цены, изменение цены.</p>
+
+        <p class="MsoNormal"><b>Конвертировать в валюту</b> – в какую валюту необходимо конвертировать цену.</p>
+
+        <p class="MsoNormal"><b>Округление цены</b> - три режима округления цены: округлять с указанной точностью(можно
+            указать точно округления после запятой), округлять до целого в большую сторону, округлять до целого в
+            меньшую сторону.</p>
+
+        <p class="MsoNormal"><b>Формат цены</b> - если цена имеет сложные разделители, например 5.990,00 . В этом случае
+            вы должны указать символы разделителей. В большинстве случаев можно оставить пустым.
+            <br>
+        </p>
+
+        <p class="MsoNormal"><b>Изменить цену</b> – возможные значения: Не изменять, Увеличить, уменьшить.</p>
+
+        <p class="MsoNormal"><b>Условие изменения цены</b> – обозначается условие, при выполнении которого будет
+            изменена цена. Словесный пример: Увеличить цену, если цена выше 600. 600 – цена в исходной валюте.</p>
+
+        <p class="MsoNormal"><b>Тип изменения</b> – возможные варианты: Проценты и Абсолютная величина. То есть
+            изменения цены будет в процентном соотношении или в абсолютной величине.</p>
+
+        <p class="MsoNormal"><b>Величина изменения</b> – величина изменения цены. Указывается в зависимости от
+            предыдущего поля. </p>
+
+        <p class="MsoNormal"><b>Парсинг размеров по селектору</b> – логика аналогична логике парсинга свойств из вкладки
+            Свойства.</p>
+
+        <p class="MsoNormal"><b>Парсинг размеров по названию</b> – логика аналогична парсингу свойств из вкладки
+            Свойства.</p>
+
+        <p class="MsoNormal"><b>Вкладка Торговые предложения</b><b><b>(если установлен модуль Торговый каталог)</b>:</b>
+        </p>
+
+        <p class="MsoNormal"><img alt="Торговые предложения - Парсер - Сотбит"
+                                  src="https://www.sotbit.ru/upload/shs.parser/instruction/7.jpg"
+                                  title="Торговые предложения - Парсер - Сотбит" width="855" height="595" border="0">
+        </p>
+
+        <p class="MsoNormal"><b>Выгружать офферы</b> - выбор типа выгружаемых торговых предложений. На данный момент
+            поддерживается два вида: Табличный вид и Офферы с одиночными характеристиками.</p>
+
+        <p class="MsoNormal"><b>Офферы табличного вида</b>
+            <br>
+        </p>
+
+        <p class="MsoNormal"><b
+                style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Параметр
+            уникализации</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– важный параметр, определяющий по каким параметрам будет происходить уникализация офферов.<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">Особенности:<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">1. Указанные свойства добавляются в название оффера.<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">2. Если название оффера отсутствует, то название полностью будет состоять из значений указанных свойств.<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">3. По данному параметру происходит уникализации офферов.<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">4. Если ничего не указано, то уникальность будет определяться по названию оффера.</span>
+        </p>
+
+        <p class="MsoNormal">
+            <br>
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Главный
+                селектор контейнера торговых предложений</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– селектор контейнера офферов относительно селектора детальной страницы. Например: table.<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <img src="http://www.sotbit.ru/upload/shs.parser/parser3.jpg"
+                 style="border: 0px none; vertical-align: middle; box-sizing: border-box; display: block; height: auto; max-width: 100%; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;"
+                 width="855" height="111" border="0">
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">&nbsp;<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Селектор
+                блока шапки таблицы</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– селектор шапки таблицы относительно предыдущего параметра. Это поле требуется, если поиск параметров идет по названию. Например: thead tr<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <img src="http://www.sotbit.ru/upload/shs.parser/parser4.jpg"
+                 style="border: 0px none; vertical-align: middle; box-sizing: border-box; display: block; height: auto; max-width: 100%; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;"
+                 width="855" height="120" border="0">
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">&nbsp;<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Селектор
+                наименования параметра в шапке таблицы</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– селектор конкретного наименования параметра относительно предыдущего параметра. Это поле требуется, если поиск параметров идет по названию. Например: th<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <img src="http://www.sotbit.ru/upload/shs.parser/parser5.jpg"
+                 style="border: 0px none; vertical-align: middle; box-sizing: border-box; display: block; height: auto; max-width: 100%; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;"
+                 width="855" height="131" border="0">
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Селектор
+                отдельного оффера</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– селектор блок торгового предложения относительно главного селектора офферов. Например: tbody tr<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <img src="http://www.sotbit.ru/upload/shs.parser/parser6.jpg"
+                 style="border: 0px none; vertical-align: middle; box-sizing: border-box; display: block; height: auto; max-width: 100%; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;"
+                 width="855" height="128" border="0">
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Селектор
+                значения параметра в теле таблицы</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– селектор конкретного значения параметра относительно предыдущего параметра. Например: td<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <img src="http://www.sotbit.ru/upload/shs.parser/parser7.jpg"
+                 style="border: 0px none; vertical-align: middle; box-sizing: border-box; display: block; height: auto; max-width: 100%; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;"
+                 width="855" height="119" border="0">
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">&nbsp;<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">Далее следует блок полей, связанных непосредственно с парсингом значений а таблице<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Парсинг
+                полей по селектору</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>-<span class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Удалять
+                символы</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– какие символы необходимо удалять из значений параметров. Перечисление идет через ||<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Наименование</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– селектор названия оффера<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Цена</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– селектор цены оффера<span class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Парсинг
+                полей и свойств по названию</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– происходит поиск значений параметров по наименованию в шапке таблицы.<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Удалять
+                символы</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space">&nbsp;</span>– удалять лишние символы. Перечисление через ||<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">Далее идут параметры, которые необходимо найти. Для этого нужно указать название параметра в шапке таблицы</span>
+        </p>
+
+        <p class="MsoNormal"><b>Офферы с одиночными характеристиками
+            <br>
+        </b></p>
+
+        <p class="MsoNormal"><b
+                style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Параметр
+            уникализации</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space"> </span>– см. выше.<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <b style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Селектор
+                контейнера отдельной характеристики оффера&nbsp;</b><span
+                    style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                    class="Apple-converted-space"> - если выбор оффера осуществляется кликом по блоку, то нужно указать селектор как раз этого блока. Пример: </span></span>select
+            option, #charect div.size
+            <br>
+        </p>
+
+        <p class="MsoNormal"><img src="https://www.sotbit.ru/upload/shs.parser/1430745019289.jpg" width="366"
+                                  height="209" border="0">
+            <br>
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                    class="Apple-converted-space"></span></span></p>
+
+        <p class="MsoNormal"><b
+                style="font-weight: bold; box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">Атрибут
+            цены</b><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space"> </span>– атрибут предыдущего параметра(селектора). Используется, если цена заносится в атрибут.
+    <br>
+   </span></p>
+
+        <p class="MsoNormal"><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;"><span
+                class="Apple-converted-space"><img src="https://www.sotbit.ru/upload/shs.parser/1430745397822.jpg"
+                                                   width="898" height="220" border="0">&nbsp;</span></span></p>
+
+        <br>
+
+        <p class="MsoNormal"><b>Вкладка Дополнительные настройки:</b></p>
+
+        <p class="MsoNormal"><img alt="Сотбит - Битрикс - Парсер каталога" src="https://www.sotbit.ru/images/img/v7.jpg"
+                                  title="Сотбит - Битрикс - Парсер каталога - Дополнительные настройки" width="855"
+                                  height="655"></p>
+
+        <p class="MsoNormal"><b>Парсить при возникновении 404 ошибки</b> – при парсинге страниц в случае возникновения
+            404 ошибки продолжать парсинг. Пункт актуален из-за СЕО заморочек.</p>
+
+        <p class="MsoNormal"><b>Запускать по агенту</b> – запуск парсера по агенту. Рекомендуется агенты запускать из
+            под крона.</p>
+
+        <p class="MsoNormal"><b>Время задержки(сек) – </b>время между запросами к страницам каталога. Иногда сайты
+            используют контроль активности за единицу времени. Этот пункт как раз позволяет обойти вышеуказанный
+            контроль. </p>
+
+        <p class="MsoNormal"><b>Прокси-сервер</b> – адрес прокси-сервера, через который будет осуществляться парсинг.
+            Применяется для сохранения анонимности.</p>
+
+        <p class="MsoNormal">Остальные поля интуитивно понятны и не требуют разъяснения.</p>
+
+        <p class="MsoNormal"><b>Вкладка Обновление</b><b><span lang="EN-US">/</span>Уникальность:</b></p>
+
+        <p class="MsoNormal"><b><img alt="Сотбит - Битрикс - Парсер каталога"
+                                     src="https://www.sotbit.ru/upload/shs.parser/instruction/8.jpg"
+                                     title="Сотбит - Битрикс - Парсер каталога - Уникальность" width="855" height="651"></b>
+        </p>
+
+        <p class="MsoNormal"><b>Обновлять товары – </b>чекбокс, который включает и выключает обновление товаров.</p>
+
+        <p class="MsoNormal"><b>Проверка уникальности</b> – изначально для уникализации использует поле <span
+                lang="EN-US">XML</span>_<span lang="EN-US">ID</span>, в которое заносит <span lang="EN-US">md</span>5 от
+            названия товара и урла страницы товара. Если вы не хотите заполнять и перетирать поле <span
+                    lang="EN-US">XML</span>_<span lang="EN-US">ID</span>, то необходимо переопределить уникализацию.
+            Например, вы можете уникализировать по названию или свойству(Артикул), либо по тому и другому по логике И.
+        </p>
+
+        <p class="MsoNormal"><b>Обновлять поля</b> – позволяет выбрать поля, которые необходимо обновлять. Так же
+            существуют условия обновления полей. К примеру, обновлять Детальное описание, если оно пустое.</p>
+
+        <p class="MsoNormal"><span
+                style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">Теперь появилась возможность отслеживания товаров выгруженных в текущей и прошлой выгрузке. Для этого во вкладку «Обновление / Уникальность» добавились доп. поля.<span
+                class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">&nbsp;<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">Существует три значения данного режима:<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">- ничего не делать – если товар отсутствует в текущей выгрузке, то с ним ничего происходить не будет<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">- деактивировать – если товар отсутствует в текущей выгрузке и присутствовал в предыдущей, то он будет деактивирован<span
+                    class="Apple-converted-space">&nbsp;</span></span>
+            <br style="box-sizing: border-box; color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: #ffffff;">
+            <span style="color: #000000; font-family: &quot;Open Sans&quot;,Arial,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 100; letter-spacing: normal; line-height: 20px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: #ffffff;">- удалить – товар будет удален, если он отсутствует в текущей выгрузке<span
+                    class="Apple-converted-space">
+      <br>
+     </span></span></p>
+
+        <p class="MsoNormal"><b>Вкладка Авторизация:</b></p>
+
+        <p class="MsoNormal"><img alt="Парсер контента - авторизация" src="https://www.sotbit.ru/images/img/auth.jpg"
+                                  title="Сотбит - Парсер контента - Авторизация" width="855" height="228" border="0">
+        </p>
+
+        <p class="MsoNormal"><b>Производить авторизацию на стороннем сайте</b> - если необходимо парсить сайт из под
+            авторизованного пользователя, то необходимо отметить это поле.</p>
+
+        <p class="MsoNormal"><b>URL авторизационной страницы</b> - если авторизацию происходит на отдельной странице, то
+            необходимо заполнить данное поле. По умолчанию идет страницы раздела, которые собираемся парсить.</p>
+
+        <p class="MsoNormal"><b>Селектор формы авторизации</b> - селектор формы авторизации. Пример на картинке ниже:
+        </p>
+
+        <p class="MsoNormal"><img alt="Парсер контента - Авторизация - Селектор формы"
+                                  src="https://www.sotbit.ru/images/img/auth_ex.jpg"
+                                  title="Парсер контента - Авторизация - Селектор формы" width="855" height="148"
+                                  border="0"></p>
+
+        <p class="MsoNormal"><b>Логин</b> - логин на стороннем сайте.</p>
+
+        <p class="MsoNormal"><b>Пароль</b> - пароль на стороннем сайте.</p>
+
+        <p class="MsoNormal"><b>Проверить авторизацию</b> - позволяет проверить авторизацию. Если вы уверены, что
+            доступы и все параметры к стороннему сайту верны, а авторизация не проходит, то обратитесь в службу
+            поддержки компании&nbsp;«Сотбит».</p>
+
+        <p class="MsoNormal"><b>Вкладка Логи:</b></p>
+
+        <p class="MsoNormal"><b><img alt="Сотбит - Битрикс - Парсер каталога"
+                                     src="https://www.sotbit.ru/images/img/v9.jpg"
+                                     title="Сотбит - Битрикс - Парсер каталога - Логи" width="855" height="147"></b></p>
+        <span style="font-size: 11pt; line-height: 115%; font-family: Calibri,sans-serif;">На данном этапе осуществляется простое логирование ошибок в файл последней выгрузки<b>.
+    <br>
+
+    <br>
+   </b></span><span style="font-size: 11pt; line-height: 115%; font-family: Calibri,sans-serif;"><b><span
+            style="font-size: 11pt; line-height: 115%; font-family: Calibri,sans-serif;"><b>Вкладка Сервисы.
+        <br>
+
+        <br>
+       Перевод текста
+        <br>
+       </b></span>
+    <br>
+   <img src="https://www.sotbit.ru/upload/shs.parser/v_perevod.jpg" title="Парсер контента - Перевод текста" width="855"
+        height="284" border="0">
+    <br>
+
+    <br>
+   Тип перевода - </b>выбор сервиса, который будет отвечать за перевод текста. На данный момент реализован только Яндекс.Переводчик.<b>
+    <br>
+
+    <br>
+   Параметры для Яндекс.Переводчика
+    <br>
+
+    <br>
+   </b></span><span style="font-size: 11pt; line-height: 115%; font-family: Calibri,sans-serif;"><b>Ключ от API Яндекс.Переводчик - </b>ключ, позволяющий пользоваться API Яндекс.Переводчика. Его </span><span
+            style="font-size: 11pt; line-height: 115%; font-family: Calibri,sans-serif;">вы можете получить совершенно бесплатно по адресу: <noindex><a
+            href="https://tech.yandex.ru/keys/get/?service=trnsl" target="_blank" rel="nofollow">https://tech.yandex.ru/keys/get/?service=trnsl</a></noindex><b>
+    <br>
+
+    <br>
+   </b></span><span style="font-size: 11pt; line-height: 115%; font-family: Calibri,sans-serif;"><b>Направление перевода - </b>в каком направлении будет осуществляться перевод текста. Языки разделяются тире. Пример: en-ru
+  <br>
+
+  <br>
+ <b>Отправлять уникальный текст в Яндекс
+    <br>
+
+    <br>
+   <img src="https://www.sotbit.ru/upload/shs.parser/v_uniq.jpg"
+        title="Парсер контента - Отправить уникальный текст в Яндекс" width="855" height="168" border="0">
+    <br>
+
+    <br>
+   Выбрать домены - </b>выбрать домен, относительно которого будет отправляться уникальный текст в Яндекс.<b>
+    <br>
+
+    <br>
+   Вкладка Видео-инструкция.
+    <br>
+
+    <br>
+   </b>Предоставлена видео-инструкция, что облегчит понимание работы и настройки Парсера. </span>
+
+
+    </div>
+
+
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <?
-$module_id = 'shs.parser';
+$module_id = 'kit.parser';
 
 $MESS['parser_tab_export'] = 'Экспорт';
 $MESS[$module_id.'_GROUP_LOGIN'] = 'Настройка соединения';

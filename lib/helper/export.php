@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Shs\Helper;
+namespace Bitrix\Kit\Helper;
 
 use Bitrix\Main,
     Bitrix\Main\Localization\Loc,
@@ -17,7 +17,7 @@ Loc::loadMessages(__FILE__);
  * <li> END_LAST_TIME datetime optional
  * </ul>
  *
- * @package Bitrix\Shs
+ * @package Bitrix\Kit
  **/
 
 class Export

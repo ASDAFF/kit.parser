@@ -1,17 +1,21 @@
 <?php
+/**
+ * Copyright (c) 12/9/2020 Created By/Edited By ASDAFF asdaff.asad@yandex.ru
+ */
+
 use Bitrix\Main\Loader;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\ExpressionField;
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/result_parser.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/result_parser_product.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/result_parser.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/result_parser_product.php");
 
 if(!CModule::IncludeModule('iblock')) return false;
 IncludeModuleLangFile(__FILE__);
 global $DB;
-$POST_RIGHT = $APPLICATION->GetGroupRight("shs.parser");
+$POST_RIGHT = $APPLICATION->GetGroupRight("kit.parser");
 if($POST_RIGHT=="D")
     $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
@@ -27,13 +31,13 @@ function CheckFilter()
     return true;
 }
 
-$parserResult = \Bitrix\Shs\ParserResultTable::getList(array(
+$parserResult = \Bitrix\Kit\ParserResultTable::getList(array(
     'select'=>array('*'),
     'filter' => array('ID'=>$ID),
 ));
 $parserResult = $parserResult->fetch();
 
-$parser = new ShsParserContent();
+$parser = new KitParserContent();
 $parser = $parser->GetList(array(),array('ID'=>$parserResult['PARSER_ID']));
 $parser = $parser->fetch();
 
@@ -43,7 +47,7 @@ $lAdmin = new CAdminList($sTableID, $oSort);
 $lAdmin->BeginPrologContent();
 ?>
 <h4><? echo GetMessage("PARSER_INFO") ?></h4>
-<table class="shs_parser_result_info">
+<table class="kit_parser_result_info">
     <tr>
         <td><?php echo GetMessage('PARSER_NAME');?></td>
         <td><?php echo $parser["NAME"];?></td>
@@ -95,7 +99,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
 {
     if($_REQUEST['action_target']=='selected')
     {
-        $rsDataRes = \Bitrix\Shs\ParserResultProductTable::getList(array(
+        $rsDataRes = \Bitrix\Kit\ParserResultProductTable::getList(array(
             'select'=>array('ID'),
             'filter' => array(),
         ));
@@ -114,7 +118,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
         case "delete":
             @set_time_limit(0);
             $DB->StartTransaction();
-                $res = \Bitrix\Shs\ParserResultProductTable::delete($ID);
+                $res = \Bitrix\Kit\ParserResultProductTable::delete($ID);
                 if(!$res->isSuccess())
                 {
                     $DB->Rollback();
@@ -210,7 +214,7 @@ $lAdmin->AddHeaders(array_merge(array(
 ),$properties));                                                         
 //$lAdmin->AddHeaders($properties);   
        
-$rsData = \Bitrix\Shs\ParserResultProductTable::getList(array(
+$rsData = \Bitrix\Kit\ParserResultProductTable::getList(array(
     'select'=>array('*','IBLOCK.NAME','IBLOCK.IBLOCK_ID','IBLOCK.ID','IBLOCK.IBLOCK_SECTION_ID','IBLOCK.IBLOCK.TYPE.ID'),
     'filter' => $arFilter,
     'order' => array(
@@ -231,7 +235,7 @@ while($arRes = $rsData->NavNext(true, "f_")):
     $m = $arRes['OLD_PRICE']-$arRes['NEW_PRICE'];
     $price = '<span class="'.($m>0?'color-green':($m==0?'color-gray':'color-red')).'" title="'.($m>0?GetMessage('price_dec'):($m==0?GetMessage('price_not_changed'):GetMessage('price_inc'))).'">'.$arRes['NEW_PRICE'].'</span>';
     $row->AddViewField('NEW_PRICE',$price);
-    $row->AddViewField("IBLOCK_NAME", '<a target="_blank" href="iblock_element_edit.php?IBLOCK_ID='.$arRes['SHS_PARSER_RESULT_PRODUCT_IBLOCK_IBLOCK_ID'].'&type='.$arRes['SHS_PARSER_RESULT_PRODUCT_IBLOCK_IBLOCK_TYPE_ID'].'&ID='.$arRes['PRODUCT_ID'].'&lang='.LANG.'&find_section_section='.$arRes['SHS_PARSER_RESULT_PRODUCT_IBLOCK_IBLOCK_SECTION_ID'].'&WF=Y">'.$arRes['SHS_PARSER_RESULT_PRODUCT_IBLOCK_NAME'].'</a>');
+    $row->AddViewField("IBLOCK_NAME", '<a target="_blank" href="iblock_element_edit.php?IBLOCK_ID='.$arRes['KIT_PARSER_RESULT_PRODUCT_IBLOCK_IBLOCK_ID'].'&type='.$arRes['KIT_PARSER_RESULT_PRODUCT_IBLOCK_IBLOCK_TYPE_ID'].'&ID='.$arRes['PRODUCT_ID'].'&lang='.LANG.'&find_section_section='.$arRes['KIT_PARSER_RESULT_PRODUCT_IBLOCK_IBLOCK_SECTION_ID'].'&WF=Y">'.$arRes['KIT_PARSER_RESULT_PRODUCT_IBLOCK_NAME'].'</a>');
                                                              
     $m = $prop['count']['old']-$prop['count']['new'];
     $count = '<span class="'.($m<0?'color-green':($m==0?'color-gray':'color-red')).'" title="'.($m>0?GetMessage('count_dec'):($m==0?GetMessage('count_not_changed'):GetMessage('count_inc'))).'">'.$prop['count']['new'].'</span>';
@@ -252,7 +256,7 @@ while($arRes = $rsData->NavNext(true, "f_")):
             "ICON"=>"",
             "DEFAULT"=>true,
             "TEXT"=>GetMessage("parser_act_see"),
-            "ACTION"=>$lAdmin->ActionRedirect("shs_one_item_result.php?ITEM_RESULT_ID=".$f_ID)
+            "ACTION"=>$lAdmin->ActionRedirect("kit_one_item_result.php?ITEM_RESULT_ID=".$f_ID)
         );
     }
     $row->AddActions($arActions);

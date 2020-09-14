@@ -1,7 +1,7 @@
 <?
-$MESS["shs_parser_section_title_edit"]  = "Редактирование категории парсера";
-$MESS["shs_parser_section_title_add"]  = "Добавление категории парсера";
-$MESS["shs_parser_category_name"] = "Категория";
+$MESS["kit_parser_section_title_edit"]  = "Редактирование категории парсера";
+$MESS["kit_parser_section_title_add"]  = "Добавление категории парсера";
+$MESS["kit_parser_category_name"] = "Категория";
 $MESS["parser_section_act"] = "Активность";
 $MESS["parser_section_sort"] = "Сортировка";
 $MESS["parser_section_name"] = "Название";

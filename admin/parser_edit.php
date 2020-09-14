@@ -1,17 +1,21 @@
 <?
+/**
+ * Copyright (c) 12/9/2020 Created By/Edited By ASDAFF asdaff.asad@yandex.ru
+ */
+
 use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Type; 
 
 if(isset($_REQUEST["ID"]) && isset($_REQUEST["btn_stop"])){
-    file_put_contents($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/stop_parser_".$_REQUEST["ID"].".txt",'end');
+    file_put_contents($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/stop_parser_".$_REQUEST["ID"].".txt",'end');
     exit;
 }
 
 if(!isset($_REQUEST['ajax']) && !isset($_REQUEST["ajax_start"]) && !isset($_REQUEST["ajax_count"]) && !isset($_POST["auth"])):
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
 $arEncoding['reference'] = array(
         //GetMessage('parser_charset_default'),
         'UTF-8',
@@ -30,8 +34,8 @@ $arEncoding['reference_id'] = array(
         'WINDOWS-1252',
         'UTF8',
         'ISO-8859-1');
-//require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/classes/mysql/list_parser.php");
-//require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/classes/general/rss_content_parser.php");
+//require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/classes/mysql/list_parser.php");
+//require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/classes/general/rss_content_parser.php");
 define("HELP_FILE", "add_issue.php");
 //CJSCore::Init(array("jquery"));
 CUtil::InitJSCore(array('ajax', 'ls', 'jquery'));
@@ -105,11 +109,11 @@ exit();*/
 if(!CModule::IncludeModule('iblock')) return false;
 CModule::IncludeModule('catalog');
 CModule::IncludeModule("highloadblock");
-CModule::IncludeModule('shs.parser');
+CModule::IncludeModule('kit.parser');
 
 IncludeModuleLangFile(__FILE__);
 
-$POST_RIGHT = $APPLICATION->GetGroupRight("shs.parser");
+$POST_RIGHT = $APPLICATION->GetGroupRight("kit.parser");
 if($POST_RIGHT=="D")
     $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
@@ -134,20 +138,20 @@ $bCopy = ($action == "copy");
 $message = null;
 $bVarsFromForm = false;
 
-/*function sotbitParserSetSettings(&$SETTINGS)
+/*function collectedParserSetSettings(&$SETTINGS)
 {
     foreach($SETTINGS as &$v)
     {
-        if(is_array($v)) sotbitParserSetSettings($v);
+        if(is_array($v)) collectedParserSetSettings($v);
         else $v = htmlspecialcharsEx($v);
     }
 }
 
-function sotbitParserGetSettings(&$SETTINGS)
+function collectedParserGetSettings(&$SETTINGS)
 {
     foreach($SETTINGS as &$v)
     {
-        if(is_array($v)) sotbitParserGetSettings($v);
+        if(is_array($v)) collectedParserGetSettings($v);
         else $v = htmlspecialcharsBack($v);
     }
 }*/
@@ -167,8 +171,8 @@ $arrFilterCircs = array(
 
 if($REQUEST_METHOD == "POST" && ($save!="" || $apply!="") && $POST_RIGHT=="W" && check_bitrix_sessid())
 {
-    $parser = new ShsParserContent();
-    RssContentParser::sotbitParserSetSettings($SETTINGS);
+    $parser = new KitParserContent();
+    RssContentParser::collectedParserSetSettings($SETTINGS);
 
     $arFields = Array(
         "NAME"    => $NAME,
@@ -245,53 +249,53 @@ ClearVars();
 
 if($ID>0 || $copy)
 {
-    if($ID)$parser = ShsParserContent::GetByID($ID);
-    elseif($copy) $parser = ShsParserContent::GetByID($copy);
+    if($ID)$parser = KitParserContent::GetByID($ID);
+    elseif($copy) $parser = KitParserContent::GetByID($copy);
     
-    if(!$parser->ExtractFields("shs_"))
+    if(!$parser->ExtractFields("kit_"))
         $ID=0;
-    if($ID>0 && $shs_TIME_AGENT>0){
-        $arAgent = CAgent::GetList(array(), array("NAME"=>"CShsParser::startAgent(".$ID.");"))->Fetch();
-        if(!$arAgent && $shs_START_AGENT=="Y"){CAgent::AddAgent(
-            "CShsParser::startAgent(".$ID.");", // ��� �������
-            "shs.parser",                          // ������������� ������
-            "N",                                  // ����� �� �������� � ���-�� ��������
-            $shs_TIME_AGENT,                                // �������� ������� - 1 �����
-            "",                // ���� ������ �������� �� ������
-            "Y",                                  // ����� �������
-            "",                // ���� ������� �������
+    if($ID>0 && $kit_TIME_AGENT>0){
+        $arAgent = CAgent::GetList(array(), array("NAME"=>"CKitParser::startAgent(".$ID.");"))->Fetch();
+        if(!$arAgent && $kit_START_AGENT=="Y"){CAgent::AddAgent(
+            "CKitParser::startAgent(".$ID.");", // имя функции
+            "kit.parser",                          // идентификатор модуля
+            "N",                                  // агент не критичен к кол-ву запусков
+            $kit_TIME_AGENT,                                // интервал запуска - 1 сутки
+            "",                // дата первой проверки на запуск
+            "Y",                                  // агент активен
+            "",                // дата первого запуска
             100
           );}
         elseif($arAgent){
             CAgent::Update($arAgent['ID'], array(
-                "AGENT_INTERVAL"=>$shs_TIME_AGENT,
-                "ACTIVE"=>$shs_START_AGENT=="Y"?"Y":"N"
+                "AGENT_INTERVAL"=>$kit_TIME_AGENT,
+                "ACTIVE"=>$kit_START_AGENT=="Y"?"Y":"N"
             ));
         }
     }
 
     
-    $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$shs_IBLOCK_ID, "PROPERTY_TYPE"=>"S"));
+    $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$kit_IBLOCK_ID, "PROPERTY_TYPE"=>"S"));
     while($arProp = $properties->Fetch())
     {
         $arrProp['REFERENCE'][] = "[".$arProp["CODE"]."] ".$arProp["NAME"];
         $arrProp['REFERENCE_ID'][] = $arProp["CODE"];
     }
 
-    $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$shs_IBLOCK_ID, "PROPERTY_TYPE"=>"F"));
+    $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$kit_IBLOCK_ID, "PROPERTY_TYPE"=>"F"));
     while($arProp = $properties->Fetch())
     {
         $arrPropFile['REFERENCE'][] = "[".$arProp["CODE"]."] ".$arProp["NAME"];
         $arrPropFile['REFERENCE_ID'][] = $arProp["CODE"];
     }
 
-    $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$shs_IBLOCK_ID));
+    $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$kit_IBLOCK_ID));
 
-    $arrPropDop['REFERENCE'][] = GetMessage("shs_parser_select_prop_new");
+    $arrPropDop['REFERENCE'][] = GetMessage("kit_parser_select_prop_new");
     $arrPropDop['REFERENCE_ID'][] = "[]";
     
-    $arrPropField['REFERENCE'][] = GetMessage("parser_SOTBIT_PARSER_NAME_E");
-    $arrPropField['REFERENCE_ID'][] = "SOTBIT_PARSER_NAME_E";
+    $arrPropField['REFERENCE'][] = GetMessage("parser_COLLECTED_PARSER_NAME_E");
+    $arrPropField['REFERENCE_ID'][] = "COLLECTED_PARSER_NAME_E";
     
     while($arProp = $properties->Fetch())
     {
@@ -312,7 +316,7 @@ if($ID>0 || $copy)
         
         if($arProp["PROPERTY_TYPE"]=="L"/* && $arProp["ID"]==14*/)
         {
-            $rsEnum = CIBlockPropertyEnum::GetList(Array("DEF"=>"DESC", "SORT"=>"ASC"), Array("IBLOCK_ID"=>$shs_IBLOCK_ID, "property_id"=>$arProp["ID"]));
+            $rsEnum = CIBlockPropertyEnum::GetList(Array("DEF"=>"DESC", "SORT"=>"ASC"), Array("IBLOCK_ID"=>$kit_IBLOCK_ID, "property_id"=>$arProp["ID"]));
             $arrPropDop["LIST_VALUES"][$arProp["CODE"]]["REFERENCE"][] = GetMessage("parser_prop_default");
             $arrPropDop["LIST_VALUES"][$arProp["CODE"]]["REFERENCE_ID"][] = "";
             while($arEnum = $rsEnum->Fetch())
@@ -363,8 +367,8 @@ if($ID>0 || $copy)
 }
 
 /*if($bVarsFromForm)
-    $DB->InitTableVarsForEdit("b_shs_list_parser", "", "shs_");*/
-$APPLICATION->SetTitle(($ID>0? GetMessage("parser_title_edit").' "'.$shs_NAME.'"' : GetMessage("parser_title_add")));
+    $DB->InitTableVarsForEdit("b_kit_list_parser", "", "kit_");*/
+$APPLICATION->SetTitle(($ID>0? GetMessage("parser_title_edit").' "'.$kit_NAME.'"' : GetMessage("parser_title_add")));
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php");
 
 $aMenu = array(
@@ -379,7 +383,7 @@ $aMenu = array(
 if($ID>0)
 {
     $startAgent = false;
-    if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/startAgent".$ID.".txt"))
+    if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/startAgent".$ID.".txt"))
         $startAgent = true;
 
     $aMenu[] = array("SEPARATOR"=>"Y");
@@ -410,37 +414,37 @@ if($ID>0)
         );
     }
     
-    if($shs_ACTIVE=="Y" && !$startAgent){
+    if($kit_ACTIVE=="Y" && !$startAgent){
         $aMenu[] = array("SEPARATOR"=>"Y");
-        if($shs_TYPE=="catalog" || $_GET["type"]=="catalog" || $shs_TYPE=="catalog_HL" || $_GET["type"]=="catalog_HL"):
+        if($kit_TYPE=="catalog" || $_GET["type"]=="catalog" || $kit_TYPE=="catalog_HL" || $_GET["type"]=="catalog_HL"):
             $aMenu[] = array(
                 "TEXT"=>GetMessage("parser_start"),
                 "TITLE"=>GetMessage("parser_start_title"),
                 "LINK"=>"parser_edit.php?start=1&lang=".LANG."&ID=".$ID,
                 "ICON"=>"btn_start_catalog"
             );
-        elseif($shs_TYPE=="page" || $_GET["type"]=="page" || $shs_TYPE=="rss" || $_GET["type"]=="rss"):
+        elseif($kit_TYPE=="page" || $_GET["type"]=="page" || $kit_TYPE=="rss" || $_GET["type"]=="rss"):
             $aMenu[] = array(
                 "TEXT"=>GetMessage("parser_start"),
                 "TITLE"=>GetMessage("parser_start_title"),
                 "LINK"=>"parser_edit.php?start=1&lang=".LANG."&ID=".$ID,
                 "ICON"=>"btn_start"
             );
-        elseif($shs_TYPE=="xml" || $_GET["type"]=="xml" || $shs_TYPE=="xml_catalo" || $_GET["type"]=="xml_catalo"):
+        elseif($kit_TYPE=="xml" || $_GET["type"]=="xml" || $kit_TYPE=="xml_catalo" || $_GET["type"]=="xml_catalo"):
             $aMenu[] = array(
                 "TEXT"=>GetMessage("parser_start"),
                 "TITLE"=>GetMessage("parser_start_title"),
                 "LINK"=>"parser_edit.php?start=1&lang=".LANG."&ID=".$ID,
                 "ICON"=>"btn_start_xml"
             );
-        elseif($shs_TYPE=="csv" || $_GET["type"]=="csv"):
+        elseif($kit_TYPE=="csv" || $_GET["type"]=="csv"):
             $aMenu[] = array(
                 "TEXT"=>GetMessage("parser_start"),
                 "TITLE"=>GetMessage("parser_start_title"),
                 "LINK"=>"parser_edit.php?start=1&lang=".LANG."&ID=".$ID,
                 "ICON"=>"btn_start_csv"
             );
-        elseif($shs_TYPE=="xls" || $_GET["type"]=="xls" || $shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo"):
+        elseif($kit_TYPE=="xls" || $_GET["type"]=="xls" || $kit_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo"):
             $aMenu[] = array(
                 "TEXT"=>GetMessage("parser_start"),
                 "TITLE"=>GetMessage("parser_start_title"),
@@ -449,7 +453,7 @@ if($ID>0)
             );
         endif;
     }
-    if($shs_TYPE=="catalog" || $_GET["type"]=="catalog")
+    if($kit_TYPE=="catalog" || $_GET["type"]=="catalog")
     {
         $aMenu[] = array(
             "TEXT"=>GetMessage("parser_instructions"),
@@ -458,7 +462,7 @@ if($ID>0)
             "ICON"=>"instruction"
         );
     }
-    if($shs_TYPE=="xml" || $_GET["type"]=="xml")
+    if($kit_TYPE=="xml" || $_GET["type"]=="xml")
     {
         $aMenu[] = array(
             "TEXT"=>GetMessage("parser_instructions"),
@@ -472,7 +476,7 @@ if($ID>0)
 $context = new CAdminContextMenu($aMenu);
 $context->Show();
 
-$rsSection = \Shs\Parser\ParserSectionTable::getList(array(
+$rsSection = \Kit\Parser\ParserSectionTable::getList(array(
     'limit' =>null,
     'offset' => null,
     'select' => array("*"),
@@ -512,12 +516,12 @@ if(isset($_REQUEST['start']) && $ID>0){
 **** to iblock
 ***/
 
-if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_catalo" || $_GET["type"]=="xml_catalo" || $shs_TYPE=="catalog" || $_GET["type"]=="catalog" || $shs_TYPE=="xml" || $_GET["type"]=="xml" || $shs_TYPE=="csv" || $_GET["type"]=="csv" || $shs_TYPE=="xls" || $_GET["type"]=="xls") && ((isset($shs_TYPE_OUT) && $shs_TYPE_OUT!="HL") || ( isset($_GET["type_out"]) && $_GET["type_out"]!="HL") || (!isset($_GET['type_out']) && (!isset($shs_TYPE_OUT) || $shs_TYPE_OUT!='HL'))) )
+if(($kit_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $kit_TYPE=="xml_catalo" || $_GET["type"]=="xml_catalo" || $kit_TYPE=="catalog" || $_GET["type"]=="catalog" || $kit_TYPE=="xml" || $_GET["type"]=="xml" || $kit_TYPE=="csv" || $_GET["type"]=="csv" || $kit_TYPE=="xls" || $_GET["type"]=="xls") && ((isset($kit_TYPE_OUT) && $kit_TYPE_OUT!="HL") || ( isset($_GET["type_out"]) && $_GET["type_out"]!="HL") || (!isset($_GET['type_out']) && (!isset($kit_TYPE_OUT) || $kit_TYPE_OUT!='HL'))) )
 {
     $isOfferCatalog = false;
-    if(isset($shs_IBLOCK_ID) && $shs_IBLOCK_ID && CModule::IncludeModule('catalog'))
+    if(isset($kit_IBLOCK_ID) && $kit_IBLOCK_ID && CModule::IncludeModule('catalog'))
     {
-        $arIblock = CCatalogSKU::GetInfoByIBlock($shs_IBLOCK_ID);
+        $arIblock = CCatalogSKU::GetInfoByIBlock($kit_IBLOCK_ID);
         
         if(is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)$isOfferCatalog = true;
         
@@ -529,7 +533,7 @@ if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_ca
         {
             $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$OFFER_IBLOCK_ID));
     
-            $arrPropDopOffer['REFERENCE'][] = GetMessage("shs_parser_select_prop_new");
+            $arrPropDopOffer['REFERENCE'][] = GetMessage("kit_parser_select_prop_new");
             $arrPropDopOffer['REFERENCE_ID'][] = "[]";
             
             while($arProp = $properties->Fetch())
@@ -587,13 +591,10 @@ if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_ca
         }
     }
     
-    /***
-    **** ���� ��� ��������
-    ***/
-    
-    if ($shs_TYPE=="catalog" || $_GET["type"]=="catalog")
+
+    if ($kit_TYPE=="catalog" || $_GET["type"]=="catalog")
     {
-        if(CModule::IncludeModule('catalog') && (($shs_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$shs_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$shs_IBLOCK_ID))
+        if(CModule::IncludeModule('catalog') && (($kit_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$kit_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$kit_IBLOCK_ID))
         {
             //unset($aTabs[5]);
             $aTabs = array(
@@ -630,13 +631,11 @@ if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_ca
         }
     }
     
-    /***
-    **** ���� ��� XML
-    ***/
+
     
-    if ($shs_TYPE=="xml" || $_GET["type"]=="xml" || $shs_TYPE=="xml_catalo" || $_GET["type"]=="xml_catalo" || $shs_TYPE=="csv" || $_GET["type"]=="csv")
+    if ($kit_TYPE=="xml" || $_GET["type"]=="xml" || $kit_TYPE=="xml_catalo" || $_GET["type"]=="xml_catalo" || $kit_TYPE=="csv" || $_GET["type"]=="csv")
     {
-        if(CModule::IncludeModule('catalog') && (($shs_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$shs_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$shs_IBLOCK_ID))
+        if(CModule::IncludeModule('catalog') && (($kit_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$kit_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$kit_IBLOCK_ID))
         {
             $aTabs = array(
                 array("DIV" => "edit1", "TAB" => GetMessage("parser_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_tab")),
@@ -673,9 +672,9 @@ if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_ca
             $isCatalog = false;
         }
     }
-    elseif ($shs_TYPE=="xls" || $_GET["type"]=="xls") //���� ��� XLS
+    elseif ($kit_TYPE=="xls" || $_GET["type"]=="xls")
     {
-        if(CModule::IncludeModule('catalog') && (($shs_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$shs_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$shs_IBLOCK_ID))
+        if(CModule::IncludeModule('catalog') && (($kit_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$kit_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$kit_IBLOCK_ID))
         {
             $aTabs = array(
                 array("DIV" => "edit1", "TAB" => GetMessage("parser_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_tab")),
@@ -708,9 +707,9 @@ if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_ca
             $isCatalog = false;
         }
     }
-    elseif ($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo") //���� ��� XLS
+    elseif ($kit_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo")
     {
-        if(CModule::IncludeModule('catalog') && (($shs_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$shs_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$shs_IBLOCK_ID))
+        if(CModule::IncludeModule('catalog') && (($kit_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$kit_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$kit_IBLOCK_ID))
         {
             $aTabs = array(
                 array("DIV" => "edit1", "TAB" => GetMessage("parser_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_tab")),
@@ -743,9 +742,9 @@ if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_ca
             $isCatalog = false;
         }
     }
-    /*elseif($shs_TYPE=="csv_catalo" || $_GET["type"]=="csv_catalo")
+    /*elseif($kit_TYPE=="csv_catalo" || $_GET["type"]=="csv_catalo")
     {
-        if(CModule::IncludeModule('catalog') && (($shs_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$shs_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$shs_IBLOCK_ID))
+        if(CModule::IncludeModule('catalog') && (($kit_IBLOCK_ID && CCatalog::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y", "ID"=>$kit_IBLOCK_ID))->Fetch()) || (is_array($arIblock) && !empty($arIblock) && $arIblock["PRODUCT_IBLOCK_ID"]!=0 && $arIblock["SKU_PROPERTY_ID"]!=0)  || !$kit_IBLOCK_ID))
         {
             $aTabs = array(
                 array("DIV" => "edit1", "TAB" => GetMessage("parser_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_tab")),
@@ -793,7 +792,7 @@ if(($shs_TYPE=="xls_catalo" || $_GET["type"]=="xls_catalo" || $shs_TYPE=="xml_ca
 /*
 to highload
 */
-elseif (($shs_TYPE=="catalog" || $_GET["type"]=="catalog" || $shs_TYPE=="xml" || $_GET["type"]=="xml" || $shs_TYPE=="csv" || $_GET["type"]=="csv" || $shs_TYPE=="xls" || $_GET["type"]=="xls") && (isset($shs_TYPE_OUT) && $shs_TYPE_OUT=="HL") || (isset($_GET["type_out"]) && $_GET["type_out"]=="HL"))
+elseif (($kit_TYPE=="catalog" || $_GET["type"]=="catalog" || $kit_TYPE=="xml" || $_GET["type"]=="xml" || $kit_TYPE=="csv" || $_GET["type"]=="csv" || $kit_TYPE=="xls" || $_GET["type"]=="xls") && (isset($kit_TYPE_OUT) && $kit_TYPE_OUT=="HL") || (isset($_GET["type_out"]) && $_GET["type_out"]=="HL"))
 {
     $Hlist = HL\HighloadBlockTable::getList(array(
         'select'=>array('ID','NAME'),
@@ -803,7 +802,7 @@ elseif (($shs_TYPE=="catalog" || $_GET["type"]=="catalog" || $shs_TYPE=="xml" ||
         $arIBlock['REFERENCE'][] = '['.$hl['ID'].'] '.$hl['NAME'];
         $arIBlock['REFERENCE_ID'][] = $hl['ID'];
     }
-    if($shs_TYPE=="catalog" || $_GET["type"]=="catalog"){
+    if($kit_TYPE=="catalog" || $_GET["type"]=="catalog"){
         $aTabs = array(
             array("DIV" => "edit1", "TAB" => GetMessage("parser_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_tab")),
             array("DIV" => "edit2", "TAB" => GetMessage("parser_pagenavigation_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_pagenavigation_tab")),
@@ -819,7 +818,7 @@ elseif (($shs_TYPE=="catalog" || $_GET["type"]=="catalog" || $shs_TYPE=="xml" ||
             array("DIV" => "edit12", "TAB" => GetMessage("parser_local_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_local_tab")),
             array("DIV" => "edit13", "TAB" => GetMessage("parser_video_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_video_tab")),
         );
-    } elseif($shs_TYPE=="csv" || $_GET["type"]=="csv"){
+    } elseif($kit_TYPE=="csv" || $_GET["type"]=="csv"){
       $aTabs = array(
                 array("DIV" => "edit1", "TAB" => GetMessage("parser_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_tab")),
                 //array("DIV" => "edit2", "TAB" => GetMessage("parser_pagenavigation_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_pagenavigation_tab")),
@@ -837,7 +836,7 @@ elseif (($shs_TYPE=="catalog" || $_GET["type"]=="catalog" || $shs_TYPE=="xml" ||
                 array("DIV" => "edit11", "TAB" => GetMessage("parser_video_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_video_tab")),
             );
     }
-    elseif($shs_TYPE=="xml" || $_GET["type"]=="xml"){
+    elseif($kit_TYPE=="xml" || $_GET["type"]=="xml"){
       $aTabs = array(
                  array("DIV" => "edit1", "TAB" => GetMessage("parser_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_tab")),
 //                array("DIV" => "edit2", "TAB" => GetMessage("parser_pagenavigation_tab"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("parser_pagenavigation_tab")),
@@ -862,7 +861,7 @@ elseif (($shs_TYPE=="catalog" || $_GET["type"]=="catalog" || $shs_TYPE=="xml" ||
 **** RSS/PAGE to iblock
 ***/
 
-elseif((isset($shs_TYPE_OUT) && $shs_TYPE_OUT!="HL") || ( isset($_GET["type_out"]) && $_GET["type_out"]!="HL") || !isset($_GET['type_out']))
+elseif((isset($kit_TYPE_OUT) && $kit_TYPE_OUT!="HL") || ( isset($_GET["type_out"]) && $_GET["type_out"]!="HL") || !isset($_GET['type_out']))
 {
     $rsIBlock = CIBlock::GetList(Array("name" => "asc"), Array("ACTIVE"=>"Y"));
     while($arr=$rsIBlock->Fetch()){
@@ -882,8 +881,8 @@ elseif((isset($shs_TYPE_OUT) && $shs_TYPE_OUT!="HL") || ( isset($_GET["type_out"
 
 $tabControl = new CAdminTabControl("tabControl", $aTabs);
 
-if(!empty($shs_IBLOCK_ID)){
-    $rsSections = CIBlockSection::GetList(array("left_margin"=>"asc"), array(/*'ACTIVE'=>"Y",*/ "IBLOCK_ID"=>$shs_IBLOCK_ID), false, array('ID', 'NAME', "IBLOCK_ID", "DEPTH_LEVEL"));
+if(!empty($kit_IBLOCK_ID)){
+    $rsSections = CIBlockSection::GetList(array("left_margin"=>"asc"), array(/*'ACTIVE'=>"Y",*/ "IBLOCK_ID"=>$kit_IBLOCK_ID), false, array('ID', 'NAME', "IBLOCK_ID", "DEPTH_LEVEL"));
 
     while($arr=$rsSections->Fetch()){
         $arr["NAME"] = str_repeat(" . ", $arr["DEPTH_LEVEL"]).$arr["NAME"];
@@ -929,10 +928,10 @@ if(isset($_REQUEST['end']) && $_REQUEST['end']==1 && $ID>0){
         foreach($_GET['ERROR'] as $error) CAdminMessage::ShowMessage($error);
     }
 }
-$shs_SETTINGS = (string)$shs_SETTINGS;
-$shs_SETTINGS = unserialize(base64_decode($shs_SETTINGS));
+$kit_SETTINGS = (string)$kit_SETTINGS;
+$kit_SETTINGS = unserialize(base64_decode($kit_SETTINGS));
 
-$shsDebug = $shs_SETTINGS["catalog"]["mode"];
+$kitDebug = $kit_SETTINGS["catalog"]["mode"];
 
 if(!function_exists('curl_getinfo')) CAdminMessage::ShowMessage(array("MESSAGE"=>GetMessage("parser_exists_libcurl")));
 if(!class_exists('XMLReader')) CAdminMessage::ShowMessage(array("MESSAGE"=>GetMessage("parser_class_exists_XMLReader")));
@@ -940,30 +939,30 @@ if(!class_exists('XMLReader')) CAdminMessage::ShowMessage(array("MESSAGE"=>GetMe
 $arTypeOut['reference']=array(GetMessage('parser_type_out_iblock'),GetMessage('parser_type_out_hl'));
 $arTypeOut['reference_id']=array('iblock', 'HL');
 ?>
-<div id="shs_message"></div>
-<form method="POST" id="shs-parser" Action="<?echo $APPLICATION->GetCurPage()?>" ENCTYPE="multipart/form-data" name="post_form">
+<div id="kit_message"></div>
+<form method="POST" id="kit-parser" Action="<?echo $APPLICATION->GetCurPage()?>" ENCTYPE="multipart/form-data" name="post_form">
 <?
 $tabControl->Begin();
 
-if($shs_TYPE=="page" || (isset($_GET["type"]) && $_GET["type"]=="page")) include("parser_edit_page.php");
-elseif($shs_TYPE=="catalog" || (isset($_GET["type"]) && $_GET["type"]=="catalog")) {
-    if ($shs_TYPE_OUT=="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]=="HL"))
+if($kit_TYPE=="page" || (isset($_GET["type"]) && $_GET["type"]=="page")) include("parser_edit_page.php");
+elseif($kit_TYPE=="catalog" || (isset($_GET["type"]) && $_GET["type"]=="catalog")) {
+    if ($kit_TYPE_OUT=="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]=="HL"))
         include("parser_edit_catalog_hl.php");
-    elseif($shs_TYPE_OUT!="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]!="HL"))
+    elseif($kit_TYPE_OUT!="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]!="HL"))
         include("parser_edit_catalog.php");
 }
-elseif($shs_TYPE=="csv" || (isset($_GET["type"]) && $_GET["type"]=="csv")){
-    if ($shs_TYPE_OUT=="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]=="HL"))
+elseif($kit_TYPE=="csv" || (isset($_GET["type"]) && $_GET["type"]=="csv")){
+    if ($kit_TYPE_OUT=="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]=="HL"))
         include("parser_edit_csv_hl.php");
-    elseif($shs_TYPE_OUT!="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]!="HL"))
+    elseif($kit_TYPE_OUT!="HL" || (isset($_GET["type_out"]) && $_GET["type_out"]!="HL"))
         include("parser_edit_csv.php");
-    //if(($shs_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_csv.php");
+    //if(($kit_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_csv.php");
 }
-elseif((($shs_TYPE=="xml" || $shs_TYPE=="xml_catalo") || (isset($_GET["type"]) && ($_GET["type"]=="xml" || $_GET["type"]=="xml_catalo"))) && ($shs_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_xml.php");
-elseif(($shs_TYPE=="xls" || (isset($_GET["type"]) && $_GET["type"]=="xls")) && ($shs_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_xls.php");
-//elseif(($shs_TYPE=="csv_catalo" || (isset($_GET["type"]) && $_GET["type"]=="csv_catalo")) && ($shs_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_csv_catalog.php");
-elseif(($shs_TYPE=="xls_catalo" || (isset($_GET["type"]) && $_GET["type"]=="xls_catalo")) && ($shs_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_xls_catalog.php");
-elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET["type"]=="rss") || !isset($ID) || !$ID) include("parser_edit_rss.php");
+elseif((($kit_TYPE=="xml" || $kit_TYPE=="xml_catalo") || (isset($_GET["type"]) && ($_GET["type"]=="xml" || $_GET["type"]=="xml_catalo"))) && ($kit_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_xml.php");
+elseif(($kit_TYPE=="xls" || (isset($_GET["type"]) && $_GET["type"]=="xls")) && ($kit_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_xls.php");
+//elseif(($kit_TYPE=="csv_catalo" || (isset($_GET["type"]) && $_GET["type"]=="csv_catalo")) && ($kit_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_csv_catalog.php");
+elseif(($kit_TYPE=="xls_catalo" || (isset($_GET["type"]) && $_GET["type"]=="xls_catalo")) && ($kit_TYPE_OUT!="HL" || !isset($_GET["type_out"]) || $_GET["type_out"]!="HL")) include("parser_edit_xls_catalog.php");
+elseif((!$kit_TYPE && $ID) || $kit_TYPE=="rss" || (isset($_GET["type"]) && $_GET["type"]=="rss") || !isset($ID) || !$ID) include("parser_edit_rss.php");
 ?>
 
 <?echo BeginNote();?>
@@ -1074,7 +1073,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                         }
                         else if(target_select_id=="loadPropField")
                         {
-                            str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+name+'&nbsp;['+code+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][action_props_val]['+code+'][]" data-code="'+code+'" size="40">&nbsp; <select id="SETTINGS[catalog][action_props]['+code+']" name="SETTINGS[catalog][action_props]['+code+'][]"><option value=""><?=GetMessage("shs_parser_select_action_props")?></option><option value="delete"><?=GetMessage("parser_action_props_delete")?></option><option value="add_b"><?=GetMessage("parser_action_props_add_begin")?></option><option value="add_e"><?=GetMessage("parser_action_props_add_end")?></option><option value="lower"><?=GetMessage("parser_action_props_to_lower")?></option></select> <a href="#" class="find_delete">Delete</a></td></tr>';
+                            str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+name+'&nbsp;['+code+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][action_props_val]['+code+'][]" data-code="'+code+'" size="40">&nbsp; <select id="SETTINGS[catalog][action_props]['+code+']" name="SETTINGS[catalog][action_props]['+code+'][]"><option value=""><?=GetMessage("kit_parser_select_action_props")?></option><option value="delete"><?=GetMessage("parser_action_props_delete")?></option><option value="add_b"><?=GetMessage("parser_action_props_add_begin")?></option><option value="add_e"><?=GetMessage("parser_action_props_add_end")?></option><option value="lower"><?=GetMessage("parser_action_props_to_lower")?></option></select> <a href="#" class="find_delete">Delete</a></td></tr>';
                             target_shadow_id.before(str);
                         }
                     }
@@ -1157,7 +1156,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property_offer("loadDopPropOffer", tr);
+                collected_iblock_edit_property_offer("loadDopPropOffer", tr);
                 return false;
             }
             str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[offer][selector_prop]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
@@ -1166,8 +1165,8 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
         
         $(".add_index_csv").on("click", function(e){
             var popup = new BX.CDialog({
-               'title': '��������� ����',
-               'content': '<div class="dfdfdf">������</div>',
+               'title': 'Заголовок окна',
+               'content': '<div class="dfdfdf">Привет</div>',
                'draggable': true,
                'resizable': true,
                'buttons': [BX.CDialog.btnClose]
@@ -1185,7 +1184,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property_offer("loadDopPropOffer", tr);
+                collected_iblock_edit_property_offer("loadDopPropOffer", tr);
                 return false;
             }
             str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[offer][selector_prop_more]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
@@ -1201,7 +1200,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property_offer("loadDopPropOffer1", tr);
+                collected_iblock_edit_property_offer("loadDopPropOffer1", tr);
                 return false;
             }
             str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[offer][find_prop]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
@@ -1447,7 +1446,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property("loadDopProp", tr);
+                collected_iblock_edit_property("loadDopProp", tr);
                 return false;
             }
             str = '<tr class="row_dop_prop"><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][selector_prop]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
@@ -1463,7 +1462,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property("loadFilterProps", tr);
+                collected_iblock_edit_property("loadFilterProps", tr);
                 return false;
             }
             
@@ -1482,14 +1481,14 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             /*else if(v=="[]")
             {
-                sotbit_iblock_edit_property("loadPropDefault", tr);
+                collected_iblock_edit_property("loadPropDefault", tr);
                 return false;
             }*/
             
             jQuery.ajax({
                     url: "",
                     type: "POST",
-                    data: 'default=1&ajax=1&prop_id='+v+"&iblock_id="+<?=isset($shs_IBLOCK_ID)?$shs_IBLOCK_ID:0?>,
+                    data: 'default=1&ajax=1&prop_id='+v+"&iblock_id="+<?=isset($kit_IBLOCK_ID)?$kit_IBLOCK_ID:0?>,
                     dataType: 'html',
                     success: function(data){
                         str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r">'+data+'</td></tr>';
@@ -1638,7 +1637,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property("loadDopProp2", tr);
+                collected_iblock_edit_property("loadDopProp2", tr);
                 return false;
             }
             str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][selector_prop_preview]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
@@ -1654,7 +1653,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property("loadDopProp1", tr);
+                collected_iblock_edit_property("loadDopProp1", tr);
                 return false;
             }
             str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][find_prop]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
@@ -1670,7 +1669,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property("loadDopProp3", tr);
+                collected_iblock_edit_property("loadDopProp3", tr);
                 return false;
             }
             str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][find_prop_preview]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
@@ -1703,22 +1702,22 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             if(v=="") return false;
             else if(v=="[]")
             {
-                sotbit_iblock_edit_property("loadPropField", tr);
+                collected_iblock_edit_property("loadPropField", tr);
                 return false;
             }
             //str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][find_prop_preview]['+v+']" data-code="'+v+'" size="40">&nbsp;<a href="#" class="prop_delete">Delete</a></td></tr>';
-            if(v=="SOTBIT_PARSER_NAME_E") str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+':</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][action_props_val]['+v+'][]" data-code="'+v+'" size="40">&nbsp; <select id="SETTINGS[catalog][action_props]['+v+']" name="SETTINGS[catalog][action_props]['+v+'][]"><option value=""><?=GetMessage("shs_parser_select_action_props")?></option><option value="delete"><?=GetMessage("parser_action_props_delete")?></option><option value="add_b"><?=GetMessage("parser_action_props_add_begin")?></option><option value="add_e"><?=GetMessage("parser_action_props_add_end")?></option><option value="lower"><?=GetMessage("parser_action_props_to_lower")?></option></select> <a href="#" class="find_delete">Delete</a></td></tr>';
-            else str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][action_props_val]['+v+'][]" data-code="'+v+'" size="40">&nbsp; <select id="SETTINGS[catalog][action_props]['+v+']" name="SETTINGS[catalog][action_props]['+v+'][]"><option value=""><?=GetMessage("shs_parser_select_action_props")?></option><option value="delete"><?=GetMessage("parser_action_props_delete")?></option><option value="add_b"><?=GetMessage("parser_action_props_add_begin")?></option><option value="add_e"><?=GetMessage("parser_action_props_add_end")?></option><option value="lower"><?=GetMessage("parser_action_props_to_lower")?></option></select> <a href="#" class="find_delete">Delete</a></td></tr>';
+            if(v=="COLLECTED_PARSER_NAME_E") str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+':</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][action_props_val]['+v+'][]" data-code="'+v+'" size="40">&nbsp; <select id="SETTINGS[catalog][action_props]['+v+']" name="SETTINGS[catalog][action_props]['+v+'][]"><option value=""><?=GetMessage("kit_parser_select_action_props")?></option><option value="delete"><?=GetMessage("parser_action_props_delete")?></option><option value="add_b"><?=GetMessage("parser_action_props_add_begin")?></option><option value="add_e"><?=GetMessage("parser_action_props_add_end")?></option><option value="lower"><?=GetMessage("parser_action_props_to_lower")?></option></select> <a href="#" class="find_delete">Delete</a></td></tr>';
+            else str = '<tr><td width="40%" class="adm-detail-content-cell-l">'+t+'&nbsp;['+v+']:</td><td width="60%" class="adm-detail-content-cell-r"><input type="text" value="" name="SETTINGS[catalog][action_props_val]['+v+'][]" data-code="'+v+'" size="40">&nbsp; <select id="SETTINGS[catalog][action_props]['+v+']" name="SETTINGS[catalog][action_props]['+v+'][]"><option value=""><?=GetMessage("kit_parser_select_action_props")?></option><option value="delete"><?=GetMessage("parser_action_props_delete")?></option><option value="add_b"><?=GetMessage("parser_action_props_add_begin")?></option><option value="add_e"><?=GetMessage("parser_action_props_add_end")?></option><option value="lower"><?=GetMessage("parser_action_props_to_lower")?></option></select> <a href="#" class="find_delete">Delete</a></td></tr>';
             
             tr.before(str);
         });
         
-        function sotbit_iblock_edit_property(select_id, tr)
+        function collected_iblock_edit_property(select_id, tr)
         {
-            <?if(isset($shs_IBLOCK_ID) && $shs_IBLOCK_ID):?>addSectionProperty(<?echo $shs_IBLOCK_ID;?>, select_id, tr, 'table_SECTION_PROPERTY')<?endif;?>
+            <?if(isset($kit_IBLOCK_ID) && $kit_IBLOCK_ID):?>addSectionProperty(<?echo $kit_IBLOCK_ID;?>, select_id, tr, 'table_SECTION_PROPERTY')<?endif;?>
         }
         
-        function sotbit_iblock_edit_property_offer(select_id, tr)
+        function collected_iblock_edit_property_offer(select_id, tr)
         {
             <?if(isset($OFFER_IBLOCK_ID) && $OFFER_IBLOCK_ID):?>addSectionProperty(<?echo $OFFER_IBLOCK_ID;?>, select_id, tr, 'table_SECTION_PROPERTY')<?endif;?>
         }
@@ -1828,7 +1827,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                data: "auth=1",
                dataType: 'html',
                success: function(data){
-                 $("#shs_message").html(data);
+                 $("#kit_message").html(data);
                }
             })
         })
@@ -1868,7 +1867,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                beforeSend: function(){BX.showWait();},
                success: function(data){
                  var ar = new Array();
-                 ar = data.split("#SOTBIT#");
+                 ar = data.split("#COLLECTED#");
                  $('#section').html(ar[0]);
                  add_list_section(ar[0]);
                  BX.closeWait();
@@ -1894,7 +1893,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                beforeSend: function(){BX.showWait();},
                success: function(data){
                  var ar = new Array();
-                 ar = data.split("#SOTBIT#");
+                 ar = data.split("#COLLECTED#");
                  var count_rss = el.parent().parent().prev(".admin_tr_rss_dop").attr('data-id');//$(".admin_tr_rss_dop").length;
                  if(typeof count_rss == "undefined")
                     count_rss = 0;
@@ -1919,7 +1918,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                beforeSend: function(){BX.showWait();},
                success: function(data){
                  var ar = new Array();
-                 ar = data.split("#SOTBIT#");
+                 ar = data.split("#COLLECTED#");
                  var count_rss = el.parent().parent().prev(".admin_tr_rss_dop").attr('data-id');//$(".admin_tr_rss_dop").length;
                  if(typeof count_rss == "undefined")
                     count_rss = 0;
@@ -1986,16 +1985,16 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
         })
 
         var debug = 0;
-        <?if($shsDebug=="debug"):?>
+        <?if($kitDebug=="debug"):?>
         debug = 1;
         <?endif;?>
         
-        function sotbitAjaxStart(href2, start)
+        function collectedAjaxStart(href2, start)
         {
             if(start==1)
             {
                 href = href2+"&begin=1";
-                sotbitStop = 0;
+                collectedStop = 0;
             }
             else href=href2;
             BX.ajax.get(href, "", function(data){
@@ -2004,16 +2003,16 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                 //$('#progress_bar_inner').width(500 * prog / 100);
                 ////$("#status_bar").hide();
                 //$('#progress_text').html(100 + '%');
-                if(data!="stop")$("#shs_message").html(data);
+                if(data!="stop")$("#kit_message").html(data);
                 //
-                //sotbitStop = 1;
+                //collectedStop = 1;
                 //var id = $("#btn_stop").data('id');
                 //$("#btn_stop").attr("id", id);
                 //$("#"+id).text(<?//echo '"'.GetMessage("parser_start").'"'?>//);
             })
         }
 
-         var sotbitStop = 0;
+         var collectedStop = 0;
          var href1, href2;
 
          $("body").on('click', "#btn_start_catalog", function(e) {   //alert("test");
@@ -2025,8 +2024,8 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             $(this).text(<?echo '"'.GetMessage("btn_stop_catalog").'"'?>);
             href1 = $(this).attr("href")+"&ajax_count=1&type=catalog";
             href2 = $(this).attr("href")+"&ajax_start=1&type=catalog";
-            sotbitCountAjax(href1, 0);
-            sotbitAjaxStart(href2, 1);
+            collectedCountAjax(href1, 0);
+            collectedAjaxStart(href2, 1);
             
 
             return false;
@@ -2041,8 +2040,8 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             $(this).text(<?echo '"'.GetMessage("btn_stop_catalog").'"'?>);
             href1 = $(this).attr("href")+"&ajax_count=1&type=xml";
             href2 = $(this).attr("href")+"&ajax_start=1&type=xml";
-            sotbitCountAjax(href1, 0);
-            sotbitAjaxStart(href2, 1);
+            collectedCountAjax(href1, 0);
+            collectedAjaxStart(href2, 1);
 
             return false;
 
@@ -2056,8 +2055,8 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             $(this).text(<?echo '"'.GetMessage("btn_stop_catalog").'"'?>);
             href1 = $(this).attr("href")+"&ajax_count=1&type=csv";
             href2 = $(this).attr("href")+"&ajax_start=1&type=csv";
-            sotbitCountAjax(href1, 0);
-            sotbitAjaxStart(href2, 1);
+            collectedCountAjax(href1, 0);
+            collectedAjaxStart(href2, 1);
 
             return false;
         })
@@ -2069,8 +2068,8 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             $(this).text(<?echo '"'.GetMessage("btn_stop_catalog").'"'?>);
             href1 = $(this).attr("href")+"&ajax_count=1&type=xls";
             href2 = $(this).attr("href")+"&ajax_start=1&type=xls";
-            sotbitCountAjax(href1, 0);
-            sotbitAjaxStart(href2, 1);
+            collectedCountAjax(href1, 0);
+            collectedAjaxStart(href2, 1);
 
             return false;
         })
@@ -2085,12 +2084,12 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
             return false;
         })
         
-        function sotbitCountAjax(href1, num)
+        function collectedCountAjax(href1, num)
         {
             BX.ajax.post(href1, "sessid="+BX.bitrix_sessid(), function(data){
                 arData = data.split("|");
                 
-                if(sotbitStop!=1)
+                if(collectedStop!=1)
                 {
                     if(arData[1]>0)prog = Math.ceil((arData[1]/arData[0])*100);
                     else prog = 0;
@@ -2102,7 +2101,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                 elements = arData[3];
                 elementError = arData[4];
                 allError = arData[5];
-                if(sotbitStop!=1)sotbitStop = parseInt(arData[6]);
+                if(collectedStop!=1)collectedStop = parseInt(arData[6]);
                 msg = <?echo '"'.GetMessage("parser_load_page").'"'?>+page+<?echo '"'.GetMessage("parser_load_product").'"'?>+elements+<?echo '"<span style=\"color:red\">'.GetMessage("parser_load_product_error").'"'?>+elementError+'</span>'+<?echo '"<span style=\"color:red\">'.GetMessage("parser_all_error").'"'?>+allError+'</span>';
                 $("#catalog_bar").html(msg);
                 var ArrGet = parseGetParams(href1);
@@ -2118,7 +2117,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                     $("#catalog_bar").html($("#catalog_bar").html() + sec);
                 }
     
-                if(sotbitStop==1)
+                if(collectedStop==1)
                 {
                     prog = 100;
                     $('#progress_text').html(prog + '%');
@@ -2130,7 +2129,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
                     $("#btn_stop").text(<?echo '"'.GetMessage("parser_start").'"'?>);
                     $("#btn_stop").attr("id", id);
                 } else {
-                    setTimeout(function(){sotbitCountAjax(href1, 0);},2000)
+                    setTimeout(function(){collectedCountAjax(href1, 0);},2000)
                 }
                 
                 
@@ -2171,21 +2170,21 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
 <?elseif(isset($_REQUEST["ajax_start"]) && isset($_REQUEST["ID"]) && isset($_REQUEST["start"]) && !isset($_REQUEST["ajax_count"])):
     set_time_limit(0);
     require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
     IncludeModuleLangFile(__FILE__);
 
     if(CModule::IncludeModule('iblock') && CModule::IncludeModule('main')):
-        $parser = ShsParserContent::GetByID($ID);
-        file_put_contents($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/parser_start".$ID.".txt", '1');
-        if(!$parser->ExtractFields("shs_")) $ID=0;
+        $parser = KitParserContent::GetByID($ID);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/parser_start".$ID.".txt", '1');
+        if(!$parser->ExtractFields("kit_")) $ID=0;
         $rssParser = new RssContentParser();
         $result = $rssParser->startParser(0);
     endif;
 ?>
 <?elseif(isset($_REQUEST["ID"]) && isset($_REQUEST["start"]) && isset($_REQUEST["ajax_count"])):
     set_time_limit(0);
-    $file = $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/count_parser".$_REQUEST["ID"].".txt";
+    $file = $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/count_parser".$_REQUEST["ID"].".txt";
     $result = '';
     
     if(isset($_REQUEST["ID"]) && file_exists($file))
@@ -2202,7 +2201,7 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
 
     if($_GET["type"]=="catalog" || $_GET["type"]=="catalog_HL" || $_GET["type"]=="csv" || $_GET["type"]=="xml" || $_GET["type"]=="xls" || $_GET["type"]=="xls_catalo")
     {
-        $file1 = $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include/count_parser_catalog".$_REQUEST["ID"].".txt";
+        $file1 = $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include/count_parser_catalog".$_REQUEST["ID"].".txt";
         
         if(isset($_REQUEST["ID"]) && file_exists($file1))
         {
@@ -2219,8 +2218,8 @@ elseif((!$shs_TYPE && $ID) || $shs_TYPE=="rss" || (isset($_GET["type"]) && $_GET
 <?
 elseif(isset($_REQUEST["prop_id"])):
     require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
     IncludeModuleLangFile(__FILE__);
     CModule::IncludeModule('iblock');
     if(isset($_REQUEST["default"])) $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "CODE"=>$_REQUEST["prop_id"], "IBLOCK_ID"=>$_REQUEST["iblock_id"]));
@@ -2244,7 +2243,7 @@ elseif(isset($_REQUEST["prop_id"])):
             
             if($arProp["PROPERTY_TYPE"]=="L"/* && $arProp["ID"]==14*/)
             {
-                $rsEnum = CIBlockPropertyEnum::GetList(Array("DEF"=>"DESC", "SORT"=>"ASC"), Array("IBLOCK_ID"=>$shs_IBLOCK_ID, "property_id"=>$arProp["ID"]));
+                $rsEnum = CIBlockPropertyEnum::GetList(Array("DEF"=>"DESC", "SORT"=>"ASC"), Array("IBLOCK_ID"=>$kit_IBLOCK_ID, "property_id"=>$arProp["ID"]));
                 $arrPropDop["LIST_VALUES"][$arProp["CODE"]]["REFERENCE"][] = GetMessage("parser_prop_default");
                 $arrPropDop["LIST_VALUES"][$arProp["CODE"]]["REFERENCE_ID"][] = "";
                 while($arEnum = $rsEnum->Fetch())
@@ -2287,8 +2286,8 @@ elseif(isset($_REQUEST["prop_id"])):
     }
 elseif(isset($_REQUEST["iblock"])):
         require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-        require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-        require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
+        require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+        require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
         IncludeModuleLangFile(__FILE__);
     CModule::IncludeModule('iblock');
     $rsSections = CIBlockSection::GetList(array("left_margin"=>"asc"), array(/*'ACTIVE'=>"Y", */"IBLOCK_ID"=>$_REQUEST["iblock"]), false, array('ID', 'NAME', "IBLOCK_ID", "DEPTH_LEVEL"));
@@ -2299,13 +2298,13 @@ elseif(isset($_REQUEST["iblock"])):
         $arr["NAME"] = str_repeat(" . ", $arr["DEPTH_LEVEL"]).$arr["NAME"];
         echo '<option value="'.$arr["ID"].'">'.$arr["NAME"].'</option>';
     }
-    echo '#SOTBIT#<option value="">'.GetMessage("parser_prop_id").'</option>';
+    echo '#COLLECTED#<option value="">'.GetMessage("parser_prop_id").'</option>';
     $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$_REQUEST['iblock'], "PROPERTY_TYPE"=>"S"));
     while($arProp = $properties->Fetch())
     {
         echo '<option value="'.$arProp["CODE"].'">'."[".$arProp["CODE"]."] ".$arProp["NAME"].'</option>';
     }
-    echo '#SOTBIT#';
+    echo '#COLLECTED#';
     $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$_REQUEST['iblock']));
     while($arProp = $properties->Fetch())
     {
@@ -2320,13 +2319,13 @@ elseif(isset($_REQUEST["iblock"])):
     {
         echo '<tr><td width="40%" class="adm-detail-content-cell-l">'.$val["NAME"].'&nbsp;['.$val["CODE"].']:</td><td width="60%" class="adm-detail-content-cell-r"><input data-code="'.$val["CODE"].'" size="40" type="text" value="" name="SETTINGS[catalog][selector_prop]['.$val["CODE"].']">&nbsp;<a class="prop_delete" href="#">Delete</a></td></tr>';
     }
-    echo '#SOTBIT#';
+    echo '#COLLECTED#';
     foreach($arPropsDop as $val)
     {
         echo '<tr><td width="40%" class="adm-detail-content-cell-l">'.$val["NAME"].'&nbsp;['.$val["CODE"].']:</td><td width="60%" class="adm-detail-content-cell-r"><input data-code="'.$val["CODE"].'" size="40" type="text" value="" name="SETTINGS[catalog][find_prop]['.$val["CODE"].']">&nbsp;<a class="find_delete" href="#">Delete</a></td></tr>';
     }
 
-    echo '#SOTBIT#<option value="">'.GetMessage("parser_prop_id").'</option>';
+    echo '#COLLECTED#<option value="">'.GetMessage("parser_prop_id").'</option>';
     $properties = CIBlockProperty::GetList(Array("sort"=>"asc", "name"=>"asc"), Array("ACTIVE"=>"Y", "IBLOCK_ID"=>$_REQUEST['iblock'], "PROPERTY_TYPE"=>"F"));
     while($arProp = $properties->Fetch())
     {
@@ -2335,12 +2334,12 @@ elseif(isset($_REQUEST["iblock"])):
 elseif(isset($_POST["auth"])):
     set_time_limit(0);
     require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
     IncludeModuleLangFile(__FILE__);
     if(CModule::IncludeModule('iblock') && CModule::IncludeModule('main')):
-    $parser = ShsParserContent::GetByID($ID);
-    if(!$parser->ExtractFields("shs_")) $ID=0;
+    $parser = KitParserContent::GetByID($ID);
+    if(!$parser->ExtractFields("kit_")) $ID=0;
     $rssParser = new RssContentParser();
     $rssParser->auth(true);
     endif;

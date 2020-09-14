@@ -1,21 +1,25 @@
 <?php
+/**
+ * Copyright (c) 12/9/2020 Created By/Edited By ASDAFF asdaff.asad@yandex.ru
+ */
+
 use Bitrix\Main\Loader;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\ExpressionField;
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/result_parser.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/result_parser_product.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/result_parser.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/result_parser_product.php");
 
 if(!CModule::IncludeModule('iblock')) return false;
 IncludeModuleLangFile(__FILE__);
 global $DB;
-$POST_RIGHT = $APPLICATION->GetGroupRight("shs.parser");
+$POST_RIGHT = $APPLICATION->GetGroupRight("kit.parser");
 if($POST_RIGHT=="D")
     $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
-//$arrErrors[] = $DB->RunSqlBatch($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/install/db/".strtolower($DB->type)."/uninstall_logs.sql");
-//$arrErrors[] = $DB->RunSqlBatch($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/install/db/".strtolower($DB->type)."/install_logs.sql");
+//$arrErrors[] = $DB->RunSqlBatch($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/install/db/".strtolower($DB->type)."/uninstall_logs.sql");
+//$arrErrors[] = $DB->RunSqlBatch($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/install/db/".strtolower($DB->type)."/install_logs.sql");
 $ID = intval($ID);
 $sTableID = "tbl_parser_result";
 
@@ -69,7 +73,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
 {
     if($_REQUEST['action_target']=='selected')
     {
-        $rsDataRes = \Bitrix\Shs\ParserResultTable::getList(array(
+        $rsDataRes = \Bitrix\Kit\ParserResultTable::getList(array(
             'select'=>array('ID'),
             'filter' => array($arFilter),
         ));
@@ -88,8 +92,8 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
         case "delete":
             @set_time_limit(0);
             $DB->StartTransaction();
-                $res = \Bitrix\Shs\ParserResultTable::delete($id);
-                $resPr = \Bitrix\Shs\ParserResultProductTable::deleteByResultId($id);
+                $res = \Bitrix\Kit\ParserResultTable::delete($id);
+                $resPr = \Bitrix\Kit\ParserResultProductTable::deleteByResultId($id);
                 
                 if(!$res->isSuccess() || !$resPr)
                 {
@@ -143,7 +147,7 @@ $lAdmin->AddHeaders(array(
         "default"    =>true,
     ),
 ));
-$rsData = \Bitrix\Shs\ParserResultTable::getList(array(
+$rsData = \Bitrix\Kit\ParserResultTable::getList(array(
     'select'=>array('*'),
     'filter' => $arFilter,
     'order' => array(
@@ -155,12 +159,12 @@ $rsData = new CAdminResult($rsData, $sTableID);
 $rsData->NavStart();
 $lAdmin->NavText($rsData->GetNavPrint(GetMessage("parser_nav")));
 
-$p = new ShsParserContent();
+$p = new KitParserContent();
 while($arRes = $rsData->NavNext(true, "f_")):
 
     $parser = $p->GetList(array(),array('ID'=>$arRes['PARSER_ID']));
     $parser = $parser->fetch();
-    $productCount = \Bitrix\Shs\ParserResultProductTable::getList(
+    $productCount = \Bitrix\Kit\ParserResultProductTable::getList(
         array(
             'select'=>array('CNT'),
             'filter' => array('RESULT_ID'=>$arRes['ID']),
@@ -186,7 +190,7 @@ while($arRes = $rsData->NavNext(true, "f_")):
             break;
     }
     
-    $row->AddViewField("STATUS", '<span class="'.$color_status.'"><span class="badge '.$color_status.'"></span>'.(\Bitrix\Shs\ParserResultTable::getStatus($arRes['STATUS'])).'</span>');
+    $row->AddViewField("STATUS", '<span class="'.$color_status.'"><span class="badge '.$color_status.'"></span>'.(\Bitrix\Kit\ParserResultTable::getStatus($arRes['STATUS'])).'</span>');
 
     $arActions = Array();
     if($POST_RIGHT=="W"){
@@ -199,7 +203,7 @@ while($arRes = $rsData->NavNext(true, "f_")):
             "ICON"=>"",
             "DEFAULT"=>true,
             "TEXT"=>GetMessage("parser_act_see"),
-            "ACTION"=>$lAdmin->ActionRedirect("shs_one_parser_result.php?RESULT_ID=".$f_ID)
+            "ACTION"=>$lAdmin->ActionRedirect("kit_one_parser_result.php?RESULT_ID=".$f_ID)
         );
     }
 

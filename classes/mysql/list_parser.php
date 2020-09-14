@@ -1,5 +1,5 @@
 <?
-class ShsParserContent extends ShsParserContentGeneral
+class KitParserContent extends KitParserContentGeneral
 {
 	function GetList($aSort=Array(), $aFilter=Array())
 	{
@@ -114,7 +114,7 @@ class ShsParserContent extends ShsParserContentGeneral
                 ,P.CATEGORY_ID
 				,".$DB->DateToCharFunction("P.TIMESTAMP_X")." TIMESTAMP_X
                 ,".$DB->DateToCharFunction("P.START_LAST_TIME_X")." START_LAST_TIME_X
-			FROM b_shs_parser P
+			FROM b_kit_parser P
 			".$sFilter.$sOrder;
 		return $DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
 	}
@@ -125,7 +125,7 @@ class ShsParserContent extends ShsParserContentGeneral
                  P.ID
                 ,P.SETTINGS    
                 ,P.IBLOCK_ID                                                          
-            FROM b_shs_parser P
+            FROM b_kit_parser P
             WHERE P.ID ='.intval($ID);
         return $DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
     }
@@ -140,7 +140,7 @@ class ShsParserContent extends ShsParserContentGeneral
                 $filter["PARENT_CATEGORY_ID"] = $arFilter["CATEGORY_ID"];
             }
 
-            $rsSection = \Shs\Parser\ParserSectionTable::getList(array(
+            $rsSection = \Kit\Parser\ParserSectionTable::getList(array(
                 'limit' =>null,
                 'offset' => null,
                 'select' => array("*"),
@@ -159,7 +159,7 @@ class ShsParserContent extends ShsParserContentGeneral
         
         if($show=="all" || $show=="parser")
         {
-            $cData = new ShsParserContent;
+            $cData = new KitParserContent;
             $rsData = $cData->GetList($aSort, $arFilter);
             while($arData = $rsData->Fetch())
             {

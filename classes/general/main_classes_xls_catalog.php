@@ -1,5 +1,5 @@
 <?php
-class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
+class CollectedXlsCatalogParser extends CollectedHLCatalogParser {
     
     public $catalog_detail_settings = array();
     
@@ -132,7 +132,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
     
     protected function setDetailSettings(){
         if(isset($this->settings['catalog']['parser_id_detail'])){
-            $p = new ShsParserContent();
+            $p = new KitParserContent();
             $arFilter = array(
                 'ID'=>intval($this->settings['catalog']['parser_id_detail']),
             );
@@ -178,8 +178,8 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
             if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && isset($this->errors) && count($this->errors)>0)
             {
                 parent::SaveLog();
-                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
-                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_copy_page".$this->id.".txt");
+                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
+                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_copy_page".$this->id.".txt");
                 return false;
             }
             $n = $this->currentPage;
@@ -194,8 +194,8 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
             parent::SaveCurrentPage($this->pagenavigation);
             if($this->stepStart)
             {
-                if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"))
-                    unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
+                if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"))
+                    unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
                 parent::DeleteCopyPage();
             }
             if( (!$this->CheckOnePageNavigation() && $this->agent) ||
@@ -204,8 +204,8 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
                     parent::parseCatalogPages();
                     
             if($this->settings['smart_log']['enabled']=='Y'){
-                $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/result_id".$this->id.".txt");
-                $this->settings['smart_log']['result_id'] = \Bitrix\Shs\ParserResultTable::updateEndTime($this->settings['smart_log']['result_id']);
+                $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/result_id".$this->id.".txt");
+                $this->settings['smart_log']['result_id'] = \Bitrix\Kit\ParserResultTable::updateEndTime($this->settings['smart_log']['result_id']);
             }
             
 //            if($this->CheckOnePageNavigation() && $this->stepStart)
@@ -219,7 +219,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         parent::checkActionAgent($this->agent);
         
         if($this->agent || $this->settings["catalog"]["mode"]=="debug"){
-            foreach(GetModuleEvents("shs.parser", "EndPars", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "EndPars", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array($this->id));
         }
     }
@@ -278,7 +278,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         
         $objReader = PHPExcel_IOFactory::createReaderForFile($this->rss);
         $p=array();
-        $selfobj = new SotbitXlsParserStatic($p);
+        $selfobj = new CollectedXlsParserStatic($p);
         
         $spreadsheetInfo = $objReader->listWorksheetInfo($this->rss);
         
@@ -329,7 +329,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
                     
                         $curLine = array('VALUE' => $valText);
                         if($this->settings['catalog']['load_style']=="Y") {
-                            $curLine['STYLE'] = SotbitXlsParserUtils::getCellStyle($val);
+                            $curLine['STYLE'] = CollectedXlsParserUtils::getCellStyle($val);
                         }
                         $arLine[] = $curLine;
                     }
@@ -435,7 +435,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
             $countStep = $count;
         }
         
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);
         
         if($count==0)
         {
@@ -444,7 +444,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         }
         
         foreach($arRes as $el){
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/stop_parser_".$this->id.".txt")) {
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/stop_parser_".$this->id.".txt")) {
                 throw new RuntimeException("stop");
             }
             
@@ -456,13 +456,13 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
             $this->parseProductElementXlsCatalog($el);
             
             $i++;
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".$i);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".$i);
             
             if($i >= $countStep) {
                 $i = 0;
             }
         }
-        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt");
+        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt");
     }
     
     protected function parseProductElementXlsCatalog(&$el)
@@ -483,7 +483,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         
         $this->parseDetailPage($el);
 
-        $db_events = GetModuleEvents("shs.parser", "parserBeforeAddElementXLS", true);
+        $db_events = GetModuleEvents("kit.parser", "parserBeforeAddElementXLS", true);
         $error = false;
         
         foreach($db_events as $arEvent)
@@ -499,7 +499,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         if(!$error && !$error_isad)
         {
             parent::AddElementCatalog();
-            foreach(GetModuleEvents("shs.parser", "parserAfterAddElementXLS", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserAfterAddElementXLS", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array(&$this, &$el));
         }
 
@@ -529,7 +529,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         }
         
         if($this->settings['smart_log']['enabled']=='Y') {
-            $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/result_id".$this->id.".txt");
+            $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/result_id".$this->id.".txt");
             SmartLogs::saveNewValues($this->elementID, $this->settings["smart_log"], $this->arFields, isset($this->arPrice['PRICE'])?$this->arPrice['PRICE']:null, $this->arProduct);
         }
         
@@ -548,7 +548,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
             }
             $this->arFields["LINK"] = trim($el[$index]['VALUE']);
         
-            foreach(GetModuleEvents("shs.parser", "parserCatalogDetailBefore", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserCatalogDetailBefore", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array($this->id, &$el, &$this->arFields));
             $el_detail = $this->getDetailPage();
             
@@ -563,7 +563,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
             $this->parseDetailAdditionalStores($el_detail);
             $this->parserOffersDetail($el_detail);
             
-            foreach(GetModuleEvents("shs.parser", "parserCatalogDetail", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserCatalogDetail", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array($this->id, &$el, &$this->arFields, $el_detail));
             unset($el_detail);
         }
@@ -694,7 +694,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
                 }
             }
         
-            foreach(GetModuleEvents("shs.parser", "parserAfterParsingOffersDetail", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserAfterParsingOffersDetail", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array(&$this, &$el));//mark
         }
     }
@@ -1752,7 +1752,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
                 }
                 $src = $this->parseCaralogFilterSrc($src);
                 $src = $this->getCatalogLink($src);
-                foreach(GetModuleEvents("shs.parser", "ParserDetailMorePhoto", true) as $arEvent) //27.10.2015
+                foreach(GetModuleEvents("kit.parser", "ParserDetailMorePhoto", true) as $arEvent) //27.10.2015
                     ExecuteModuleEventEx($arEvent, array(&$this, &$src));
                 if(isset($this->arPhoto[$src])) continue 1;
                 $this->arPhoto[$src] = 1;
@@ -1814,7 +1814,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
                 
                 $src = $this->parseCaralogFilterSrc($src);
                 $src = $this->getCatalogLink($src);
-                foreach(GetModuleEvents("shs.parser", "ParserDetailPicture", true) as $arEvent) //27.10.2015
+                foreach(GetModuleEvents("kit.parser", "ParserDetailPicture", true) as $arEvent) //27.10.2015
                     ExecuteModuleEventEx($arEvent, array(&$this, &$src));
 
                 if(!self::CheckImage($src)) continue;
@@ -1847,7 +1847,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         $this->arFields["NAME"] = htmlspecialchars_decode(trim(strip_tags(pq($el)->find($name)->html())));
         if($this->arFields["NAME"])
         {
-            $this->arFields["NAME"] = $this->actionFieldProps("SOTBIT_PARSER_NAME_E", $this->arFields["NAME"]);
+            $this->arFields["NAME"] = $this->actionFieldProps("COLLECTED_PARSER_NAME_E", $this->arFields["NAME"]);
             if(isset($this->settings["loc"]["f_name"]) && $this->settings["loc"]["f_name"]=="Y")
             {
                 $this->arFields["NAME"] = $this->locText($this->arFields["NAME"]);
@@ -2085,7 +2085,7 @@ class SotbitXlsCatalogParser extends SotbitHLCatalogParser {
         $this->detailFileHtml = new FileGetHtml();
         $this->detailPage = $this->fileHtml->file_get_html($this->arFields["LINK"], $this->proxy, $this->auth, $this);
 
-        foreach(GetModuleEvents("shs.parser", "parserCatalogDetailPageAfter", true) as $arEvent)
+        foreach(GetModuleEvents("kit.parser", "parserCatalogDetailPageAfter", true) as $arEvent)
             ExecuteModuleEventEx($arEvent, array(&$this));
             
         $this->DeleteCharsetHtml5($this->detailPage);

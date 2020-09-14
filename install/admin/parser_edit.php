@@ -1,1 +1,1 @@
-<? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/admin/parser_edit.php");?>
+<? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/admin/parser_edit.php");?>

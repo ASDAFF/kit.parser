@@ -1,5 +1,5 @@
 <?
-$module_id = "shs.parser";
+$module_id = "kit.parser";
 $POST_RIGHT = $APPLICATION->GetGroupRight($module_id);
 if($POST_RIGHT>="R") :
 

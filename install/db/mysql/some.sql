@@ -1,4 +1,4 @@
-insert into b_shs_parser_result_product (RESULT_ID, PRODUCT_ID, OLD_PRICE, NEW_PRICE)
+insert into b_kit_parser_result_product (RESULT_ID, PRODUCT_ID, OLD_PRICE, NEW_PRICE)
 values 
 (1, 317, 123, 456),
 (2, 317, 456, 453),

@@ -7,14 +7,14 @@ IncludeModuleLangFile(__FILE__);
 class ParserEventHandler {
     function OnParserStart($ID, &$_this){
         if($_this->settings["notification"]['start']=='Y'){
-            $parser = new ShsParserContent();
+            $parser = new KitParserContent();
             $parser = $parser->GetList(array(),array('ID'=>$ID))->fetch();   
             \Bitrix\Main\Loader::includeModule('iblock');
             $block = CIBlock::GetByID($_this->iblock_id)->fetch();
 //            $block = CIBlockElement::GetByID($_this->iblock_id)->fetch();
        
             \Bitrix\Main\Mail\Event::send(array(
-                "EVENT_NAME" => "SOTBIT_PARSER_START",
+                "EVENT_NAME" => "COLLECTED_PARSER_START",
                 "LID" => $block['LID'],
                 "C_FIELDS" => array(
                     "EMAIL_TO" => $_this->settings["notification"]['email'],
@@ -30,7 +30,7 @@ class ParserEventHandler {
     
     function OnParserEnd($ID)
     { 
-        $parser = new ShsParserContent();
+        $parser = new KitParserContent();
         $set = $parser->GetSettingsById($ID)->fetch();       
         $settings = unserialize(base64_decode($set['SETTINGS']));  
         $parser = $parser->GetList(array(),array('ID'=>$ID))->fetch();
@@ -43,7 +43,7 @@ class ParserEventHandler {
            \Bitrix\Main\Loader::includeModule('iblock');    
            $block = CIBlock::GetByID($set['IBLOCK_ID'])->fetch();
            \Bitrix\Main\Mail\Event::send(array(
-                "EVENT_NAME" => "SOTBIT_PARSER_END",
+                "EVENT_NAME" => "COLLECTED_PARSER_END",
                 "LID" => $block['LID'],
                 "C_FIELDS" => array(
                     "EMAIL_TO" => $settings["notification"]['email'],

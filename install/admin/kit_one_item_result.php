@@ -1,0 +1,1 @@
+<? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/admin/kit_one_item_result.php");?>

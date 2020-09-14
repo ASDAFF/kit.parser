@@ -36,7 +36,7 @@
  * simple strings and complete email addresses as well. That means, that you might
  * use any of the following notations:
  *
- * - www.nörgler.com
+ * - www.nÑ†rgler.com
  * - xn--nrgler-wxa
  * - xn--brse-5qa.xn--knrz-1ra.info
  *
@@ -50,7 +50,7 @@
  * @copyright 2004-2011 phlyLabs Berlin, http://phlylabs.de
  * @version 0.8.1 2011-12-19
  */
-class sotbit_idna_convert
+class collected_idna_convert
 {
     // NP See below
 

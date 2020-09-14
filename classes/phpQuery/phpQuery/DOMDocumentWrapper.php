@@ -81,7 +81,7 @@ class DOMDocumentWrapper {
 	}
 	protected function loadMarkup($markup) {
 		$loaded = false;
-        if(!file_exists($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/classes/general/main_classes.php"))return;
+        if(!file_exists($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/classes/general/main_classes.php"))return;
 		if ($this->contentType) {
 			self::debug("Load markup for content type {$this->contentType}");
 			// content determined by contentType
@@ -134,9 +134,9 @@ class DOMDocumentWrapper {
 		$this->document->preserveWhiteSpace = true;
 	}
 	protected function loadMarkupHTML($markup, $requestedCharset = null) {
-	    global $shs_preview, $shs_ENCODING, $shs_first, $shs_DOC_ENCODING;
+	    global $kit_preview, $kit_ENCODING, $kit_first, $kit_DOC_ENCODING;
 		if (phpQuery::$debug)
-			phpQuery::debug('Full markup load (HTML): '.substr($markup, 0, 250)); //if(!$shs_preview) print $markup;
+			phpQuery::debug('Full markup load (HTML): '.substr($markup, 0, 250)); //if(!$kit_preview) print $markup;
 		$this->loadMarkupReset();
 		$this->isHTML = true;
         $requestedCharset = LANG_CHARSET;  //print "BEGIN";
@@ -144,24 +144,24 @@ class DOMDocumentWrapper {
 			$this->isDocumentFragment = self::isDocumentFragmentHTML($markup);
 		$charset = null;
 		$documentCharset = $this->charsetFromHTML($markup);
-		$addDocumentCharset = false;  //if(!$shs_preview) print "CHARS".$documentCharset;
+		$addDocumentCharset = false;  //if(!$kit_preview) print "CHARS".$documentCharset;
 		if ($documentCharset) {      //print "DOC";
-			$charset = $documentCharset;//if(!$shs_preview) print "CHARS".$documentCharset;
+			$charset = $documentCharset;//if(!$kit_preview) print "CHARS".$documentCharset;
 			$markup = $this->charsetFixHTML($markup);
             //print "ENC".$charset;
-		}elseif(!$shs_preview){
-		    $charset = $shs_ENCODING;
+		}elseif(!$kit_preview){
+		    $charset = $kit_ENCODING;
             $addDocumentCharset = true;
 		}
         else{
-            $charset = $requestedCharset;  //if(!$shs_preview)print "TEXT".$markup;
+            $charset = $requestedCharset;  //if(!$kit_preview)print "TEXT".$markup;
             //$addDocumentCharset = true;
         }
-        //if(!$shs_preview) print_r(array($requestedCharset, $documentCharset)); //return;
+        //if(!$kit_preview) print_r(array($requestedCharset, $documentCharset)); //return;
         $documentCharset = strtoupper($charset);
         $docEncoding = strtoupper($charset);
-        $shs_DOC_ENCODING = $docEncoding;
-        //if(!$shs_preview) print_r(array($requestedCharset, $documentCharset));
+        $kit_DOC_ENCODING = $docEncoding;
+        //if(!$kit_preview) print_r(array($requestedCharset, $documentCharset));
          /*else if ($requestedCharset) {
 			$charset = $requestedCharset;
 		}
@@ -177,13 +177,13 @@ class DOMDocumentWrapper {
 		// Worse, some pages can have mixed encodings... we'll try not to worry about that
 		$requestedCharset = strtoupper($requestedCharset);
 		$documentCharset = strtoupper($documentCharset);
-        //if(!$shs_preview) print_r(array($requestedCharset, $documentCharset));
-		phpQuery::debug("DOC: $documentCharset REQ: $requestedCharset");//if(!$shs_preview) print_r(array($requestedCharset, $documentCharset));
+        //if(!$kit_preview) print_r(array($requestedCharset, $documentCharset));
+		phpQuery::debug("DOC: $documentCharset REQ: $requestedCharset");//if(!$kit_preview) print_r(array($requestedCharset, $documentCharset));
 		if ($requestedCharset && $documentCharset && $requestedCharset !== $documentCharset) {
 			phpQuery::debug("CHARSET CONVERT");
 			// Document Encoding Conversion
 			// http://code.google.com/p/phpquery/issues/detail?id=86
-            //if(!$shs_preview) print_r(array($markup, $requestedCharset, $docEncoding));
+            //if(!$kit_preview) print_r(array($markup, $requestedCharset, $docEncoding));
             //return;
             //$possibleCharsets = array($documentCharset, $requestedCharset, 'AUTO');
 			//$docEncoding1 = mb_detect_encoding($markup, implode(', ', $possibleCharsets));
@@ -191,12 +191,12 @@ class DOMDocumentWrapper {
             
             if ($docEncoding !== $requestedCharset) {
 					phpQuery::debug("CONVERT $docEncoding => $requestedCharset");
-                    //if(!$shs_preview) print_r(array($markup, $requestedCharset, $docEncoding));
+                    //if(!$kit_preview) print_r(array($markup, $requestedCharset, $docEncoding));
 					$markup = mb_convert_encoding($markup, $requestedCharset, $docEncoding);
                     //$markup = iconv($docEncoding, $requestedCharset, $markup);
 					$markup = $this->charsetAppendToHTML($markup, $requestedCharset);
 					$charset = $requestedCharset;
-                    //if(!$shs_preview) print_r(array($markup, $requestedCharset, $docEncoding));
+                    //if(!$kit_preview) print_r(array($markup, $requestedCharset, $docEncoding));
                     //return;
 			}
 
@@ -370,15 +370,15 @@ class DOMDocumentWrapper {
 	 * @param $markup
 	 * @return array contentType, charset
 	 */
-	protected function contentTypeFromHTML($markup) {  global $shs_preview, $shs_first, $shs_ENCODING;
+	protected function contentTypeFromHTML($markup) {  global $kit_preview, $kit_first, $kit_ENCODING;
 		$matches = array();
         //print "LANG".LANG_CHARSET;
-        //if(!$shs_preview)print_r(array($matches, $markup));
-        //if(!$shs_first && !$shs_preview) return LANG_CHARSET;
+        //if(!$kit_preview)print_r(array($matches, $markup));
+        //if(!$kit_first && !$kit_preview) return LANG_CHARSET;
 		// find meta tag
         preg_match('@\s*<meta[^>]+[.^\>]*charset=(["|\']{0,1}.*?["|\']{1})\s*([^>]?)>@i', $markup, $matches);
         //print "ENCODE";print_r($matches);
-        //if(!$shs_preview)print_r(array($matches, $markup));
+        //if(!$kit_preview)print_r(array($matches, $markup));
         //if(!isset($matches[1])) return array(null, null);
         if(!isset($matches[1])) return false;
         $matches[1] = trim($matches[1]);
@@ -391,7 +391,7 @@ class DOMDocumentWrapper {
 		/*preg_match('@<meta[^>]+http-equiv\\s*=\\s*(["|\'])Content-Type\\1([^>]+?)>@i',
 			$markup, $matches
 		);
-        //if(!$shs_preview)print_r(array($matches, $markup));
+        //if(!$kit_preview)print_r(array($matches, $markup));
         //print_r($matches);
 		if (! isset($matches[0]))
 			return array(null, null);

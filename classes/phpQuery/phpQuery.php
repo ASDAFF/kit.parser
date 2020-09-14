@@ -1322,7 +1322,7 @@ class phpQueryPlugins {
  * @package phpQuery
  */
 function pq($arg1, $context = null) {
-    if(!file_exists($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/classes/general/main_classes.php"))return;
+    if(!file_exists($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/classes/general/main_classes.php"))return;
 	$args = func_get_args();
 	return call_user_func_array(
 		array('phpQuery', 'pq'),

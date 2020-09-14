@@ -1,5 +1,5 @@
 <?
-namespace Shs\Parser;
+namespace Kit\Parser;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Localization\Loc;
 Loc::loadMessages(__FILE__);
@@ -13,7 +13,7 @@ class ParserTmpOldTable extends Entity\DataManager
 
    public static function getTableName()
    {
-      return 'b_shs_parser_tmp_old';
+      return 'b_kit_parser_tmp_old';
    }
    
    public static function getMap()

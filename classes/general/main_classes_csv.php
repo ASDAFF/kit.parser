@@ -9,7 +9,7 @@ use Bitrix\Main\IO\Path;
 \Bitrix\Main\Loader::includeModule('seo');
 \Bitrix\Main\Loader::includeModule('socialservices');
 
-class SotbitCsvParser extends SotbitXmlParser
+class CollectedCsvParser extends CollectedXmlParser
 {
     const TEST = 0;
     const DEFAULT_DEBUG_ITEM = 30;
@@ -64,8 +64,8 @@ class SotbitCsvParser extends SotbitXmlParser
             if(!$this->agent && $this->settings["catalog"]["mode"] != "debug" && isset($this->errors) && count($this->errors) > 0)
             {
                 parent::SaveLog();
-                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
-                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_copy_page".$this->id.".txt");
+                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
+                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_copy_page".$this->id.".txt");
 
                 return false;
             }
@@ -83,9 +83,9 @@ class SotbitCsvParser extends SotbitXmlParser
 
             if($this->stepStart)
             {
-//                if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"))
+//                if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"))
 //                {
-//                    unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
+//                    unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
 //                }
 
                 parent::DeleteCopyPage();
@@ -96,8 +96,8 @@ class SotbitCsvParser extends SotbitXmlParser
 
             if($this->settings['smart_log']['enabled'] == 'Y')
             {
-                $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/result_id".$this->id.".txt");
-                $this->settings['smart_log']['result_id'] = \Bitrix\Shs\ParserResultTable::updateEndTime($this->settings['smart_log']['result_id']);
+                $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/result_id".$this->id.".txt");
+                $this->settings['smart_log']['result_id'] = \Bitrix\Kit\ParserResultTable::updateEndTime($this->settings['smart_log']['result_id']);
             }
 
 //            if(parent::CheckOnePageNavigation() && $this->stepStart)
@@ -113,7 +113,7 @@ class SotbitCsvParser extends SotbitXmlParser
         parent::checkActionAgent($this->agent);
 
         if($this->agent || $this->settings['catalog']['mode']=='debug'){
-            foreach(GetModuleEvents("shs.parser", "EndPars", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "EndPars", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array($this->id));
         }
     }
@@ -190,7 +190,7 @@ class SotbitCsvParser extends SotbitXmlParser
         else
             $countStep = $count;
 
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);
         
         if($count==0)
         {
@@ -200,7 +200,7 @@ class SotbitCsvParser extends SotbitXmlParser
         
         foreach($arRes as $el)
         {
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/stop_parser_".$this->id.".txt")) {
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/stop_parser_".$this->id.".txt")) {
                 throw new RuntimeException("stop");
             }
 
@@ -211,14 +211,14 @@ class SotbitCsvParser extends SotbitXmlParser
            
             $this->parseCatalogProductElementCsv($el);
 
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".++$i);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".++$i);
 
             if($i >= $countStep) {
                 $i = 0;
             }
         }
         unset($count, $i, $ci, $debug_item, $csvFile, $arRes, $el, $countStep);
-        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt");
+        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt");
     }
     
     protected function parseCatalogProductElementCsv(&$el)
@@ -236,7 +236,7 @@ class SotbitCsvParser extends SotbitXmlParser
         parent::parseCatalogDate();
         $this->parseCatalogAllFieldsCsv();
 
-        $db_events = GetModuleEvents("shs.parser", "parserBeforeAddElementCSV", true);
+        $db_events = GetModuleEvents("kit.parser", "parserBeforeAddElementCSV", true);
         $error = false;
 
         foreach($db_events as $arEvent)
@@ -254,7 +254,7 @@ class SotbitCsvParser extends SotbitXmlParser
         {
             parent::AddElementCatalog();
 
-            foreach(GetModuleEvents("shs.parser", "parserAfterAddElementCSV", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserAfterAddElementCSV", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array(&$this, &$el));
         }
 
@@ -287,7 +287,7 @@ class SotbitCsvParser extends SotbitXmlParser
 
         if($this->settings['smart_log']['enabled']=='Y')
         {
-            $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/result_id".$this->id.".txt");
+            $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/result_id".$this->id.".txt");
             SmartLogs::saveNewValues($this->elementID, $this->settings["smart_log"], $this->arFields, isset($this->arPrice['PRICE'])?$this->arPrice['PRICE']:null, $this->arProduct);
         }
 
@@ -369,7 +369,7 @@ class SotbitCsvParser extends SotbitXmlParser
         
         if($this->arFields["NAME"])
         {
-            $this->arFields["NAME"] = $this->actionFieldProps("SOTBIT_PARSER_NAME_E", $this->arFields["NAME"]);
+            $this->arFields["NAME"] = $this->actionFieldProps("COLLECTED_PARSER_NAME_E", $this->arFields["NAME"]);
 
             if(isset($this->settings["loc"]["f_name"]) && $this->settings["loc"]["f_name"]=="Y")
             {
@@ -559,7 +559,7 @@ class SotbitCsvParser extends SotbitXmlParser
             $src = isset($el[$index_img])?$el[$index_img]:'';
             $src = $this->parseCaralogFilterSrc($src);
             $src = $this->getCatalogLink($src);
-            /*foreach(GetModuleEvents("shs.parser", "ParserPreviewPicture", true) as $arEvent)
+            /*foreach(GetModuleEvents("kit.parser", "ParserPreviewPicture", true) as $arEvent)
                     ExecuteModuleEventEx($arEvent, array(&$this, $src));*/
             //$src = str_replace("cdn.", "", $src);
             if(!self::CheckImage($src))
@@ -635,7 +635,7 @@ class SotbitCsvParser extends SotbitXmlParser
                     }
                 }
 
-                /*foreach(GetModuleEvents("shs.parser", "ParserDetailPicture", true) as $arEvent)
+                /*foreach(GetModuleEvents("kit.parser", "ParserDetailPicture", true) as $arEvent)
                     ExecuteModuleEventEx($arEvent, array(&$this, $src));*/
 
                 if(!self::CheckImage($src))
@@ -995,14 +995,14 @@ class SotbitCsvParser extends SotbitXmlParser
 
         $prevPage = $prevElement = $currentPage = 0;
 
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_page".$this->id.".txt"))
-            $prevPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_page".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_page".$this->id.".txt"))
+            $prevPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_page".$this->id.".txt");
 
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_element".$this->id.".txt"))
-            $prevElement = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_element".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_element".$this->id.".txt"))
+            $prevElement = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_element".$this->id.".txt");
 
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt"))
-            $currentPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt"))
+            $currentPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt");
 
         if($prevPage)
         {

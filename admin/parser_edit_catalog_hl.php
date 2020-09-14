@@ -8,7 +8,7 @@ use Bitrix\Main\Entity;
 
 \Bitrix\Main\Loader::includeModule('seo');
 \Bitrix\Main\Loader::includeModule('socialservices');
-global $shs_IBLOCK_ID;
+global $kit_IBLOCK_ID;
 $tabControl->BeginNextTab();
 $arType['reference'] = array('html', 'text');
 $arType['reference_id'] = array('html', 'text');
@@ -25,8 +25,8 @@ while($hl = $Hlist->fetch()){
 }
 
 $arProps = array();
-if(isset($shs_IBLOCK_ID) && !empty($shs_IBLOCK_ID)){
-    $hlblock = HL\HighloadBlockTable::getById($shs_IBLOCK_ID)->fetch();
+if(isset($kit_IBLOCK_ID) && !empty($kit_IBLOCK_ID)){
+    $hlblock = HL\HighloadBlockTable::getById($kit_IBLOCK_ID)->fetch();
     if($hlblock){
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();
@@ -35,7 +35,7 @@ if(isset($shs_IBLOCK_ID) && !empty($shs_IBLOCK_ID)){
             if(strpos($column['Field'], 'UF_')===false)
                 continue;
             $q = CUserTypeEntity::GetList(array(),array(
-                'ENTITY_ID' => 'HLBLOCK_'.$shs_IBLOCK_ID,
+                'ENTITY_ID' => 'HLBLOCK_'.$kit_IBLOCK_ID,
                 'FIELD_NAME' => $column['Field'],
             ))->fetch();
             $arProps['REFERENCE'][] = str_replace('UF_','',$column['Field']);
@@ -81,25 +81,25 @@ $arrActionProps['REFERENCE_ID'] = array("delete", "add_b", "add_e", "lower");
 
 $disabled = false;
 $disabledType = false;
-$arrDate = ParseDateTime($shs_START_LAST_TIME_X, "YYYY.MM.DD HH:MI:SS");
-if($shs_TYPE)$disabled  = 'disabled=""';
-if($shs_TYPE_OUT)$disabledType  = 'disabled=""';
+$arrDate = ParseDateTime($kit_START_LAST_TIME_X, "YYYY.MM.DD HH:MI:SS");
+if($kit_TYPE)$disabled  = 'disabled=""';
+if($kit_TYPE_OUT)$disabledType  = 'disabled=""';
 ?>
     <tr>
         <td><?echo GetMessage("parser_type")?></td>
-        <td><?=SelectBoxFromArray('TYPE', $arTypeParser, $shs_TYPE?$shs_TYPE:$_GET["type"], "", $disabled);?>
-        <?if($disabled):?><input type="hidden" name="TYPE" value="<?=$shs_TYPE?>" /><?endif;?>
+        <td><?=SelectBoxFromArray('TYPE', $arTypeParser, $kit_TYPE?$kit_TYPE:$_GET["type"], "", $disabled);?>
+        <?if($disabled):?><input type="hidden" name="TYPE" value="<?=$kit_TYPE?>" /><?endif;?>
         </td>
     </tr>
     <tr>
         <td><?echo GetMessage("parser_type_out")?></td>
-        <td><?=SelectBoxFromArray('TYPE_OUT', $arTypeOut, $shs_TYPE_OUT?$shs_TYPE_OUT:$_GET["type_out"], "", $disabledType);?>
-        <?if($disabledType):?><input type="hidden" name="TYPE_OUT" value="<?=$shs_TYPE_OUT?>" /><?endif;?>
+        <td><?=SelectBoxFromArray('TYPE_OUT', $arTypeOut, $kit_TYPE_OUT?$kit_TYPE_OUT:$_GET["type_out"], "", $disabledType);?>
+        <?if($disabledType):?><input type="hidden" name="TYPE_OUT" value="<?=$kit_TYPE_OUT?>" /><?endif;?>
         </td>
     </tr>
     <tr>
         <td><?echo GetMessage("parser_mode")?></td>
-        <td><?=SelectBoxFromArray('SETTINGS[catalog][mode]', $arMode, $shs_SETTINGS["catalog"]["mode"]?$shs_SETTINGS["catalog"]["mode"]:"debug", "", "");?></td>
+        <td><?=SelectBoxFromArray('SETTINGS[catalog][mode]', $arMode, $kit_SETTINGS["catalog"]["mode"]?$kit_SETTINGS["catalog"]["mode"]:"debug", "", "");?></td>
     </tr>
     <tr>
         <td></td>
@@ -111,36 +111,36 @@ if($shs_TYPE_OUT)$disabledType  = 'disabled=""';
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_act")?></td>
-        <td width="60%"><input type="checkbox" name="ACTIVE" value="Y"<?if($shs_ACTIVE == "Y" || !$ID) echo " checked"?>>
+        <td width="60%"><input type="checkbox" name="ACTIVE" value="Y"<?if($kit_ACTIVE == "Y" || !$ID) echo " checked"?>>
         </td>
     </tr>
     <tr>
         <td><?echo GetMessage("parser_sort")?></td>
-        <td><input type="text" name="SORT" value="<?echo !$ID?"100":$shs_SORT;?>" size="4"></td>
+        <td><input type="text" name="SORT" value="<?echo !$ID?"100":$kit_SORT;?>" size="4"></td>
     </tr>
     <?if(isset($arCategory) && !empty($arCategory)):?>
     <tr>
         <td><?echo GetMessage("parser_category_title")?></td>
-        <td><?=SelectBoxFromArray('CATEGORY_ID', $arCategory, isset($shs_CATEGORY_ID)?$shs_CATEGORY_ID:$parentID, GetMessage("parser_category_select"), "id='category' style='width:262px'");?></td>
+        <td><?=SelectBoxFromArray('CATEGORY_ID', $arCategory, isset($kit_CATEGORY_ID)?$kit_CATEGORY_ID:$parentID, GetMessage("parser_category_select"), "id='category' style='width:262px'");?></td>
     </tr>
     <?endif;?>
     <tr>
         <td><span class="required">*</span><?echo GetMessage("parser_name")?></td>
-        <td><input type="text" name="NAME" value="<?echo $shs_NAME;?>" size="40" maxlength="250"></td>
+        <td><input type="text" name="NAME" value="<?echo $kit_NAME;?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td><span class="required">*</span><?echo GetMessage("parser_iblock_id_catalog")?></td>
-        <td><?=SelectBoxFromArray('IBLOCK_ID', $arIBlock, $shs_IBLOCK_ID, GetMessage("parser_iblock_id"), "id='iblock' style='width:262px' ");?>
+        <td><?=SelectBoxFromArray('IBLOCK_ID', $arIBlock, $kit_IBLOCK_ID, GetMessage("parser_iblock_id"), "id='iblock' style='width:262px' ");?>
         </td>
     </tr>
     <tr>
         <td><span class="required">*</span><?echo GetMessage("parser_rss_catalog")?></td>
-        <td><input type="text" name="RSS" value="<?echo $shs_RSS;?>" size="80" maxlength="500"></td>
+        <td><input type="text" name="RSS" value="<?echo $kit_RSS;?>" size="80" maxlength="500"></td>
     </tr>
     <tr>
         <td style="vertical-align:top"><?echo GetMessage("parser_url_dop")?></td>
         <td>
-            <textarea name="SETTINGS[catalog][url_dop]" cols="65" rows="5"><?=$shs_SETTINGS["catalog"]["url_dop"]?></textarea>
+            <textarea name="SETTINGS[catalog][url_dop]" cols="65" rows="5"><?=$kit_SETTINGS["catalog"]["url_dop"]?></textarea>
         </td>
     </tr>
     <tr>
@@ -153,7 +153,7 @@ if($shs_TYPE_OUT)$disabledType  = 'disabled=""';
     </tr>
     <tr>
         <td><?echo GetMessage("parser_encoding")?></td>
-        <td><?=SelectBoxFromArray('ENCODING', $arEncoding, $shs_ENCODING);?></td>
+        <td><?=SelectBoxFromArray('ENCODING', $arEncoding, $kit_ENCODING);?></td>
     </tr>
     <tr>
         <td></td>
@@ -165,7 +165,7 @@ if($shs_TYPE_OUT)$disabledType  = 'disabled=""';
     </tr>
     <tr>
         <td><?echo GetMessage("parser_step")?></td>
-        <td><input type="text" name="SETTINGS[catalog][step]" value="<?echo $shs_SETTINGS["catalog"]["step"]?$shs_SETTINGS["catalog"]["step"]:30;?>" size="40" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][step]" value="<?echo $kit_SETTINGS["catalog"]["step"]?$kit_SETTINGS["catalog"]["step"]:30;?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td><?echo GetMessage("parser_start_last_time")?></td>
@@ -182,7 +182,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td class="field-name" width="40%"><?echo GetMessage("parser_pagenavigation_selector")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][pagenavigation_selector]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_selector"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][pagenavigation_selector]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_selector"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -194,7 +194,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td><?echo GetMessage("parser_pagenavigation_one")?></td>
-        <td><input type="text" name="SETTINGS[catalog][pagenavigation_one]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_one"];?>" size="40" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][pagenavigation_one]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_one"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -206,11 +206,11 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td><?echo GetMessage("parser_pagenavigation_delete")?></td>
-        <td><input type="text" name="SETTINGS[catalog][pagenavigation_delete]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_delete"];?>" size="40" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][pagenavigation_delete]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_delete"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td><?echo GetMessage("parser_pagenavigation_begin")?></td>
-        <td><input type="text" name="SETTINGS[catalog][pagenavigation_begin]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_begin"];?>" size="5" maxlength="5"> <?echo GetMessage("parser_pagenavigation_end")?> <input type="text" name="SETTINGS[catalog][pagenavigation_end]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_end"];?>" size="5" maxlength="5"></td>
+        <td><input type="text" name="SETTINGS[catalog][pagenavigation_begin]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_begin"];?>" size="5" maxlength="5"> <?echo GetMessage("parser_pagenavigation_end")?> <input type="text" name="SETTINGS[catalog][pagenavigation_end]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_end"];?>" size="5" maxlength="5"></td>
     </tr>
     <tr>
         <td></td>
@@ -233,7 +233,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td><?echo GetMessage("parser_work_pagenavigation_var")?>:</td>
-        <td><input type="text" name="SETTINGS[catalog][pagenavigation_var]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_var"];?>" size="10" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][pagenavigation_var]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_var"];?>" size="10" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -245,7 +245,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td><?echo GetMessage("parser_work_pagenavigation_var_step")?>:</td>
-        <td><input type="text" name="SETTINGS[catalog][pagenavigation_var_step]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_var_step"];?>" size="10" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][pagenavigation_var_step]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_var_step"];?>" size="10" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -257,7 +257,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td><?echo GetMessage("parser_work_pagenavigation_other_var")?>:</td>
-        <td><input type="text" name="SETTINGS[catalog][pagenavigation_other_var]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_other_var"];?>" size="40" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][pagenavigation_other_var]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_other_var"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -269,7 +269,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td><?echo GetMessage("parser_work_pagenavigation_page_count")?>:</td>
-        <td><input type="text" name="SETTINGS[catalog][pagenavigation_page_count]" value="<?echo $shs_SETTINGS["catalog"]["pagenavigation_page_count"];?>" size="10" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][pagenavigation_page_count]" value="<?echo $kit_SETTINGS["catalog"]["pagenavigation_page_count"];?>" size="10" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -284,7 +284,7 @@ $tabControl->BeginNextTab();
 $tabControl->BeginNextTab();
 ?>  <tr>
         <td class="field-name" width="40%"><?echo GetMessage("parser_selector_preview_catalog")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][selector]" value="<?echo $shs_SETTINGS["catalog"]["selector"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][selector]" value="<?echo $kit_SETTINGS["catalog"]["selector"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -296,7 +296,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td><?echo GetMessage("parser_href_catalog")?></td>
-        <td><input type="text" name="SETTINGS[catalog][href]" value="<?echo $shs_SETTINGS["catalog"]["href"];?>" size="40" maxlength="250"></td>
+        <td><input type="text" name="SETTINGS[catalog][href]" value="<?echo $kit_SETTINGS["catalog"]["href"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td></td>
@@ -311,7 +311,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td class="field-name" width="40%"><?echo GetMessage("parser_catalog_delete_symb")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_props_symb_preview]" value="<?echo $shs_SETTINGS["catalog"]["catalog_delete_selector_props_symb_preview"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_props_symb_preview]" value="<?echo $kit_SETTINGS["catalog"]["catalog_delete_selector_props_symb_preview"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td class="field-name" width="40%"></td>
@@ -322,8 +322,8 @@ $tabControl->BeginNextTab();
         </td>
     </tr>
     <?php
-    if(isset($shs_SETTINGS['properties']['preview']) && !empty($shs_SETTINGS['properties']['preview'])){
-        foreach($shs_SETTINGS['properties']['preview'] as $id => $props){
+    if(isset($kit_SETTINGS['properties']['preview']) && !empty($kit_SETTINGS['properties']['preview'])){
+        foreach($kit_SETTINGS['properties']['preview'] as $id => $props){
         ?>
         <tr class="adittional_preview_props_id_<?php echo $id;?>">
             <td><?php echo GetMessage('parser_field').' '.$props['name'].'['.$id.']:';?></td>
@@ -338,7 +338,7 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrProps', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
+            <?=SelectBoxFromArray('arrProps', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
             <input type="submit" id="addPrevProp" name="refresh" value="<?=GetMessage("parser_add")?>">
         </td>
     </tr>
@@ -355,7 +355,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_preview_delete_element")?></td>
-        <td width="60%"><input size="40" maxlength="300" type="text" name="PREVIEW_DELETE_ELEMENT" value="<?=$shs_PREVIEW_DELETE_ELEMENT?>"></td>
+        <td width="60%"><input size="40" maxlength="300" type="text" name="PREVIEW_DELETE_ELEMENT" value="<?=$kit_PREVIEW_DELETE_ELEMENT?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -367,7 +367,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_preview_delete_attribute")?></td>
-        <td width="60%"><input size="40" maxlength="300" type="text" name="PREVIEW_DELETE_ATTRIBUTE" value="<?=$shs_PREVIEW_DELETE_ATTRIBUTE?>"></td>
+        <td width="60%"><input size="40" maxlength="300" type="text" name="PREVIEW_DELETE_ATTRIBUTE" value="<?=$kit_PREVIEW_DELETE_ATTRIBUTE?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -382,7 +382,7 @@ $tabControl->BeginNextTab();
 ?>
     <tr>
         <td class="field-name" width="40%"><?echo GetMessage("parser_selector_detail_catalog")?></td>
-        <td width="60%"><input type="text" name="SELECTOR" value="<?echo $shs_SELECTOR;?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SELECTOR" value="<?echo $kit_SELECTOR;?>" size="40" maxlength="250"></td>
     </tr>
 
     <tr>
@@ -398,7 +398,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td class="field-name" width="40%"><?echo GetMessage("parser_catalog_delete_symb")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_props_symb]" value="<?echo $shs_SETTINGS["catalog"]["catalog_delete_selector_props_symb"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_props_symb]" value="<?echo $kit_SETTINGS["catalog"]["catalog_delete_selector_props_symb"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td class="field-name" width="40%"></td>
@@ -409,8 +409,8 @@ $tabControl->BeginNextTab();
         </td>
     </tr>
     <?php
-    if(isset($shs_SETTINGS['properties']['detail']) && !empty($shs_SETTINGS['properties']['detail'])){
-        foreach($shs_SETTINGS['properties']['detail'] as $id => $props){
+    if(isset($kit_SETTINGS['properties']['detail']) && !empty($kit_SETTINGS['properties']['detail'])){
+        foreach($kit_SETTINGS['properties']['detail'] as $id => $props){
         ?>
         <tr class="adittional_detail_props_id_<?php echo $id;?>">
             <td><?php echo GetMessage('parser_field').' '.$props['name'].'['.$id.']:';?></td>
@@ -425,7 +425,7 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropsDetail', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
+            <?=SelectBoxFromArray('arrPropsDetail', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
             <input type="submit" id="addDetailProp" name="refresh" value="<?=GetMessage("parser_add")?>">
         </td>
     </tr>
@@ -442,7 +442,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_detail_delete_element")?></td>
-        <td width="60%"><input size="40" maxlength="300" type="text" name="DETAIL_DELETE_ELEMENT" value="<?=$shs_DETAIL_DELETE_ELEMENT?>"></td>
+        <td width="60%"><input size="40" maxlength="300" type="text" name="DETAIL_DELETE_ELEMENT" value="<?=$kit_DETAIL_DELETE_ELEMENT?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -454,7 +454,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_detail_delete_attribute")?></td>
-        <td width="60%"><input size="40" maxlength="300" type="text" name="DETAIL_DELETE_ATTRIBUTE" value="<?=$shs_DETAIL_DELETE_ATTRIBUTE?>"></td>
+        <td width="60%"><input size="40" maxlength="300" type="text" name="DETAIL_DELETE_ATTRIBUTE" value="<?=$kit_DETAIL_DELETE_ATTRIBUTE?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -472,8 +472,8 @@ $tabControl->BeginNextTab();
         <td colspan="2"><?echo GetMessage("parser_default_fields")?></td>
     </tr>
     <?php
-    if(isset($shs_SETTINGS['properties']['default']) && !empty($shs_SETTINGS['properties']['default'])){
-        foreach($shs_SETTINGS['properties']['default'] as $id => $props){
+    if(isset($kit_SETTINGS['properties']['default']) && !empty($kit_SETTINGS['properties']['default'])){
+        foreach($kit_SETTINGS['properties']['default'] as $id => $props){
         ?>
         <tr class="adittional_detail_props_id_<?php echo $id;?>">
             <td><?php echo GetMessage('parser_field').' '.$props['name'].'['.$id.']:';?></td>
@@ -488,8 +488,8 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropDefault', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
-            <input type="submit" id="loadPropDefaultHL" name="refresh" value="<?=GetMessage("shs_parser_select_prop_but")?>">
+            <?=SelectBoxFromArray('arrPropDefault', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
+            <input type="submit" id="loadPropDefaultHL" name="refresh" value="<?=GetMessage("kit_parser_select_prop_but")?>">
         </td>
     </tr>
     
@@ -499,13 +499,13 @@ $tabControl->BeginNextTab();
     
     <tr>
         <td width="40%"><?echo GetMessage("parser_props_filter")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][enable_props_filter]" value="Y"<?if($shs_SETTINGS["catalog"]["enable_props_filter"] == "Y") echo " checked"?>>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][enable_props_filter]" value="Y"<?if($kit_SETTINGS["catalog"]["enable_props_filter"] == "Y") echo " checked"?>>
         </td>
     </tr>
     <?
-    if(isset($shs_SETTINGS["props_filter_value"]) && count($shs_SETTINGS["props_filter_value"]) > 0)
+    if(isset($kit_SETTINGS["props_filter_value"]) && count($kit_SETTINGS["props_filter_value"]) > 0)
     {
-        foreach($shs_SETTINGS["props_filter_value"] as $id => $propsfilter)
+        foreach($kit_SETTINGS["props_filter_value"] as $id => $propsfilter)
         {
             foreach($propsfilter as $code => $val)
             {
@@ -514,7 +514,7 @@ $tabControl->BeginNextTab();
         <tr>
             <td width="40%"><?=$code?>&nbsp;[<?=$code?>]</td>
             <td width="60%">
-                <?=SelectBoxFromArray("SETTINGS[props_filter_circs][$id][$code]", $arrFilterCircs, $shs_SETTINGS["props_filter_circs"][$id][$code]?$shs_SETTINGS["props_filter_circs"][$id][$code]:"equally", "", "");?>
+                <?=SelectBoxFromArray("SETTINGS[props_filter_circs][$id][$code]", $arrFilterCircs, $kit_SETTINGS["props_filter_circs"][$id][$code]?$kit_SETTINGS["props_filter_circs"][$id][$code]:"equally", "", "");?>
                 <input type="text" size="40" data-code="<?=$code?>" name="SETTINGS[props_filter_value][<?=$id?>][<?=$code?>]" value="<?=$val?>">
                 <a href="#" class="prop_delete">Delete</a>
             </td>
@@ -525,8 +525,8 @@ $tabControl->BeginNextTab();
     }?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropsFilter', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
-            <input type="submit" id="loadFilterProps" name="refresh" value="<?=GetMessage("shs_parser_select_prop_but")?>">
+            <?=SelectBoxFromArray('arrPropsFilter', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
+            <input type="submit" id="loadFilterProps" name="refresh" value="<?=GetMessage("kit_parser_select_prop_but")?>">
         </td>
     </tr>
     <tr>
@@ -543,7 +543,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"><?echo GetMessage("parser_selector_find_props")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][selector_find_props]" value="<?echo $shs_SETTINGS["catalog"]["selector_find_props"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][selector_find_props]" value="<?echo $kit_SETTINGS["catalog"]["selector_find_props"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"></td>
@@ -555,7 +555,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"><?echo GetMessage("parser_catalog_delete_symb")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_find_props_symb]" value="<?echo $shs_SETTINGS["catalog"]["catalog_delete_selector_find_props_symb"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_find_props_symb]" value="<?echo $kit_SETTINGS["catalog"]["catalog_delete_selector_find_props_symb"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"></td>
@@ -567,8 +567,8 @@ $tabControl->BeginNextTab();
     </tr>
     <?php
     
-    if(isset($shs_SETTINGS["catalog"]["find_prop"]) && !empty($shs_SETTINGS["catalog"]["find_prop"])){
-        foreach($shs_SETTINGS["catalog"]["find_prop"] as $id => $props){
+    if(isset($kit_SETTINGS["catalog"]["find_prop"]) && !empty($kit_SETTINGS["catalog"]["find_prop"])){
+        foreach($kit_SETTINGS["catalog"]["find_prop"] as $id => $props){
         ?>
         <tr class="dop_props1_id_<?php echo $id;?>">
             <td><?php echo GetMessage('parser_field').' '.$id.':';?></td>
@@ -582,13 +582,13 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropDop1', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
-            <input type="submit" id="loadDopPropHL1" name="refresh" value="<?=GetMessage("shs_parser_select_prop_but")?>">
+            <?=SelectBoxFromArray('arrPropDop1', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
+            <input type="submit" id="loadDopPropHL1" name="refresh" value="<?=GetMessage("kit_parser_select_prop_but")?>">
         </td>
     </tr>
     
     <tr style="display:none">
-        <td colspan="2"><input type="hidden" id="delete_find_prop" name="SETTINGS[catalog][delete_find_prop]" value="<?=$shs_SETTINGS["catalog"]["delete_find_prop"]?>" /></td>
+        <td colspan="2"><input type="hidden" id="delete_find_prop" name="SETTINGS[catalog][delete_find_prop]" value="<?=$kit_SETTINGS["catalog"]["delete_find_prop"]?>" /></td>
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"></td>
@@ -605,7 +605,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td class="field-name" width="40%"><?echo GetMessage("parser_catalog_delete_symb")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_props_symb_preview]" value="<?echo $shs_SETTINGS["catalog"]["catalog_delete_selector_props_symb_preview"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_props_symb_preview]" value="<?echo $kit_SETTINGS["catalog"]["catalog_delete_selector_props_symb_preview"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr>
         <td class="field-name" width="40%"></td>
@@ -616,8 +616,8 @@ $tabControl->BeginNextTab();
         </td>
     </tr>
     <?php
-    if(isset($shs_SETTINGS["catalog"]["selector_prop_preview"]) && !empty($shs_SETTINGS["catalog"]["selector_prop_preview"])){
-        foreach($shs_SETTINGS["catalog"]["selector_prop_preview"] as $id => $props){
+    if(isset($kit_SETTINGS["catalog"]["selector_prop_preview"]) && !empty($kit_SETTINGS["catalog"]["selector_prop_preview"])){
+        foreach($kit_SETTINGS["catalog"]["selector_prop_preview"] as $id => $props){
         ?>
         <tr class="dop_props2_id_<?php echo $id;?>">
             <td><?php echo GetMessage('parser_field').' '.$id.':';?></td>
@@ -631,8 +631,8 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropDop2', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
-            <input type="submit" id="loadDopPropHL2" name="refresh" value="<?=GetMessage("shs_parser_select_prop_but")?>">
+            <?=SelectBoxFromArray('arrPropDop2', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
+            <input type="submit" id="loadDopPropHL2" name="refresh" value="<?=GetMessage("kit_parser_select_prop_but")?>">
         </td>
     </tr>
     
@@ -651,7 +651,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"><?echo GetMessage("parser_selector_find_props")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][selector_find_props_preview]" value="<?echo $shs_SETTINGS["catalog"]["selector_find_props_preview"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][selector_find_props_preview]" value="<?echo $kit_SETTINGS["catalog"]["selector_find_props_preview"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"></td>
@@ -663,7 +663,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"><?echo GetMessage("parser_catalog_delete_symb")?></td>
-        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_find_props_symb_preview]" value="<?echo $shs_SETTINGS["catalog"]["catalog_delete_selector_find_props_symb_preview"];?>" size="40" maxlength="250"></td>
+        <td width="60%"><input type="text" name="SETTINGS[catalog][catalog_delete_selector_find_props_symb_preview]" value="<?echo $kit_SETTINGS["catalog"]["catalog_delete_selector_find_props_symb_preview"];?>" size="40" maxlength="250"></td>
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"></td>
@@ -675,8 +675,8 @@ $tabControl->BeginNextTab();
     </tr>
     <?php
     
-    if(isset($shs_SETTINGS["catalog"]["find_prop_preview"]) && !empty($shs_SETTINGS["catalog"]["find_prop_preview"])){
-        foreach($shs_SETTINGS["catalog"]["find_prop_preview"] as $id => $props){
+    if(isset($kit_SETTINGS["catalog"]["find_prop_preview"]) && !empty($kit_SETTINGS["catalog"]["find_prop_preview"])){
+        foreach($kit_SETTINGS["catalog"]["find_prop_preview"] as $id => $props){
         ?>
         <tr class="dop_props3_id_<?php echo $id;?>">
             <td><?php echo GetMessage('parser_field').' '.$id.':';?></td>
@@ -690,8 +690,8 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropDop3', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
-            <input type="submit" id="loadDopPropHL3" name="refresh" value="<?=GetMessage("shs_parser_select_prop_but")?>">
+            <?=SelectBoxFromArray('arrPropDop3', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
+            <input type="submit" id="loadDopPropHL3" name="refresh" value="<?=GetMessage("kit_parser_select_prop_but")?>">
         </td>
     </tr>
     
@@ -708,15 +708,15 @@ $tabControl->BeginNextTab();
     </tr>
     <?php
     
-    if(isset($shs_SETTINGS["catalog"]["action_props_val"]) && !empty($shs_SETTINGS["catalog"]["action_props_val"])){
-        foreach($shs_SETTINGS["catalog"]["action_props_val"] as $id => $arVal){
+    if(isset($kit_SETTINGS["catalog"]["action_props_val"]) && !empty($kit_SETTINGS["catalog"]["action_props_val"])){
+        foreach($kit_SETTINGS["catalog"]["action_props_val"] as $id => $arVal){
             foreach($arVal as $i=>$val){
                 $val = trim($val);
                 if(!$val) continue 1;
                 ?>
                 <tr>
                     <td width="40%"><?php echo GetMessage('parser_field').' '.$id.':';?></td>
-                    <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][action_props_val][<?php echo $id; ?>][]" value="<?=$val?>">&nbsp; <?=SelectBoxFromArray('SETTINGS[catalog][action_props]['.$id.']['.$i.']', $arrActionProps, $shs_SETTINGS["catalog"]["action_props"][$id][$i], GetMessage("shs_parser_select_action_props"), "");?> <a class="find_delete" href="#"><?php echo GetMessage('parser_delete');?></a></td>
+                    <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][action_props_val][<?php echo $id; ?>][]" value="<?=$val?>">&nbsp; <?=SelectBoxFromArray('SETTINGS[catalog][action_props]['.$id.']['.$i.']', $arrActionProps, $kit_SETTINGS["catalog"]["action_props"][$id][$i], GetMessage("kit_parser_select_action_props"), "");?> <a class="find_delete" href="#"><?php echo GetMessage('parser_delete');?></a></td>
                 </tr>
                 <?php
             }
@@ -725,15 +725,15 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropField', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
-            <input type="submit" id="loadPropField" name="refresh" value="<?=GetMessage("shs_parser_select_prop_but")?>">
+            <?=SelectBoxFromArray('arrPropField', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
+            <input type="submit" id="loadPropField" name="refresh" value="<?=GetMessage("kit_parser_select_prop_but")?>">
         </td>
     </tr>
     <tr class="tr_find_prop">
         <td class="field-name" width="40%"></td>
         <td width="60%">
             <?=BeginNote();?>
-            <?echo GetMessage("shs_parser_action_props_descr")?>
+            <?echo GetMessage("kit_parser_action_props_descr")?>
             <?=EndNote();?>
         </td>
     </tr>
@@ -744,32 +744,32 @@ $tabControl->BeginNextTab();
 <!--
     <tr>
         <td width="40%"><?echo GetMessage("parser_active_element")?></td>
-        <td width="60%"><input type="checkbox" name="ACTIVE_ELEMENT" value="Y"<?if($shs_ACTIVE_ELEMENT == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="ACTIVE_ELEMENT" value="Y"<?if($kit_ACTIVE_ELEMENT == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_code_element")?></td>
-        <td width="60%"><input type="checkbox" name="CODE_ELEMENT" value="Y"<?if($shs_CODE_ELEMENT == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="CODE_ELEMENT" value="Y"<?if($kit_CODE_ELEMENT == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_index_element")?></td>
-        <td width="60%"><input type="checkbox" name="INDEX_ELEMENT" value="Y"<?if($shs_INDEX_ELEMENT == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="INDEX_ELEMENT" value="Y"<?if($kit_INDEX_ELEMENT == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_resize_image")?></td>
-        <td width="60%"><input type="checkbox" name="RESIZE_IMAGE" value="Y"<?if($shs_RESIZE_IMAGE == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="RESIZE_IMAGE" value="Y"<?if($kit_RESIZE_IMAGE == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_preview_from_detail")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][img_preview_from_detail]" value="Y"<?if($shs_SETTINGS["catalog"]["img_preview_from_detail"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][img_preview_from_detail]" value="Y"<?if($kit_SETTINGS["catalog"]["img_preview_from_detail"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_preview_from_detail_text")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][text_preview_from_detail]" value="Y"<?if($shs_SETTINGS["catalog"]["text_preview_from_detail"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][text_preview_from_detail]" value="Y"<?if($kit_SETTINGS["catalog"]["text_preview_from_detail"] == "Y") echo " checked"?>></td>
     </tr>
 -->
     <tr>
         <td width="40%"><?echo GetMessage("parser_404_error")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][404]" value="Y"<?if($shs_SETTINGS["catalog"]["404"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][404]" value="Y"<?if($kit_SETTINGS["catalog"]["404"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td></td>
@@ -782,35 +782,35 @@ $tabControl->BeginNextTab();
 <!--
     <tr>
         <td width="40%"><?echo GetMessage("parser_date_active")?></td>
-        <td width="60%"><input type="checkbox" name="DATE_ACTIVE" value="Y"<?if($shs_DATE_ACTIVE && $shs_DATE_ACTIVE != "N") echo " checked"?>> <?=SelectBoxFromArray('DATE_PROP_ACTIVE', $arrDateActive, $shs_DATE_ACTIVE, GetMessage("parser_date_type"), "id='prop-active' style='width:262px'");?></td>
+        <td width="60%"><input type="checkbox" name="DATE_ACTIVE" value="Y"<?if($kit_DATE_ACTIVE && $kit_DATE_ACTIVE != "N") echo " checked"?>> <?=SelectBoxFromArray('DATE_PROP_ACTIVE', $arrDateActive, $kit_DATE_ACTIVE, GetMessage("parser_date_type"), "id='prop-active' style='width:262px'");?></td>
     </tr>
 -->
     <?/*?><tr>
         <td width="40%"><?echo GetMessage("parser_date_public")?></td>
-        <td width="60%"><input type="checkbox" name="DATE_PUBLIC" value="Y"<?if($shs_DATE_PUBLIC && $shs_DATE_PUBLIC != "N") echo " checked"?>> <?=SelectBoxFromArray('DATE_PROP_PUBLIC', $arrProp, $shs_DATE_PUBLIC, GetMessage("parser_prop_id"), "id='prop-date' style='width:262px' class='prop-iblock'");?></td>
+        <td width="60%"><input type="checkbox" name="DATE_PUBLIC" value="Y"<?if($kit_DATE_PUBLIC && $kit_DATE_PUBLIC != "N") echo " checked"?>> <?=SelectBoxFromArray('DATE_PROP_PUBLIC', $arrProp, $kit_DATE_PUBLIC, GetMessage("parser_prop_id"), "id='prop-date' style='width:262px' class='prop-iblock'");?></td>
     </tr><?*/?>
     <tr>
         <td width="40%"><?echo GetMessage("parser_first_title")?></td>
-        <td width="60%"><input type="checkbox" name="FIRST_TITLE" value="Y"<?if($shs_FIRST_TITLE && $shs_FIRST_TITLE != "N") echo " checked"?>> <?=SelectBoxFromArray('FIRST_PROP_TITLE', $arProps, $shs_FIRST_TITLE, GetMessage("parser_prop_id"), "id='prop-first' style='width:262px' class='prop-iblock'");?></td>
+        <td width="60%"><input type="checkbox" name="FIRST_TITLE" value="Y"<?if($kit_FIRST_TITLE && $kit_FIRST_TITLE != "N") echo " checked"?>> <?=SelectBoxFromArray('FIRST_PROP_TITLE', $arProps, $kit_FIRST_TITLE, GetMessage("parser_prop_id"), "id='prop-first' style='width:262px' class='prop-iblock'");?></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_meta_title")?></td>
-        <td width="60%"><input type="checkbox" name="META_TITLE" value="Y"<?if($shs_META_TITLE && $shs_META_TITLE != "N") echo " checked"?>> <?=SelectBoxFromArray('META_PROP_TITLE', $arProps, $shs_META_TITLE, GetMessage("parser_prop_id"), "id='prop-title' style='width:262px' class='prop-iblock'");?></td>
+        <td width="60%"><input type="checkbox" name="META_TITLE" value="Y"<?if($kit_META_TITLE && $kit_META_TITLE != "N") echo " checked"?>> <?=SelectBoxFromArray('META_PROP_TITLE', $arProps, $kit_META_TITLE, GetMessage("parser_prop_id"), "id='prop-title' style='width:262px' class='prop-iblock'");?></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_meta_description")?></td>
-        <td width="60%"><input type="checkbox" name="META_DESCRIPTION" value="Y"<?if($shs_META_DESCRIPTION && $shs_META_DESCRIPTION != "N") echo " checked"?>> <?=SelectBoxFromArray('META_PROP_DESCRIPTION', $arProps, $shs_META_DESCRIPTION, GetMessage("parser_prop_id"), "id='prop-key' style='width:262px' class='prop-iblock'");?></td>
+        <td width="60%"><input type="checkbox" name="META_DESCRIPTION" value="Y"<?if($kit_META_DESCRIPTION && $kit_META_DESCRIPTION != "N") echo " checked"?>> <?=SelectBoxFromArray('META_PROP_DESCRIPTION', $arProps, $kit_META_DESCRIPTION, GetMessage("parser_prop_id"), "id='prop-key' style='width:262px' class='prop-iblock'");?></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_meta_keywords")?></td>
-        <td width="60%"><input type="checkbox" name="META_KEYWORDS" value="Y"<?if($shs_META_KEYWORDS && $shs_META_KEYWORDS != "N") echo " checked"?>> <?=SelectBoxFromArray('META_PROP_KEYWORDS', $arProps, $shs_META_KEYWORDS, GetMessage("parser_prop_id"), "id='prop-meta' style='width:262px' class='prop-iblock'");?></td>
+        <td width="60%"><input type="checkbox" name="META_KEYWORDS" value="Y"<?if($kit_META_KEYWORDS && $kit_META_KEYWORDS != "N") echo " checked"?>> <?=SelectBoxFromArray('META_PROP_KEYWORDS', $arProps, $kit_META_KEYWORDS, GetMessage("parser_prop_id"), "id='prop-meta' style='width:262px' class='prop-iblock'");?></td>
     </tr>
     <tr class="heading">
         <td colspan="2"><?php echo GetMessage('parser_start_header');?></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_start_agent")?></td>
-        <td width="60%"><input type="checkbox" name="START_AGENT" value="Y"<?if($shs_START_AGENT == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="START_AGENT" value="Y"<?if($kit_START_AGENT == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td></td>
@@ -822,11 +822,11 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_time_agent")?></td>
-        <td width="60%"><input type="text" size="40" name="TIME_AGENT" value="<?=$shs_TIME_AGENT?>"></td>
+        <td width="60%"><input type="text" size="40" name="TIME_AGENT" value="<?=$kit_TIME_AGENT?>"></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_sleep")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][sleep]" value="<?=$shs_SETTINGS["catalog"]["sleep"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][sleep]" value="<?=$kit_SETTINGS["catalog"]["sleep"]?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -842,14 +842,14 @@ $tabControl->BeginNextTab();
     <tr>
         <td width="40%"><?echo GetMessage("parser_proxy").':'?></td>
         <td width="60%">
-            <input type="text" size="40" name="SETTINGS[catalog][proxy]" value="<?=$shs_SETTINGS["catalog"]["proxy"]?>">
-            <input placeholder="username:password" type="text" size="30" name="SETTINGS[proxy][username_password]" value="<?=$shs_SETTINGS["proxy"]["username_password"]?>">
+            <input type="text" size="40" name="SETTINGS[catalog][proxy]" value="<?=$kit_SETTINGS["catalog"]["proxy"]?>">
+            <input placeholder="username:password" type="text" size="30" name="SETTINGS[proxy][username_password]" value="<?=$kit_SETTINGS["proxy"]["username_password"]?>">
         </td>
     </tr>
     <?php
-    if(isset($shs_SETTINGS['proxy']['servers']) && !empty($shs_SETTINGS['proxy']['servers'])){
+    if(isset($kit_SETTINGS['proxy']['servers']) && !empty($kit_SETTINGS['proxy']['servers'])){
     $i = 1;
-        foreach($shs_SETTINGS['proxy']['servers'] as $id => $server){
+        foreach($kit_SETTINGS['proxy']['servers'] as $id => $server){
             if(empty($server))
                 continue;
             ?>
@@ -877,21 +877,21 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_madialibrary")?></td>
-        <td width="60%"><?=SelectBoxFromArray('SETTINGS[madialibrary_id]', $arrLibrary, $shs_SETTINGS["madialibrary_id"], GetMessage("parser_no_select"), "");?></td>
+        <td width="60%"><?=SelectBoxFromArray('SETTINGS[madialibrary_id]', $arrLibrary, $kit_SETTINGS["madialibrary_id"], GetMessage("parser_no_select"), "");?></td>
     </tr>
     <?
     $tabControl->BeginNextTab();
     ?>
     <tr>
         <td width="40%"><?echo GetMessage("parser_uniq_update")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][active]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["active"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][active]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["active"] == "Y") echo " checked"?>></td>
     </tr>
     
-    <tr class="show_block_add_element" <?if(!isset($shs_SETTINGS["catalog"]["update"]["active"]) || ($shs_SETTINGS["catalog"]["update"]["active"] != "Y")):?>style="display: none"<?endif;?>>
+    <tr class="show_block_add_element" <?if(!isset($kit_SETTINGS["catalog"]["update"]["active"]) || ($kit_SETTINGS["catalog"]["update"]["active"] != "Y")):?>style="display: none"<?endif;?>>
         <td width="40%"><?echo GetMessage("parser_uniq_add_element")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][add_element]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["add_element"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][add_element]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["add_element"] == "Y") echo " checked"?>></td>
     </tr>
-    <tr class="show_block_add_element" <?if(!isset($shs_SETTINGS["catalog"]["update"]["active"]) || ($shs_SETTINGS["catalog"]["update"]["active"] != "Y")):?>style="display: none"<?endif;?>>
+    <tr class="show_block_add_element" <?if(!isset($kit_SETTINGS["catalog"]["update"]["active"]) || ($kit_SETTINGS["catalog"]["update"]["active"] != "Y")):?>style="display: none"<?endif;?>>
         <td></td>
         <td>
             <?=BeginNote();?>
@@ -905,12 +905,12 @@ $tabControl->BeginNextTab();
     <!--
     <tr>
         <td width="40%"><?echo GetMessage("parser_uniq_name")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][uniq][name]" value="Y"<?if($shs_SETTINGS["catalog"]["uniq"]["name"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][uniq][name]" value="Y"<?if($kit_SETTINGS["catalog"]["uniq"]["name"] == "Y") echo " checked"?>></td>
     </tr>
     -->
     <tr>
         <td width="40%"><?echo GetMessage("parser_uniq_prop")?></td>
-        <td width="60%"><?=SelectBoxFromArray('SETTINGS[catalog][uniq][prop]', $arProps, $shs_SETTINGS["catalog"]["uniq"]["prop"], GetMessage("parser_prop_id"), "id='style='width:262px' class='prop-iblock'");?></td>
+        <td width="60%"><?=SelectBoxFromArray('SETTINGS[catalog][uniq][prop]', $arProps, $kit_SETTINGS["catalog"]["uniq"]["prop"], GetMessage("parser_prop_id"), "id='style='width:262px' class='prop-iblock'");?></td>
     </tr>
     <!--
     <tr>
@@ -928,61 +928,61 @@ $tabControl->BeginNextTab();
     <!--
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_name")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][name]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["name"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][name]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["name"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_price")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][price]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["price"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][price]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["price"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_count")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][count]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["count"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][count]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["count"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_param")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][param]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["param"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][param]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["param"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_preview_descr")?></td>
         <td width="60%">
-            <?=SelectBoxFromArray('SETTINGS[catalog][update][preview_descr]', $arUpdate, $shs_SETTINGS["catalog"]["update"]["preview_descr"], "", "");?>
-            <?/*?><input type="checkbox" name="SETTINGS[catalog][update][preview_descr]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["preview_descr"] == "Y") echo " checked"?>><?*/?>
+            <?=SelectBoxFromArray('SETTINGS[catalog][update][preview_descr]', $arUpdate, $kit_SETTINGS["catalog"]["update"]["preview_descr"], "", "");?>
+            <?/*?><input type="checkbox" name="SETTINGS[catalog][update][preview_descr]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["preview_descr"] == "Y") echo " checked"?>><?*/?>
         </td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_detail_descr")?></td>
         <td width="60%">
-            <?=SelectBoxFromArray('SETTINGS[catalog][update][detail_descr]', $arUpdate, $shs_SETTINGS["catalog"]["update"]["detail_descr"], "", "");?>
+            <?=SelectBoxFromArray('SETTINGS[catalog][update][detail_descr]', $arUpdate, $kit_SETTINGS["catalog"]["update"]["detail_descr"], "", "");?>
         </td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_preview_img")?></td>
         <td width="60%">
-            <?=SelectBoxFromArray('SETTINGS[catalog][update][preview_img]', $arUpdate, $shs_SETTINGS["catalog"]["update"]["preview_img"], "", "");?>
+            <?=SelectBoxFromArray('SETTINGS[catalog][update][preview_img]', $arUpdate, $kit_SETTINGS["catalog"]["update"]["preview_img"], "", "");?>
         </td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_detail_img")?></td>
         <td width="60%">
-            <?=SelectBoxFromArray('SETTINGS[catalog][update][detail_img]', $arUpdate, $shs_SETTINGS["catalog"]["update"]["detail_img"], "", "");?>
+            <?=SelectBoxFromArray('SETTINGS[catalog][update][detail_img]', $arUpdate, $kit_SETTINGS["catalog"]["update"]["detail_img"], "", "");?>
         </td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_more_img")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][more_img]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["more_img"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][more_img]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["more_img"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_uniq_field_props")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][props]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["props"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][props]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["props"] == "Y") echo " checked"?>></td>
     </tr>
     -->
     <?php
-    if(isset($shs_SETTINGS["catalog"]["update"]["props"]) && !empty($shs_SETTINGS["catalog"]["update"]["props"])){
-        foreach($shs_SETTINGS["catalog"]["update"]["props"] as $prop => $val){
+    if(isset($kit_SETTINGS["catalog"]["update"]["props"]) && !empty($kit_SETTINGS["catalog"]["update"]["props"])){
+        foreach($kit_SETTINGS["catalog"]["update"]["props"] as $prop => $val){
         ?>
         <tr class="update_prop_<?php echo $prop;?>">
             <td width="40%"><?php echo GetMessage("parser_field").' '.$prop; ?></td>
-            <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][props][<?php echo $prop; ?>]" value="Y"<?if($shs_SETTINGS["catalog"]["update"]["props"][$prop] == "Y") echo " checked"?>>&nbsp;<a href="#" class="prev_prop_delete" data-prop-id="'+v+'"><?php echo GetMessage('parser_delete');?></a></td>
+            <td width="60%"><input type="checkbox" name="SETTINGS[catalog][update][props][<?php echo $prop; ?>]" value="Y"<?if($kit_SETTINGS["catalog"]["update"]["props"][$prop] == "Y") echo " checked"?>>&nbsp;<a href="#" class="prev_prop_delete" data-prop-id="'+v+'"><?php echo GetMessage('parser_delete');?></a></td>
         </tr>
         <?php
         }
@@ -990,8 +990,8 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td colspan="2" align="center">
-            <?=SelectBoxFromArray('arrPropUpdate', $arProps, "", GetMessage("shs_parser_select_prop"), "");?>
-            <input type="submit" id="loadPropUpdate" name="refresh" value="<?=GetMessage("shs_parser_select_prop_but")?>">
+            <?=SelectBoxFromArray('arrPropUpdate', $arProps, "", GetMessage("kit_parser_select_prop"), "");?>
+            <input type="submit" id="loadPropUpdate" name="refresh" value="<?=GetMessage("kit_parser_select_prop_but")?>">
         </td>
     </tr>
     <tr>
@@ -1008,7 +1008,7 @@ $tabControl->BeginNextTab();
     <tr>
         <td width="40%"><?echo GetMessage("parser_element_action")?></td>
         <td width="60%">
-            <?=SelectBoxFromArray('SETTINGS[catalog][uniq][action]', $arAction, $shs_SETTINGS["catalog"]["uniq"]["action"], "", "");?>
+            <?=SelectBoxFromArray('SETTINGS[catalog][uniq][action]', $arAction, $kit_SETTINGS["catalog"]["uniq"]["action"], "", "");?>
         </td>
     </tr>
     <tr>
@@ -1025,17 +1025,17 @@ $tabControl->BeginNextTab();
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_type")?></td>
         <td width="60%">
-            <?=SelectBoxFromArray('SETTINGS[catalog][auth][type]', $arAuthType, $shs_SETTINGS["catalog"]["auth"]["type"], "", "class='select_load'");?>
+            <?=SelectBoxFromArray('SETTINGS[catalog][auth][type]', $arAuthType, $kit_SETTINGS["catalog"]["auth"]["type"], "", "class='select_load'");?>
         </td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_active")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][auth][active]" value="Y"<?if($shs_SETTINGS["catalog"]["auth"]["active"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][auth][active]" value="Y"<?if($kit_SETTINGS["catalog"]["auth"]["active"] == "Y") echo " checked"?>></td>
     </tr>
-    <?if((isset($shs_SETTINGS["catalog"]["auth"]["type"]) && $shs_SETTINGS["catalog"]["auth"]["type"]=="form") || !isset($shs_SETTINGS["catalog"]["auth"]["type"])):?>
+    <?if((isset($kit_SETTINGS["catalog"]["auth"]["type"]) && $kit_SETTINGS["catalog"]["auth"]["type"]=="form") || !isset($kit_SETTINGS["catalog"]["auth"]["type"])):?>
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_url")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][url]" value="<?=$shs_SETTINGS["catalog"]["auth"]["url"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][url]" value="<?=$kit_SETTINGS["catalog"]["auth"]["url"]?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -1047,15 +1047,15 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_selector")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][selector]" value="<?=$shs_SETTINGS["catalog"]["auth"]["selector"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][selector]" value="<?=$kit_SETTINGS["catalog"]["auth"]["selector"]?>"></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_login")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][login]" value="<?=$shs_SETTINGS["catalog"]["auth"]["login"]?>"> <?echo GetMessage("parser_auth_login_name")?> <input type="text" size="20" name="SETTINGS[catalog][auth][login_name]" value="<?=$shs_SETTINGS["catalog"]["auth"]["login_name"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][login]" value="<?=$kit_SETTINGS["catalog"]["auth"]["login"]?>"> <?echo GetMessage("parser_auth_login_name")?> <input type="text" size="20" name="SETTINGS[catalog][auth][login_name]" value="<?=$kit_SETTINGS["catalog"]["auth"]["login_name"]?>"></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_password")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][password]" value="<?=$shs_SETTINGS["catalog"]["auth"]["password"]?>"> <?echo GetMessage("parser_auth_password_name")?> <input type="text" size="20" name="SETTINGS[catalog][auth][password_name]" value="<?=$shs_SETTINGS["catalog"]["auth"]["password_name"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][password]" value="<?=$kit_SETTINGS["catalog"]["auth"]["password"]?>"> <?echo GetMessage("parser_auth_password_name")?> <input type="text" size="20" name="SETTINGS[catalog][auth][password_name]" value="<?=$kit_SETTINGS["catalog"]["auth"]["password_name"]?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -1068,14 +1068,14 @@ $tabControl->BeginNextTab();
     <?else:?>
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_login")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][login]" value="<?=$shs_SETTINGS["catalog"]["auth"]["login"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][login]" value="<?=$kit_SETTINGS["catalog"]["auth"]["login"]?>"></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_auth_password")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][password]" value="<?=$shs_SETTINGS["catalog"]["auth"]["password"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[catalog][auth][password]" value="<?=$kit_SETTINGS["catalog"]["auth"]["password"]?>"></td>
     </tr>
     <?endif;?>
-    <?if($shs_SETTINGS["catalog"]["auth"]["type"]=="form"):?>
+    <?if($kit_SETTINGS["catalog"]["auth"]["type"]=="form"):?>
     <tr>
         <td width="40%"></td>
         <td width="60%"><input type="button" size="40" id="auth" name="auth" data-href="<?=$APPLICATION->GetCurPageParam("auth=1", array("auth")); ?>" value="<?echo GetMessage('parser_auth_check')?>"></td>
@@ -1086,10 +1086,10 @@ $tabControl->BeginNextTab();
     ?>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_logs")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][log]" value="Y"<?if($shs_SETTINGS["catalog"]["log"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[catalog][log]" value="Y"<?if($kit_SETTINGS["catalog"]["log"] == "Y") echo " checked"?>></td>
     </tr>
     <?
-    $file_log = $_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_log_".htmlspecialcharsbx($_GET["ID"]).".txt";
+    $file_log = $_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_log_".htmlspecialcharsbx($_GET["ID"]).".txt";
     if(isset($_GET["ID"]) && file_exists($file_log)):?>
     <tr>
         <td width="40%"><?echo GetMessage("parser_header_logs_download")?></td>
@@ -1110,47 +1110,47 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_smart_logs")?></td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[smart_log][enabled]" value="Y"<?if($shs_SETTINGS["smart_log"]["enabled"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[smart_log][enabled]" value="Y"<?if($kit_SETTINGS["smart_log"]["enabled"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_iteration")?></td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[smart_log][iteration]" value="<?=$shs_SETTINGS["smart_log"]["iteration"]!=''?$shs_SETTINGS["smart_log"]["iteration"]:5?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[smart_log][iteration]" value="<?=$kit_SETTINGS["smart_log"]["iteration"]!=''?$kit_SETTINGS["smart_log"]["iteration"]:5?>"></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_props")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_props]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_props"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_props]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_props"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_price")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_price]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_price"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_price]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_price"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_count")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_count]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_count"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_count]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_count"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_descr")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_descr]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_descr"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_descr]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_descr"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_prev_descr")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_prev_descr]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_prev_descr"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_prev_descr]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_prev_descr"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_img")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_img]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_img"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_img]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_img"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_prev_img")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_prev_img]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_prev_img"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_prev_img]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_prev_img"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_addit_img")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_addit_img]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_addit_img"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_addit_img]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_addit_img"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_log_save_set_catalog")?></td>
-        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_set_catalog]" value="Y"<?if($shs_SETTINGS["smart_log"]["settings"]["save_set_catalog"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" size="40" name="SETTINGS[smart_log][settings][save_set_catalog]" value="Y"<?if($kit_SETTINGS["smart_log"]["settings"]["save_set_catalog"] == "Y") echo " checked"?>></td>
     </tr>
     -->
     <?
@@ -1162,13 +1162,13 @@ $tabControl->BeginNextTab();
     <tr>
         <td width="40%"><?echo GetMessage("parser_loc_type")?>:</td>
         <td width="60%">
-            <?=SelectBoxFromArray('SETTINGS[loc][type]', $arLocType, $shs_SETTINGS["loc"]["type"], "", "class='select_load'");?>
+            <?=SelectBoxFromArray('SETTINGS[loc][type]', $arLocType, $kit_SETTINGS["loc"]["type"], "", "class='select_load'");?>
         </td>
     </tr>
-    <?if(isset($shs_SETTINGS["loc"]["type"]) && $shs_SETTINGS["loc"]["type"]=="yandex"):?>
+    <?if(isset($kit_SETTINGS["loc"]["type"]) && $kit_SETTINGS["loc"]["type"]=="yandex"):?>
     <tr>
         <td width="40%"><?echo GetMessage("parser_loc_yandex_key")?>:</td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[loc][yandex][key]" value="<?=$shs_SETTINGS["loc"]["yandex"]["key"]?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[loc][yandex][key]" value="<?=$kit_SETTINGS["loc"]["yandex"]["key"]?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -1180,7 +1180,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_loc_yandex_lang")?>:</td>
-        <td width="60%"><input type="text" size="20" name="SETTINGS[loc][yandex][lang]" value="<?=$shs_SETTINGS["loc"]["yandex"]["lang"]?>"></td>
+        <td width="60%"><input type="text" size="20" name="SETTINGS[loc][yandex][lang]" value="<?=$kit_SETTINGS["loc"]["yandex"]["lang"]?>"></td>
     </tr>
     <tr>
         <td></td>
@@ -1195,7 +1195,7 @@ $tabControl->BeginNextTab();
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_loc_fields_props")?>:</td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[loc][f_props]" value="Y"<?if($shs_SETTINGS["loc"]["f_props"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[loc][f_props]" value="Y"<?if($kit_SETTINGS["loc"]["f_props"] == "Y") echo " checked"?>></td>
     </tr>
     <?endif;
     $tabControl->BeginNextTab();
@@ -1242,15 +1242,15 @@ $tabControl->BeginNextTab();  ?>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_notification_start")?>:</td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[notification][start]" value="Y"<?if($shs_SETTINGS["notification"]["start"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[notification][start]" value="Y"<?if($kit_SETTINGS["notification"]["start"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_notification_end")?>:</td>
-        <td width="60%"><input type="checkbox" name="SETTINGS[notification][end]" value="Y"<?if($shs_SETTINGS["notification"]["end"] == "Y") echo " checked"?>></td>
+        <td width="60%"><input type="checkbox" name="SETTINGS[notification][end]" value="Y"<?if($kit_SETTINGS["notification"]["end"] == "Y") echo " checked"?>></td>
     </tr>
     <tr>
         <td width="40%"><?echo GetMessage("parser_notification_email")?>:</td>
-        <td width="60%"><input type="text" size="40" name="SETTINGS[notification][email]" value="<?=!empty($shs_SETTINGS["notification"]["email"])?$shs_SETTINGS["notification"]["email"]:COption::GetOptionString("main", "email_from")?>"></td>
+        <td width="60%"><input type="text" size="40" name="SETTINGS[notification][email]" value="<?=!empty($kit_SETTINGS["notification"]["email"])?$kit_SETTINGS["notification"]["email"]:COption::GetOptionString("main", "email_from")?>"></td>
     </tr>
 <?php
 $tabControl->Buttons(

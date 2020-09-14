@@ -1,4 +1,4 @@
-CREATE TABLE b_shs_parser_result
+CREATE TABLE b_kit_parser_result
 (
     ID        int(11)        NOT NULL auto_increment,
     PARSER_ID        int(11)    NULL,
@@ -8,7 +8,7 @@ CREATE TABLE b_shs_parser_result
     STATUS int(11) NULL,
     PRIMARY KEY (ID)
 );
-CREATE TABLE b_shs_parser_result_product
+CREATE TABLE b_kit_parser_result_product
 (
     ID        int(11)        NOT NULL auto_increment,
     RESULT_ID        int(11)    NULL,

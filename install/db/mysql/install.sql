@@ -1,4 +1,4 @@
-CREATE TABLE b_shs_parser
+CREATE TABLE b_kit_parser
 (
 	ID		int(11)		NOT NULL auto_increment,
 	NAME		VARCHAR(255)	NULL,
@@ -41,11 +41,11 @@ CREATE TABLE b_shs_parser
 	ACTIVE_ELEMENT CHAR(1) NULL,
 	START_LAST_TIME_X DATETIME NULL,
     SETTINGS LONGTEXT NULL,
-	TMP VARCHAR(50) DEFAULT 'b_shs_parser_tmp' NOT NULL,
+	TMP VARCHAR(50) DEFAULT 'b_kit_parser_tmp' NOT NULL,
     CATEGORY_ID int(11) DEFAULT 0 NOT NULL,
 	PRIMARY KEY (ID)
 );
-CREATE TABLE b_shs_parser_tmp
+CREATE TABLE b_kit_parser_tmp
 (
 	ID		int(11)		NOT NULL auto_increment,
 	PARSER_ID		int(11)	NULL,
@@ -54,14 +54,14 @@ CREATE TABLE b_shs_parser_tmp
 
 	
 );
-CREATE TABLE b_shs_parser_tmp_old
+CREATE TABLE b_kit_parser_tmp_old
 (
 	ID		int(11)		NOT NULL auto_increment,
 	PARSER_ID		int(11)	NULL,
     PRODUCT_ID		int(11) NULL,
 	PRIMARY KEY (ID)
 );
-CREATE TABLE b_shs_parser_section
+CREATE TABLE b_kit_parser_section
 (
     ID        int(11)        NOT NULL auto_increment,
     TIMESTAMP_X timestamp not null,
@@ -73,7 +73,7 @@ CREATE TABLE b_shs_parser_section
     PARENT_CATEGORY_ID    INT(11) DEFAULT 0 NOT NULL,
     PRIMARY KEY (ID)
 );
-CREATE TABLE b_shs_parser_result
+CREATE TABLE b_kit_parser_result
 (
     ID        int(11)        NOT NULL auto_increment,
     PARSER_ID        int(11)    NULL,
@@ -83,7 +83,7 @@ CREATE TABLE b_shs_parser_result
     STATUS int(11) NULL,
     PRIMARY KEY (ID)
 );
-CREATE TABLE b_shs_parser_result_product
+CREATE TABLE b_kit_parser_result_product
 (
     ID        int(11)        NOT NULL auto_increment,
     RESULT_ID        int(11)    NULL,

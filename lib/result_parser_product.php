@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Shs;
+namespace Bitrix\Kit;
 
 use \Bitrix\Main,
     \Bitrix\Main\Localization\Loc;
@@ -17,7 +17,7 @@ Loc::loadMessages(__FILE__);
  * <li> NEW_PRICE double optional
  * </ul>
  *
- * @package Bitrix\Shs
+ * @package Bitrix\Kit
  **/
 
 class ParserResultProductTable extends Main\Entity\DataManager
@@ -29,7 +29,7 @@ class ParserResultProductTable extends Main\Entity\DataManager
      */
     public static function getTableName()
     {
-        return 'b_shs_parser_result_product';
+        return 'b_kit_parser_result_product';
     }
 
     /**
@@ -51,7 +51,7 @@ class ParserResultProductTable extends Main\Entity\DataManager
             )),
             new \Bitrix\Main\Entity\ReferenceField(
                 'PARSER',
-                'Bitrix\Shs\ParserResultTable',
+                'Bitrix\Kit\ParserResultTable',
                 array('=this.RESULT_ID' => 'ref.ID'),
                 array('join_type' => 'LEFT')
             ),

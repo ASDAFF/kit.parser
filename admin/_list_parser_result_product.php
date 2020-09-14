@@ -1,16 +1,20 @@
 <?php
+/**
+ * Copyright (c) 12/9/2020 Created By/Edited By ASDAFF asdaff.asad@yandex.ru
+ */
+
 use Bitrix\Main\Loader;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\ExpressionField;
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/result_parser.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/lib/result_parser_product.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/result_parser.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/lib/result_parser_product.php");
 
 if(!CModule::IncludeModule('iblock')) return false;
 IncludeModuleLangFile(__FILE__);
-$POST_RIGHT = $APPLICATION->GetGroupRight("shs.parser");
+$POST_RIGHT = $APPLICATION->GetGroupRight("kit.parser");
 if($POST_RIGHT=="D")
     $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
@@ -88,7 +92,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
 {
     if($_REQUEST['action_target']=='selected')
     {
-        $rsDataRes = \Bitrix\Shs\ParserResultTable::getList(array(
+        $rsDataRes = \Bitrix\Kit\ParserResultTable::getList(array(
             'select'=>array('ID'),
             'filter' => array(),
         ));
@@ -108,7 +112,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
         case "delete":
             @set_time_limit(0);
             $DB->StartTransaction();
-                $res = \Bitrix\Shs\ParserResultTable::delete($ID);
+                $res = \Bitrix\Kit\ParserResultTable::delete($ID);
                 if(!$res->isSuccess())
                 {
                     $DB->Rollback();
@@ -156,7 +160,7 @@ $lAdmin->AddHeaders(array(
         "default"    =>true,
     ),
 ));
-$rsData = \Bitrix\Shs\ParserResultTable::getList(array(
+$rsData = \Bitrix\Kit\ParserResultTable::getList(array(
     'select'=>array('*'),
     'filter' => array(),
     'order' => array(
@@ -173,12 +177,12 @@ while($arr=$rsIBlock->Fetch()){
     $arIBlockFilter['REFERENCE_ID'][] = $arr["ID"];
 }*/
 
-$p = new ShsParserContent();
+$p = new KitParserContent();
 while($arRes = $rsData->NavNext(true, "f_")):
 
     $parser = $p->GetList(array(),array('ID'=>$arRes['PARSER_ID']));
     $parser = $parser->fetch();
-    $productCount = \Bitrix\Shs\ParserResultProductTable::getList(
+    $productCount = \Bitrix\Kit\ParserResultProductTable::getList(
         array(
             'select'=>array('CNT'),
             'filter' => array('RESULT_ID'=>$arRes['ID']),
@@ -314,8 +318,8 @@ if(isset($_REQUEST['parser_end']) && $_REQUEST['parser_end']==1 && isset($_REQUE
 
 }
 if(isset($_REQUEST['action']) && $_REQUEST['action']=="parser"):
-$parser = ShsParserContent::GetByID($_REQUEST['ID']);
-if(!$parser->ExtractFields("shs_"))
+$parser = KitParserContent::GetByID($_REQUEST['ID']);
+if(!$parser->ExtractFields("kit_"))
     $ID=0;
 
 if($ID>0){

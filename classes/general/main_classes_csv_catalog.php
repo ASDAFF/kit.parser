@@ -1,5 +1,5 @@
 <?php
-class SotbitCsvCatalogParser extends SotbitXmlCatalogParser {
+class CollectedCsvCatalogParser extends CollectedXmlCatalogParser {
     
    // protected $catalog_detail_settings = array();
     

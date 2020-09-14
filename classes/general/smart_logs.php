@@ -125,7 +125,7 @@ class SmartLogs {
         if($settings["enabled"]!="Y")
             return false;                      
             
-        $isset = \Bitrix\Shs\ParserResultProductTable::getList(array(
+        $isset = \Bitrix\Kit\ParserResultProductTable::getList(array(
             'filter'=>array(
                 'RESULT_ID' => $settings['result_id'],
                 'PRODUCT_ID' => $elementID,
@@ -200,7 +200,7 @@ class SmartLogs {
         $props['catalog'] = SmartLogs::$props['catalog']; 
         $props['type'] = 'product';                             
         if($elementID){        
-            $res = \Bitrix\Shs\ParserResultProductTable::add(array(
+            $res = \Bitrix\Kit\ParserResultProductTable::add(array(
                 'RESULT_ID' => $settings['result_id'],
                 'PRODUCT_ID' => $elementID,
                 'UPDATE_TIME' => new \Bitrix\Main\Type\DateTime(),
@@ -334,7 +334,7 @@ class SmartLogs {
         if($settings["enabled"]!="Y")
             return false;                      
             
-        $isset = \Bitrix\Shs\ParserResultProductTable::getList(array(
+        $isset = \Bitrix\Kit\ParserResultProductTable::getList(array(
             'filter'=>array(
                 'RESULT_ID' => $settings['result_id'],
                 'PRODUCT_ID' => $elementID,
@@ -407,7 +407,7 @@ class SmartLogs {
         $props['catalog'] = SmartLogs::$propsOffer['catalog']; 
         $props['type'] = 'offer';                             
         if($elementID){        
-            $res = \Bitrix\Shs\ParserResultProductTable::add(array(
+            $res = \Bitrix\Kit\ParserResultProductTable::add(array(
                 'RESULT_ID' => $settings['result_id'],
                 'PRODUCT_ID' => $elementID,
                 'UPDATE_TIME' => new \Bitrix\Main\Type\DateTime(),

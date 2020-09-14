@@ -1,10 +1,10 @@
 /*Menu icon*/
-#shs_parser_menu_icon {background:url(icons/shs.parser/mnu_shs_parser.gif) no-repeat 50% 50%!important;}
-#shs_parser_page_icon {background:url(icons/shs.parser/title.gif) no-repeat 50% 50%!important;}
-.shs_parser_menu_icon {background:url(icons/shs.parser/mnu_shs_parser.gif) no-repeat 50% 50%!important;}
-.shs_parser_page_icon {background:url(icons/shs.parser/title.gif) no-repeat 50% 50%!important;}
+#kit_parser_menu_icon {background:url(icons/kit.parser/mnu_kit_parser.gif) no-repeat 50% 50%!important;}
+#kit_parser_page_icon {background:url(icons/kit.parser/title.gif) no-repeat 50% 50%!important;}
+.kit_parser_menu_icon {background:url(icons/kit.parser/mnu_kit_parser.gif) no-repeat 50% 50%!important;}
+.kit_parser_page_icon {background:url(icons/kit.parser/title.gif) no-repeat 50% 50%!important;}
 
-.shs_parser_border {border:1px solid #BDC6E0; padding:4px;}
+.kit_parser_border {border:1px solid #BDC6E0; padding:4px;}
 
 div.set-scroll,
 div.wrap-table {
@@ -87,23 +87,23 @@ table.preview-xls-data tr.params-row td {
 .badge.color-yellow{
     background-color:#de9c23;
 }
-.shs_parser_result_info {
+.kit_parser_result_info {
     margin-bottom: 20px;
 }
-.shs_parser_result_info td{
+.kit_parser_result_info td{
     padding-top: 5px;
 }
-.shs_parser_result_info td:first-child {
+.kit_parser_result_info td:first-child {
     font-weight: bold;
     padding-right: 15px;
 }
-.shs_table_properties{
+.kit_table_properties{
     margin-bottom: 15px;
     margin-top: 5px;
     border-collapse: collapse;
 }
-.shs_table_properties th,
-.shs_table_properties td{
+.kit_table_properties th,
+.kit_table_properties td{
     padding-right: 15px;
     padding-top: 5px;
     padding-bottom: 3px;

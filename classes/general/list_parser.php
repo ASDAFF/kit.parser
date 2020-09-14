@@ -1,6 +1,6 @@
 <?
 IncludeModuleLangFile(__FILE__);
-Class ShsParserContentGeneral{
+Class KitParserContentGeneral{
     function CheckFields($arFields)
     {
         global $DB;
@@ -60,11 +60,11 @@ Class ShsParserContentGeneral{
         if(!$this->CheckFields($arFields))
             return false;
 
-        $strUpdate = $DB->PrepareUpdate("b_shs_parser", $arFields);
+        $strUpdate = $DB->PrepareUpdate("b_kit_parser", $arFields);
 
         if($strUpdate!="")
         {
-            $strSql = "UPDATE b_shs_parser SET ".$strUpdate." WHERE ID=".$ID;
+            $strSql = "UPDATE b_kit_parser SET ".$strUpdate." WHERE ID=".$ID;
             $arBinds = array();
 
             if(!$DB->QueryBind($strSql, $arBinds))
@@ -81,7 +81,7 @@ Class ShsParserContentGeneral{
         if(!$this->CheckFields($arFields))
             return false;
 
-        $ID = $DB->Add("b_shs_parser", $arFields);
+        $ID = $DB->Add("b_kit_parser", $arFields);
 
         return $ID;
     }
@@ -91,10 +91,10 @@ Class ShsParserContentGeneral{
         global $DB;
         CModule::IncludeModule("main");
         $ID = intval($ID);
-        $arAgent = CAgent::GetList(array(), array("NAME"=>"CShsParser::startAgent(".$ID.");"))->Fetch();
+        $arAgent = CAgent::GetList(array(), array("NAME"=>"CKitParser::startAgent(".$ID.");"))->Fetch();
         CAgent::Delete($arAgent["ID"]);
         $DB->StartTransaction();
-        $res = $DB->Query("DELETE FROM b_shs_parser WHERE ID='".$ID."'", false, "File: ".__FILE__."<br>Line: ".__LINE__);
+        $res = $DB->Query("DELETE FROM b_kit_parser WHERE ID='".$ID."'", false, "File: ".__FILE__."<br>Line: ".__LINE__);
 
         if($res)
             $DB->Commit();
@@ -108,7 +108,7 @@ Class ShsParserContentGeneral{
     {
         global $DB;
         $ID = intval($ID);
-        $strSql = "SELECT P.* FROM b_shs_parser P WHERE P.ID = '".$ID."'";
+        $strSql = "SELECT P.* FROM b_kit_parser P WHERE P.ID = '".$ID."'";
 
         return $DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
     }
@@ -117,7 +117,7 @@ Class ShsParserContentGeneral{
     {
         global $DB;
 
-        $strSql = "SELECT P.ID, P.NAME FROM b_shs_parser P ORDER BY ID DESC";
+        $strSql = "SELECT P.ID, P.NAME FROM b_kit_parser P ORDER BY ID DESC";
 
         return $DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
     }

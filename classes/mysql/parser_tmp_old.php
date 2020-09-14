@@ -3,7 +3,7 @@ use Bitrix\Main\Entity;
 use Bitrix\Main\Localization\Loc;
 Loc::loadMessages(__FILE__);
 
-class ShsParserTmpOldTable extends Entity\DataManager
+class KitParserTmpOldTable extends Entity\DataManager
 {
     public static function getFilePath()
     {
@@ -12,7 +12,7 @@ class ShsParserTmpOldTable extends Entity\DataManager
 
    public static function getTableName()
    {
-      return 'b_shs_parser_tmp_old';
+      return 'b_kit_parser_tmp_old';
    }
    
    public static function getMap()
@@ -37,13 +37,13 @@ class ShsParserTmpOldTable extends Entity\DataManager
 
 //    public static function add(array $arFields)
 //    {
-//        file_put_contents(dirname(__FILE__).'/log.log', 'ShsParserTmpOldTable -> add PARSER_ID = '.$arFields['PARSER_ID'].' PRODUCT_ID = '.$arFields['PRODUCT_ID']."\n", FILE_APPEND);
+//        file_put_contents(dirname(__FILE__).'/log.log', 'KitParserTmpOldTable -> add PARSER_ID = '.$arFields['PARSER_ID'].' PRODUCT_ID = '.$arFields['PRODUCT_ID']."\n", FILE_APPEND);
 //        parent::add($arFields);
 //    }
 //
 //    public static function Delete($id)
 //    {
-//        file_put_contents(dirname(__FILE__).'/log.log', 'ShsParserTmpOldTable -> Delete row ID = '.$id."\n", FILE_APPEND);
+//        file_put_contents(dirname(__FILE__).'/log.log', 'KitParserTmpOldTable -> Delete row ID = '.$id."\n", FILE_APPEND);
 //        parent::Delete($id);
 //    }
 }

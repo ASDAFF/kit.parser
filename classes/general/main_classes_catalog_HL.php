@@ -4,7 +4,7 @@ use Bitrix\Main\Entity;
 
 \Bitrix\Main\Loader::includeModule('highloadblock');  
 
-class SotbitHLCatalogParser extends SotbitXlsParser {
+class CollectedHLCatalogParser extends CollectedXlsParser {
   
     public function __construct()
     {
@@ -160,7 +160,7 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
             $countStep = $count;    
         }
             
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);    
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);
         
         if($count==0)
         {
@@ -172,7 +172,7 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
         {      
             $ci++;
             if($this->StepContinue($ci, $count)) continue;
-            if ($this->typeN == "xml") $debug_item = SotbitXmlParser::DEFAULT_DEBUG_ITEM;
+            if ($this->typeN == "xml") $debug_item = CollectedXmlParser::DEFAULT_DEBUG_ITEM;
             else $debug_item = self::DEFAULT_DEBUG_ITEM;
             if($i==$debug_item && $this->settings["catalog"]["mode"]=="debug") break;
             if($this->typeN=="catalog")
@@ -184,10 +184,10 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
                 $this->parseCatalogProductElementXmlHL($el);
             }
             $i++;
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".$i);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".$i);
             $this->CalculateStep($count); 
         }
-        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt"); 
+        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt");
     }
     
     protected function parseCatalogProductElementHL(&$el){
@@ -205,7 +205,7 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
         $this->parseCatalogMetaHL();
         $this->parseCatalogFirstUrlHL();   
 
-        $db_events = GetModuleEvents("shs.parser", "parserBeforeAddElementCatalog", true); //27.10.2015
+        $db_events = GetModuleEvents("kit.parser", "parserBeforeAddElementCatalog", true); //27.10.2015
         $error = false;
         foreach($db_events as $arEvent)
         {
@@ -219,11 +219,11 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
 
         if(!$error && !$error_isad) {
             $this->AddElementCatalogHL();   
-            foreach(GetModuleEvents("shs.parser", "parserAfterAddElementCatalog", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserAfterAddElementCatalog", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array(&$this, &$el));   
         }                                                                      
         /*if($this->settings['smart_log']['enabled']=='Y' && $this->elementID) {        
-            $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/result_id".$this->id.".txt");
+            $this->settings['smart_log']['result_id'] = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/result_id".$this->id.".txt");
             SmartLogs::saveNewValues($this->elementID, $this->settings["smart_log"], $this->arFields, isset($this->arPrice['PRICE'])?$this->arPrice['PRICE']:null, $this->arProduct);
         } */       
 
@@ -341,7 +341,7 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
                 {
                     $meta_text = pq($meta)->attr("content");
                     if(!$meta_text)$meta_text = pq($meta)->attr("value");
-                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) {
+                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) {
                         $meta_text = mb_convert_encoding($meta_text, LANG_CHARSET, "utf-8");
                     }
                     $this->arFields["PROPERTY_VALUES"][$this->meta_description] = strip_tags($meta_text);
@@ -349,7 +349,7 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
                 {
                     $meta_text = pq($meta)->attr("content");
                     if(!$meta_text)$meta_text = pq($meta)->attr("value");
-                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) {
+                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) {
                         $meta_text = mb_convert_encoding($meta_text, LANG_CHARSET, "utf-8");
                     }
                     $this->arFields["FIELDS"][$this->meta_keywords] = strip_tags($meta_text);
@@ -362,7 +362,7 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
         {
             $meta_title = pq($this->detailHtml["head:eq(0) title:eq(0)"])->text();
             $meta_title = strip_tags($meta_title);
-            if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) {
+            if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) {
                 $meta_title = mb_convert_encoding($meta_title, LANG_CHARSET, "utf-8");
             }
             $this->arFields["FIELDS"][$this->meta_title] = $meta_title;
@@ -371,7 +371,7 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
 
     protected function parserCatalogPreviewHL(&$el)
     {    
-        foreach(GetModuleEvents("shs.parser", "parserCatalogPreview", true) as $arEvent)
+        foreach(GetModuleEvents("kit.parser", "parserCatalogPreview", true) as $arEvent)
             ExecuteModuleEventEx($arEvent, array($this->id, &$el, &$this->arFields));
             
         if(!$this->parseCatalogUrlPreview($el)) return false;   
@@ -697,10 +697,10 @@ class SotbitHLCatalogParser extends SotbitXlsParser {
     {
         if($this->checkUniqHL() && !$this->isUpdate) return false;
         
-        foreach(GetModuleEvents("shs.parser", "parserCatalogDetailBefore", true) as $arEvent)
+        foreach(GetModuleEvents("kit.parser", "parserCatalogDetailBefore", true) as $arEvent)
             ExecuteModuleEventEx($arEvent, array($this->id, &$el, &$this->arFields));
         $el = $this->parserCatalogDetailPage();
-        foreach(GetModuleEvents("shs.parser", "parserCatalogDetail", true) as $arEvent)
+        foreach(GetModuleEvents("kit.parser", "parserCatalogDetail", true) as $arEvent)
             ExecuteModuleEventEx($arEvent, array($this->id, &$el, &$this->arFields));
         
         $this->parseCatalogPropertiesHL($el);  

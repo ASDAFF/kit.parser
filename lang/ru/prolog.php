@@ -1,3 +1,3 @@
 <?
-$MESS ['shs_parser_prolog_title'] = "Парсер контента";
+$MESS ['kit_parser_prolog_title'] = "Парсер контента";
 ?>

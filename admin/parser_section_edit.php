@@ -5,12 +5,12 @@ use Bitrix\Main\Entity\ExpressionField;
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_admin.php');
 
-$module_id = "shs.parser";
+$module_id = "kit.parser";
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$module_id."/include.php");
 IncludeModuleLangFile(__FILE__);
 IncludeModuleLangFile($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/interface/admin_lib.php");
 
-CModule::IncludeModule('shs.parser');
+CModule::IncludeModule('kit.parser');
 $parentID = 0;
 
 if(isset($_REQUEST["parent"]) && $_REQUEST["parent"])
@@ -37,7 +37,7 @@ if($REQUEST_METHOD == "POST" && ($save!="" || $apply!="") && $POST_RIGHT=="W" &&
     //die("SSS");
     if($ID>0)
     {
-        $result = \Shs\Parser\ParserSectionTable::Update($ID, $arFields);
+        $result = \Kit\Parser\ParserSectionTable::Update($ID, $arFields);
         if (!$result->isSuccess())
         {
             $errors = $result->getErrorMessages();
@@ -48,7 +48,7 @@ if($REQUEST_METHOD == "POST" && ($save!="" || $apply!="") && $POST_RIGHT=="W" &&
     else
     {
         $arFields["DATE_CREATE"] = new Bitrix\Main\Type\DateTime(date('Y-m-d H:i:s',time()),'Y-m-d H:i:s');
-        $result = \Shs\Parser\ParserSectionTable::add($arFields);
+        $result = \Kit\Parser\ParserSectionTable::add($arFields);
 
         if ($result->isSuccess())
         {
@@ -87,9 +87,9 @@ if(isset($_REQUEST["ID"]) || $copy)
 {
     $ID = (int)$_REQUEST["ID"];
     if($copy)
-        $arDataTable = \Shs\Parser\ParserSectionTable::GetByID($copy)->Fetch();
+        $arDataTable = \Kit\Parser\ParserSectionTable::GetByID($copy)->Fetch();
     else
-        $arDataTable = \Shs\Parser\ParserSectionTable::GetByID($ID)->Fetch();
+        $arDataTable = \Kit\Parser\ParserSectionTable::GetByID($ID)->Fetch();
 
 }
 
@@ -98,9 +98,9 @@ if(isset($_REQUEST["ID"]) || $copy)
 $aTabs = array(
         array(
             "DIV" => "edit1",
-            "TAB" => GetMessage("shs_parser_category_name"),
-            "ICON" => "shs_parser_category_icon",
-            "TITLE" => GetMessage("shs_parser_category_name")
+            "TAB" => GetMessage("kit_parser_category_name"),
+            "ICON" => "kit_parser_category_icon",
+            "TITLE" => GetMessage("kit_parser_category_name")
         ),
 );
 
@@ -138,7 +138,7 @@ if($ID>0)
 $context = new CAdminContextMenu($aMenu);
 $context->Show();
 
-$rsSection = \Shs\Parser\ParserSectionTable::getList(array(
+$rsSection = \Kit\Parser\ParserSectionTable::getList(array(
     'limit' =>null,
     'offset' => null,
     'select' => array("*"),
@@ -156,7 +156,7 @@ while($arSection = $rsSection->Fetch())
 $tabControl = new CAdminTabControl("tabControl", $aTabs);
 
 ?>
-<form method="POST" id="shs-parser" Action="<?echo $APPLICATION->GetCurPage()?>" ENCTYPE="multipart/form-data" name="post_form">
+<form method="POST" id="kit-parser" Action="<?echo $APPLICATION->GetCurPage()?>" ENCTYPE="multipart/form-data" name="post_form">
 <?
 $tabControl->Begin();
 
@@ -207,7 +207,7 @@ $tabControl->Buttons(
     )
 );
 
-$APPLICATION->SetTitle(($ID>0? GetMessage("shs_parser_section_title_edit") : GetMessage("shs_parser_section_title_add")));
+$APPLICATION->SetTitle(($ID>0? GetMessage("kit_parser_section_title_edit") : GetMessage("kit_parser_section_title_add")));
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_admin.php");
 ?>

@@ -3,7 +3,7 @@
  * Copyright (c) 11/9/2020 Created By/Edited By ASDAFF asdaff.asad@yandex.ru
  */
 
-class SotbitContentParser{
+class CollectedContentParser{
     
     protected $id = false;
     protected $rss;
@@ -48,41 +48,41 @@ class SotbitContentParser{
     const DEFAULT_DEBUG_ITEM = 3;
     public function __construct()
     {
-        global $zis, $shs_ID, $shs_TYPE, $shs_ACTIVE, $shs_IBLOCK_ID, $shs_RSS, $shs_SECTION_ID, $shs_SELECTOR, $shs_ENCODING, $shs_PREVIEW_DELETE_TAG, $shs_PREVIEW_TEXT_TYPE, $shs_DETAIL_TEXT_TYPE, $shs_BOOL_PREVIEW_DELETE_TAG,$shs_PREVIEW_FIRST_IMG, $shs_PREVIEW_SAVE_IMG, $shs_DETAIL_DELETE_TAG, $shs_BOOL_DETAIL_DELETE_TAG,$shs_DETAIL_FIRST_IMG, $shs_DETAIL_SAVE_IMG, $shs_PREVIEW_DELETE_ELEMENT, $shs_DETAIL_DELETE_ELEMENT, $shs_PREVIEW_DELETE_ATTRIBUTE, $shs_DETAIL_DELETE_ATTRIBUTE, $shs_INDEX_ELEMENT, $shs_CODE_ELEMENT, $shs_RESIZE_IMAGE, $shs_META_DESCRIPTION, $shs_META_KEYWORDS, $shs_ACTIVE_ELEMENT, $shs_FIRST_TITLE, $shs_DATE_PUBLIC, $shs_FIRST_URL, $shs_DATE_ACTIVE, $shs_META_TITLE, $shs_SETTINGS;
-        $this->id = $shs_ID;
-        $this->type = $shs_TYPE;
-        $this->rss = $shs_RSS;
-        $this->active = $shs_ACTIVE;
-        $this->iblock_id = $shs_IBLOCK_ID;
-        $this->section_id = $shs_SECTION_ID;
-        $this->detail_dom = $shs_SELECTOR;
-        $this->first_url = trim($shs_FIRST_URL);
-        $this->encoding = $shs_ENCODING;
-        $this->preview_text_type = $shs_PREVIEW_TEXT_TYPE;
-        $this->detail_text_type = $shs_DETAIL_TEXT_TYPE;
-        $this->preview_delete_tag = $shs_PREVIEW_DELETE_TAG;
-        $this->detail_delete_tag = $shs_DETAIL_DELETE_TAG;
-        $this->bool_preview_delete_tag = $shs_BOOL_PREVIEW_DELETE_TAG;
-        $this->bool_detail_delete_tag = $shs_BOOL_DETAIL_DELETE_TAG;
-        $this->preview_first_img = $shs_PREVIEW_FIRST_IMG;
-        $this->detail_first_img = $shs_DETAIL_FIRST_IMG;
-        $this->preview_save_img = $shs_PREVIEW_SAVE_IMG;
-        $this->detail_save_img = $shs_DETAIL_SAVE_IMG;
-        $this->preview_delete_element = $shs_PREVIEW_DELETE_ELEMENT;
-        $this->detail_delete_element = $shs_DETAIL_DELETE_ELEMENT;
-        $this->preview_delete_attribute = $shs_PREVIEW_DELETE_ATTRIBUTE;
-        $this->detail_delete_attribute = $shs_DETAIL_DELETE_ATTRIBUTE;
-        $this->index_element = $shs_INDEX_ELEMENT;
-        $this->code_element = $shs_CODE_ELEMENT;
-        $this->resize_image = $shs_RESIZE_IMAGE;
-        $this->meta_title = $shs_META_TITLE;
-        $this->meta_description = $shs_META_DESCRIPTION;
-        $this->meta_keywords = $shs_META_KEYWORDS;
-        $this->active_element = $shs_ACTIVE_ELEMENT;
-        $this->first_title = $shs_FIRST_TITLE;
-        $this->date_public = $shs_DATE_PUBLIC;
-        $this->date_active = $shs_DATE_ACTIVE;
-        $this->settings = unserialize(base64_decode($shs_SETTINGS));
+        global $zis, $kit_ID, $kit_TYPE, $kit_ACTIVE, $kit_IBLOCK_ID, $kit_RSS, $kit_SECTION_ID, $kit_SELECTOR, $kit_ENCODING, $kit_PREVIEW_DELETE_TAG, $kit_PREVIEW_TEXT_TYPE, $kit_DETAIL_TEXT_TYPE, $kit_BOOL_PREVIEW_DELETE_TAG,$kit_PREVIEW_FIRST_IMG, $kit_PREVIEW_SAVE_IMG, $kit_DETAIL_DELETE_TAG, $kit_BOOL_DETAIL_DELETE_TAG,$kit_DETAIL_FIRST_IMG, $kit_DETAIL_SAVE_IMG, $kit_PREVIEW_DELETE_ELEMENT, $kit_DETAIL_DELETE_ELEMENT, $kit_PREVIEW_DELETE_ATTRIBUTE, $kit_DETAIL_DELETE_ATTRIBUTE, $kit_INDEX_ELEMENT, $kit_CODE_ELEMENT, $kit_RESIZE_IMAGE, $kit_META_DESCRIPTION, $kit_META_KEYWORDS, $kit_ACTIVE_ELEMENT, $kit_FIRST_TITLE, $kit_DATE_PUBLIC, $kit_FIRST_URL, $kit_DATE_ACTIVE, $kit_META_TITLE, $kit_SETTINGS;
+        $this->id = $kit_ID;
+        $this->type = $kit_TYPE;
+        $this->rss = $kit_RSS;
+        $this->active = $kit_ACTIVE;
+        $this->iblock_id = $kit_IBLOCK_ID;
+        $this->section_id = $kit_SECTION_ID;
+        $this->detail_dom = $kit_SELECTOR;
+        $this->first_url = trim($kit_FIRST_URL);
+        $this->encoding = $kit_ENCODING;
+        $this->preview_text_type = $kit_PREVIEW_TEXT_TYPE;
+        $this->detail_text_type = $kit_DETAIL_TEXT_TYPE;
+        $this->preview_delete_tag = $kit_PREVIEW_DELETE_TAG;
+        $this->detail_delete_tag = $kit_DETAIL_DELETE_TAG;
+        $this->bool_preview_delete_tag = $kit_BOOL_PREVIEW_DELETE_TAG;
+        $this->bool_detail_delete_tag = $kit_BOOL_DETAIL_DELETE_TAG;
+        $this->preview_first_img = $kit_PREVIEW_FIRST_IMG;
+        $this->detail_first_img = $kit_DETAIL_FIRST_IMG;
+        $this->preview_save_img = $kit_PREVIEW_SAVE_IMG;
+        $this->detail_save_img = $kit_DETAIL_SAVE_IMG;
+        $this->preview_delete_element = $kit_PREVIEW_DELETE_ELEMENT;
+        $this->detail_delete_element = $kit_DETAIL_DELETE_ELEMENT;
+        $this->preview_delete_attribute = $kit_PREVIEW_DELETE_ATTRIBUTE;
+        $this->detail_delete_attribute = $kit_DETAIL_DELETE_ATTRIBUTE;
+        $this->index_element = $kit_INDEX_ELEMENT;
+        $this->code_element = $kit_CODE_ELEMENT;
+        $this->resize_image = $kit_RESIZE_IMAGE;
+        $this->meta_title = $kit_META_TITLE;
+        $this->meta_description = $kit_META_DESCRIPTION;
+        $this->meta_keywords = $kit_META_KEYWORDS;
+        $this->active_element = $kit_ACTIVE_ELEMENT;
+        $this->first_title = $kit_FIRST_TITLE;
+        $this->date_public = $kit_DATE_PUBLIC;
+        $this->date_active = $kit_DATE_ACTIVE;
+        $this->settings = unserialize(base64_decode($kit_SETTINGS));
         $this->header_url = "";
         $this->sleep = (int)$this->settings[$this->type]["sleep"];
         $this->proxy = (int)$this->settings[$this->type]["proxy"];
@@ -106,7 +106,7 @@ class SotbitContentParser{
           if(!$agent)CAdminMessage::ShowMessage(GetMessage("parser_active_no"));
           return $result;
         }
-        $parser = new ShsParserContent();
+        $parser = new KitParserContent();
         $now = time()+CTimeZone::GetOffset();
         $arFieldsTime['START_LAST_TIME_X'] = date($DB->DateFormatToPHP(FORMAT_DATETIME), $now);
         $parser->Update($this->id, $arFieldsTime);
@@ -232,7 +232,7 @@ class SotbitContentParser{
     
     private function setContentIblock($arContent=array(), $iblock_id=false, $section_id=false, $detail_dom="", $encoding="utf-8"){
         $first = false;
-        global $shs_preview, $shs_first, $DB;
+        global $kit_preview, $kit_first, $DB;
         set_time_limit(0);
         /*if($this->first_url)
         {
@@ -241,7 +241,7 @@ class SotbitContentParser{
         else */
         $count = count($arContent['item']);
         $ci = 0;
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $count."|".$ci);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $count."|".$ci);
         foreach($arContent['item'] as $i=>$item){
 
             //if($this->sleep && $this->sleep>0)sleep($this->sleep);
@@ -259,12 +259,12 @@ class SotbitContentParser{
             $data = $fileHtml->file_get_html($item['link'], $proxy, $this->auth);
             $this->header_url = $fileHtml->headerUrl;
             if($this->first_url && strpos($this->header_url, $this->first_url)===false && strpos($item['link'], $this->first_url)==false) continue;
-            $shs_first = true;
+            $kit_first = true;
             //preg_replace("/\<meta\s+charser=[\"|']{0,1}.+[\"|']{0,1}\s*\/{0,1}\>/ig")
             //print $data;
             $this->DeleteCharsetHtml5($data);
             $html = phpQuery::newDocument($data, "text/html;charset=".LANG_CHARSET);
-            $shs_first = false;
+            $kit_first = false;
             $this->first_title_text = $this->header_url;
 
             $this->getUrlSite();
@@ -274,16 +274,16 @@ class SotbitContentParser{
             $DETAIL_TEXT = $this->parserSelector($html, htmlspecialchars_decode(trim($detail_dom)));
 
             $el = new CIBlockElement;
-            $shs_preview = true;
+            $kit_preview = true;
             if($this->preview_first_img=="Y") $PREVIEW_IMG = $this->parserFirstImg(phpQuery::newDocument($item['description']), "text/html;charset=".LANG_CHARSET);
-            $shs_preview = false;
+            $kit_preview = false;
             if($this->detail_first_img=="Y") $DETAIL_IMG = $this->parserFirstImg(phpQuery::newDocument($DETAIL_TEXT), "text/html;charset=".LANG_CHARSET);
             
             $this->preview_delete_element = trim($this->preview_delete_element);
             $this->detail_delete_element = trim($this->detail_delete_element);
-            $shs_preview = true;
+            $kit_preview = true;
             $preview_html = phpQuery::newDocument($item['description'], "text/html;charset=".LANG_CHARSET);
-            $shs_preview = false;
+            $kit_preview = false;
             $detail_html = phpQuery::newDocument($DETAIL_TEXT, "text/html;charset=".LANG_CHARSET);
             if(!empty($this->preview_delete_element)){
                 $preview_html = $this->deleteElementStart($preview_html, htmlspecialchars_decode($this->preview_delete_element));
@@ -377,13 +377,13 @@ class SotbitContentParser{
                 unset($detail_html);
             }
             unset($html);
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $count."|".$ci);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $count."|".$ci);
             unset($fileHtml);
             if(self::TEST)break;
             if($this->sleep && $this->sleep>0)sleep($this->sleep);
 
         }
-        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt");
+        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt");
         if($elem){
             $message = implode(',', $elem);
             $message = GetMessage("parser_pars_el_ok").' '.$message.' '.GetMessage("parser_pars_create_ok");
@@ -610,13 +610,13 @@ class SotbitContentParser{
     
     protected function DeleteLog()
     {
-        if($this->agent)unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog".$this->id.".txt");    
+        if($this->agent)unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog".$this->id.".txt");    
     }
     
     protected function SaveLog()
     {
         if($this->settings["catalog"]["log"]=="Y" && isset($this->errors) && count($this->errors)>0)
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_log_".$this->id.".txt", print_r($this->errors, true), FILE_APPEND);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_log_".$this->id.".txt", print_r($this->errors, true), FILE_APPEND);
             
         if(!isset($this->errors)) $this->errors = array();
         $this->debugErrors = array_merge($this->debugErrors, $this->errors);
@@ -837,8 +837,8 @@ class SotbitContentParser{
             if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && isset($this->errors) && count($this->errors)>0)
             {
                 $this->SaveLog();
-                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
-                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_copy_page".$this->id.".txt");
+                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
+                unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_copy_page".$this->id.".txt");
                 return false;    
             }
         
@@ -859,8 +859,8 @@ class SotbitContentParser{
             $this->SaveCurrentPage($this->pagenavigation);
             if($this->stepStart)
             {
-                if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"))
-                    unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
+                if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"))
+                    unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
                 $this->DeleteCopyPage();
             } 
             if((!$this->CheckOnePageNavigation() && $this->agent) || (!$this->CheckOnePageNavigation() && !$this->agent && $this->settings["catalog"]["mode"]=="debug"))$this->parseCatalogPages();
@@ -877,12 +877,12 @@ class SotbitContentParser{
     {
         if($this->settings["catalog"]["mode"]=="debug" || $this->agent || $_GET["begin"]) return true;
         $prevPage = $prevElement = $currentPage = 0;
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_page".$this->id.".txt"))
-            $prevPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_page".$this->id.".txt");
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_element".$this->id.".txt"))
-            $prevElement = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_element".$this->id.".txt");
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt"))
-            $currentPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_page".$this->id.".txt"))
+            $prevPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_page".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_element".$this->id.".txt"))
+            $prevElement = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_element".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt"))
+            $currentPage = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt");
         
         if($prevPage)
         {
@@ -1030,7 +1030,7 @@ class SotbitContentParser{
             $countStep = $count;    
         }
             
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);    
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".$ci);    
         
         if($count==0)
         {
@@ -1047,11 +1047,11 @@ class SotbitContentParser{
             $this->parseCatalogProductElement($el);
             
             $i++;
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt", $countStep."|".$i);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt", $countStep."|".$i);
             $this->CalculateStep($count);
             
         }
-        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt");
+        unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt");
     }
 
     protected function parseCatalogProductElement(&$el)
@@ -1132,8 +1132,8 @@ class SotbitContentParser{
         if($step>$count && $count>0) return false;
         $file = 0;
         
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"))
-            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"))
+            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
         if($file)
         {
             $arFile = explode("|", $file);
@@ -1158,8 +1158,8 @@ class SotbitContentParser{
             return true;    
         }
         $file = 0;
-        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"))  
-            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
+        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"))  
+            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
         if($file)
         {
             $arFile = explode("|", $file);
@@ -1176,7 +1176,7 @@ class SotbitContentParser{
          
         if($count==0) return true;
         $currentElement++;
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt", $countElement."|".$currentElement);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt", $countElement."|".$currentElement);
         if($currentElement%$step==0 && !$this->stepStart)
         {
             $this->clearFields();
@@ -1189,8 +1189,8 @@ class SotbitContentParser{
     protected function SetCatalogElementsResult($page=false)
     {
         $file = 0;
-        if(file_exists(($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt")))
-            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt");
+        if(file_exists(($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt")))
+            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt");
         
         if($file)
         {
@@ -1217,14 +1217,14 @@ class SotbitContentParser{
             $this->SavePrevPageDetail($this->arFields["LINK"]);    
         }
         if(isset($this->errors) && count($this->errors)>0)$allError = $allError+count($this->errors);
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt", "|".$countPage."|".$ciElement."|".$errorElement."|".$allError);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt", "|".$countPage."|".$ciElement."|".$errorElement."|".$allError);
     }
     
     protected function SaveCatalogError()
     {
         $file = 0;
-        if(file_exists(($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt")))
-            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt");
+        if(file_exists(($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt")))
+            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt");
         
         if($file)
         {
@@ -1245,7 +1245,7 @@ class SotbitContentParser{
             if(isset($this->errors) && count($this->errors))$errorElement++;
         }
         if(isset($this->errors) && count($this->errors)>0)$allError = $allError+count($this->errors);
-        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt", "|".$countPage."|".$ciElement."|".$errorElement."|".$allError);    
+        file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt", "|".$countPage."|".$ciElement."|".$errorElement."|".$allError);    
     }
 
     protected function parseCatalogAllFields()
@@ -1934,7 +1934,7 @@ class SotbitContentParser{
                 {
                     $meta_text = pq($meta)->attr("content");
                     if(!$meta_text)$meta_text = pq($meta)->attr("value");
-                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) {
+                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) {
                         $meta_text = mb_convert_encoding($meta_text, LANG_CHARSET, "utf-8");
                     }
                     $this->arFields["PROPERTY_VALUES"][$this->meta_description] = strip_tags($meta_text);
@@ -1942,7 +1942,7 @@ class SotbitContentParser{
                 {
                     $meta_text = pq($meta)->attr("content");
                     if(!$meta_text)$meta_text = pq($meta)->attr("value");
-                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) {
+                    if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) {
                         $meta_text = mb_convert_encoding($meta_text, LANG_CHARSET, "utf-8");
                     }
                     $this->arFields["PROPERTY_VALUES"][$this->meta_keywords] = strip_tags($meta_text);
@@ -1955,7 +1955,7 @@ class SotbitContentParser{
         {
             $meta_title = pq($this->detailHtml["head:eq(0) title:eq(0)"])->text();
             $meta_title = strip_tags($meta_title);
-            if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) {
+            if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) {
                 $meta_title = mb_convert_encoding($meta_title, LANG_CHARSET, "utf-8");
             }
             $this->arFields["PROPERTY_VALUES"][$this->meta_title] = $meta_title;
@@ -2473,7 +2473,7 @@ class SotbitContentParser{
 
     protected function parseCatalogSaveImgServer($img, $src){
         $arImg = CFile::MakeFileArray($src);
-        $fid = CFile::SaveFile($arImg, "shs.parser");
+        $fid = CFile::SaveFile($arImg, "kit.parser");
         pq($img)->attr('src', CFile::GetPath($fid));
     }
 
@@ -2547,25 +2547,25 @@ class SotbitContentParser{
     {
         if(!$this->agent && $this->settings["catalog"]["mode"]!="debug")
         {
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_page".$this->id.".txt", $this->page);
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_url".$this->id.".txt", $this->fileHtml->headerUrl);   
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_page".$this->id.".txt", $this->page);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_url".$this->id.".txt", $this->fileHtml->headerUrl);   
         }     
     }
     
     protected function DeleteCopyPage()
     {
-        if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_page".$this->id.".txt"))
+        if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_page".$this->id.".txt"))
         {
-            unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_page".$this->id.".txt");
-            unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_url".$this->id.".txt"); 
+            unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_page".$this->id.".txt");
+            unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_url".$this->id.".txt"); 
         }     
     }
     
     protected function GetCopyPage()
     {
-        if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_page".$this->id.".txt"))
+        if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_page".$this->id.".txt"))
         {
-            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_page".$this->id.".txt");
+            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_page".$this->id.".txt");
             $this->httpCode = 200;
             return $file;  
         }
@@ -2575,9 +2575,9 @@ class SotbitContentParser{
     
     protected function GetCopyUrl()
     {
-        if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_url".$this->id.".txt"))
+        if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_url".$this->id.".txt"))
         {
-            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_copy_url".$this->id.".txt");
+            $file = file_get_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_copy_url".$this->id.".txt");
             return $file;  
         }
         $this->httpCode = 0;
@@ -2663,8 +2663,8 @@ class SotbitContentParser{
                     {
                         $this->stepStart = 1;
                         $this->SavePrevPage($page);
-                        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"))
-                            unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt");
+                        if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"))
+                            unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt");
                         $this->DeleteCopyPage();
                         $this->activeCurrentPage++;
                         $this->SetCatalogElementsResult($this->activeCurrentPage);
@@ -2701,7 +2701,7 @@ class SotbitContentParser{
     {
         if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && $this->stepStart)
         {
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_page".$this->id.".txt", $page."|", FILE_APPEND);  
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_page".$this->id.".txt", $page."|", FILE_APPEND);  
         }  
     }
     
@@ -2709,7 +2709,7 @@ class SotbitContentParser{
     {
         if(!$this->agent && $this->settings["catalog"]["mode"]!="debug")
         {
-            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_element".$this->id.".txt", $page."|", FILE_APPEND);  
+            file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_element".$this->id.".txt", $page."|", FILE_APPEND);  
         }  
     }
     
@@ -2718,9 +2718,9 @@ class SotbitContentParser{
         if(!$this->agent && $this->settings["catalog"]["mode"]!="debug" && $this->stepStart)
         {    
             $page = implode("|", $arPage);
-            if(!empty($arPage))file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt", $page."|"); 
-            elseif($this->IsEndSectionUrl()) file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt", "");
-            else file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt", "0");   
+            if(!empty($arPage))file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt", $page."|"); 
+            elseif($this->IsEndSectionUrl()) file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt", "");
+            else file_put_contents($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt", "0");   
         }
             
     }
@@ -2729,14 +2729,14 @@ class SotbitContentParser{
     {
         if(!$this->agent && $_GET["begin"])
         {
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_page".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_page".$this->id.".txt");
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_element".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_prev_element".$this->id.".txt");
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_parser_current_page".$this->id.".txt"); 
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog".$this->id.".txt");
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_log_".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/catalog_log_".$this->id.".txt");
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser".$this->id.".txt");  
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_catalog_step".$this->id.".txt"); 
-            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_copy_page".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/count_parser_copy_page".$this->id.".txt"); 
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_page".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_page".$this->id.".txt");
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_element".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_prev_element".$this->id.".txt");
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_parser_current_page".$this->id.".txt"); 
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog".$this->id.".txt");
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_log_".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/catalog_log_".$this->id.".txt");
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser".$this->id.".txt");  
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_catalog_step".$this->id.".txt"); 
+            if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_copy_page".$this->id.".txt"))unlink($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/count_parser_copy_page".$this->id.".txt"); 
         }
            
     }
@@ -2899,13 +2899,13 @@ class SotbitContentParser{
     }
     
     public function parserSelector(&$html, $selector, $nextSelector=0){
-        global $shs_DOC_ENCODING;
+        global $kit_DOC_ENCODING;
         phpQuery::selectDocument($html);
         if($nextSelector==0 && $this->meta_description!="N")foreach($html['meta'] as $meta){
             if(strtolower(pq($meta)->attr("name"))=="description"){
                 $this->meta_description_text = pq($meta)->attr("content");
                 if(!$this->meta_description_text)$this->meta_description_text = pq($meta)->attr("value");
-                if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) $this->meta_description_text = mb_convert_encoding($this->meta_description_text, LANG_CHARSET, "utf-8");
+                if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) $this->meta_description_text = mb_convert_encoding($this->meta_description_text, LANG_CHARSET, "utf-8");
                 if($this->meta_description_text)
                 {
                     $this->meta_description_text = strip_tags($this->meta_description_text);
@@ -2918,7 +2918,7 @@ class SotbitContentParser{
             if(strtolower(pq($meta)->attr("name"))=="keywords"){
                 $this->meta_keywords_text = pq($meta)->attr("content");
                 if(!$this->meta_keywords_text)$this->meta_keywords_text = pq($meta)->attr("value");
-                if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) $this->meta_keywords_text = mb_convert_encoding($this->meta_keywords_text, LANG_CHARSET, "utf-8");
+                if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) $this->meta_keywords_text = mb_convert_encoding($this->meta_keywords_text, LANG_CHARSET, "utf-8");
                 if($this->meta_keywords_text)
                 {
                     $this->meta_keywords_text = strip_tags($this->meta_keywords_text);
@@ -2931,11 +2931,11 @@ class SotbitContentParser{
         {
             $this->meta_title_text = pq($html['title'])->text();
             $this->meta_title_text = strip_tags($this->meta_title_text);
-            //print_r(array(strtoupper(LANG_CHARSET), strtoupper($shs_DOC_ENCODING)));
-            if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($shs_DOC_ENCODING)*/) {
-                //$this->meta_title_text = mb_convert_encoding($this->meta_title_text, LANG_CHARSET, $shs_DOC_ENCODING);
+            //print_r(array(strtoupper(LANG_CHARSET), strtoupper($kit_DOC_ENCODING)));
+            if(strtoupper(LANG_CHARSET)=="WINDOWS-1251"/* && strtoupper(LANG_CHARSET)!=strtoupper($kit_DOC_ENCODING)*/) {
+                //$this->meta_title_text = mb_convert_encoding($this->meta_title_text, LANG_CHARSET, $kit_DOC_ENCODING);
                 $this->meta_title_text = mb_convert_encoding($this->meta_title_text, LANG_CHARSET, "utf-8");
-                //print_r(array(strtoupper(LANG_CHARSET), strtoupper($shs_DOC_ENCODING)));
+                //print_r(array(strtoupper(LANG_CHARSET), strtoupper($kit_DOC_ENCODING)));
             }
         }
 
@@ -2991,7 +2991,7 @@ class SotbitContentParser{
     public function saveImgServer($html){
         foreach($html["img"] as $img){
             $arImg = CFile::MakeFileArray(pq($img)->attr("src"));
-            $fid = CFile::SaveFile($arImg, "shs.parser");
+            $fid = CFile::SaveFile($arImg, "kit.parser");
             $img->setAttribute('src', CFile::GetPath($fid));
         }
         return $html->htmlOuter();

@@ -1,10 +1,14 @@
 <?
+/**
+ * Copyright (c) 12/9/2020 Created By/Edited By ASDAFF asdaff.asad@yandex.ru
+ */
+
 use Bitrix\Main\Loader;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\ExpressionField;
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/include.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/prolog.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/include.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/prolog.php");
 
 
 
@@ -12,7 +16,7 @@ if(!CModule::IncludeModule('iblock')) return false;
 IncludeModuleLangFile(__FILE__);
 
 
-$POST_RIGHT = $APPLICATION->GetGroupRight("shs.parser");
+$POST_RIGHT = $APPLICATION->GetGroupRight("kit.parser");
 if($POST_RIGHT=="D")
     $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
@@ -66,12 +70,12 @@ $lAdmin->InitFilter($FilterArr);
 
 if (CheckFilter())
 {
-    $results = $DB->Query("SELECT `ID` FROM `b_shs_parser_section`");
+    $results = $DB->Query("SELECT `ID` FROM `b_kit_parser_section`");
     while($row = $results->Fetch()) $SECTION_ID_LIST[] = (int)$row['ID'];
     if(is_array($SECTION_ID_LIST))
-        $DB->Query('UPDATE `b_shs_parser` SET `CATEGORY_ID` = 0 WHERE `CATEGORY_ID` NOT IN (' . implode(',', array_map('intval', $SECTION_ID_LIST)) . ')'); 
+        $DB->Query('UPDATE `b_kit_parser` SET `CATEGORY_ID` = 0 WHERE `CATEGORY_ID` NOT IN (' . implode(',', array_map('intval', $SECTION_ID_LIST)) . ')');
     else 
-        $DB->Query('UPDATE `b_shs_parser` SET `CATEGORY_ID` = 0 WHERE `CATEGORY_ID`<>0'); 
+        $DB->Query('UPDATE `b_kit_parser` SET `CATEGORY_ID` = 0 WHERE `CATEGORY_ID`<>0');
 
     $arFilter = array(
         "ID" => ($find!="" && $find_type == "id"? $find:$find_id),
@@ -90,7 +94,7 @@ if (CheckFilter())
     );
 }
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shs.parser/classes/mysql/list_parser.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/kit.parser/classes/mysql/list_parser.php");
 
 if($lAdmin->EditAction() && $POST_RIGHT=="W")
 {
@@ -100,7 +104,7 @@ if($lAdmin->EditAction() && $POST_RIGHT=="W")
             continue;
         $DB->StartTransaction();
         $ID = IntVal($ID);
-        $ob = new ShsParserContent;
+        $ob = new KitParserContent;
         if(!$ob->Update($ID, $arFields))
         {
             $lAdmin->AddUpdateError(GetMessage("parser_save_err").$ID.": ".$ob->LAST_ERROR, $ID);
@@ -114,7 +118,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
 {
     if($_REQUEST['action_target']=='selected')
     {
-        $cData = new ShsParserContent;
+        $cData = new KitParserContent;
         //$rsData = $cData->GetList(array($by=>$order), $arFilter);
         $rsData = $cData->GetMixedList(array($by=>$order), $arFilter);
         while($arRes = $rsData->Fetch())
@@ -135,7 +139,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
             $DB->StartTransaction();
             if($TYPE=="P")
             {
-                if(!ShsParserContent::Delete($ID))
+                if(!KitParserContent::Delete($ID))
                 {
                     $DB->Rollback();
                     $lAdmin->AddGroupError(GetMessage("parser_del_err"), $ID);
@@ -143,7 +147,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
             }
             if($TYPE=="S")
             {
-                if(!\Shs\Parser\ParserSectionTable::Delete($ID))
+                if(!\Kit\Parser\ParserSectionTable::Delete($ID))
                 {
                     $DB->Rollback();
                     $lAdmin->AddGroupError(GetMessage("parser_del_err"), $ID);
@@ -154,7 +158,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
             break;
         case "activate":
         case "deactivate":
-            $cData = new ShsParserContent;
+            $cData = new KitParserContent;
             if($TYPE=="P" && ($rsData = $cData->GetByID($ID)) && ($arFields = $rsData->Fetch()))
             {
                 $arFields["ACTIVE"]=($_REQUEST['action']=="activate"?"Y":"N");
@@ -167,7 +171,7 @@ if(($arID = $lAdmin->GroupAction()) && $POST_RIGHT=="W")
             }elseif($TYPE=="S")
             {
                 $arFields["ACTIVE"]=($_REQUEST['action']=="activate"?"Y":"N");
-                if(!\Shs\Parser\ParserSectionTable::Update($ID, $arFields))
+                if(!\Kit\Parser\ParserSectionTable::Update($ID, $arFields))
                     $lAdmin->AddGroupError(GetMessage("parser_save_error").$cData->LAST_ERROR, $ID);
             }
             else
@@ -253,7 +257,7 @@ $lAdmin->AddHeaders(array(
     ),
 ));
 
-$cData = new ShsParserContent;
+$cData = new KitParserContent;
 //$rsData = $cData->GetList(array($by=>$order), $arFilter);
 //printr($arFilter);
 $show = "all";
@@ -288,7 +292,7 @@ $arShowSP['REFERENCE_ID'] = array("tree", "all", "section", "parser");
 
 while($arRes = $rsData->NavNext(true, "f_")):
     $startAgent = false;
-    if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/shs.parser/include/startAgent".$f_ID.".txt"))
+    if(file_exists($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/kit.parser/include/startAgent".$f_ID.".txt"))
         $startAgent = true;
         
     $row =& $lAdmin->AddRow($f_T.$f_ID, $arRes);
@@ -390,20 +394,20 @@ $lAdmin->AddFooter(
     )
 );
 $lAdmin->AddGroupActionTable(Array(
-    "delete"=>GetMessage("MAIN_ADMIN_LIST_DELETE"), // ??????? ????????? ????????
-    "activate"=>GetMessage("MAIN_ADMIN_LIST_ACTIVATE"), // ???????????? ????????? ????????
-    "deactivate"=>GetMessage("MAIN_ADMIN_LIST_DEACTIVATE"), // ?????????????? ????????? ????????
+    "delete"=>GetMessage("MAIN_ADMIN_LIST_DELETE"), 
+    "activate"=>GetMessage("MAIN_ADMIN_LIST_ACTIVATE"), 
+    "deactivate"=>GetMessage("MAIN_ADMIN_LIST_DEACTIVATE"), 
     ));
 
 $aContext = array(
     array(
-        "TEXT"=>GetMessage("SHS_PARSER_MAIN_ADD"),
+        "TEXT"=>GetMessage("KIT_PARSER_MAIN_ADD"),
         "LINK"=>"parser_edit.php?parent=".$parentID."&lang=".LANG,
         "TITLE"=>GetMessage("PARSER_ADD_TITLE"),
         "ICON"=>"btn_new",
     ),
     array(
-        "TEXT"=>GetMessage("SHS_PARSER_SECTION_MAIN_ADD"),
+        "TEXT"=>GetMessage("KIT_PARSER_SECTION_MAIN_ADD"),
         "LINK"=>"parser_section_edit.php?parent=".$parentID."&lang=".LANG,
         "TITLE"=>GetMessage("PARSER_SECTION_ADD_TITLE"),
         "ICON"=>"btn_sect_new",
@@ -411,7 +415,7 @@ $aContext = array(
 );
 $lAdmin->AddAdminContextMenu($aContext);
 
-// ? ????????? ??? ? ??????
+
 $lAdmin->AddAdminContextMenu($aContext);
 
 $lAdmin->CheckListMode();
@@ -588,8 +592,8 @@ if(isset($_REQUEST['parser_end']) && $_REQUEST['parser_end']==1 && isset($_REQUE
 
 }
 if(isset($_REQUEST['action']) && $_REQUEST['action']=="parser"):
-$parser = ShsParserContent::GetByID($_REQUEST['ID']);
-if(!$parser->ExtractFields("shs_"))
+$parser = KitParserContent::GetByID($_REQUEST['ID']);
+if(!$parser->ExtractFields("kit_"))
     $ID=0;
 
 if($ID>0){

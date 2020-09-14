@@ -4,10 +4,10 @@ use \Bitrix\Main\ModuleManager;
 
 IncludeModuleLangFile(__FILE__);
 
-Class shs_parser extends CModule
+Class kit_parser extends CModule
 {
-    const MODULE_ID = 'shs.parser';
-    var $MODULE_ID = 'shs.parser';
+    const MODULE_ID = 'kit.parser';
+    var $MODULE_ID = 'kit.parser';
     var $MODULE_VERSION;
     var $MODULE_VERSION_DATE;
     var $MODULE_NAME;
@@ -21,10 +21,10 @@ Class shs_parser extends CModule
         include(dirname(__FILE__) . '/version.php');
         $this->MODULE_VERSION = $arModuleVersion['VERSION'];
         $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
-        $this->MODULE_NAME = GetMessage('shs.parser_MODULE_NAME');
-        $this->MODULE_DESCRIPTION = GetMessage('shs.parser_MODULE_DESC');
-        $this->PARTNER_NAME = GetMessage('shs.parser_PARTNER_NAME');
-        $this->PARTNER_URI = GetMessage('shs.parser_PARTNER_URI');
+        $this->MODULE_NAME = GetMessage('kit.parser_MODULE_NAME');
+        $this->MODULE_DESCRIPTION = GetMessage('kit.parser_MODULE_DESC');
+        $this->PARTNER_NAME = GetMessage('kit.parser_PARTNER_NAME');
+        $this->PARTNER_URI = GetMessage('kit.parser_PARTNER_URI');
     }
 
     function InstallDB($arParams = array())
@@ -36,8 +36,8 @@ Class shs_parser extends CModule
             $APPLICATION->ThrowException(implode('<br>', $this->errors));
             return false;
         } else {
-            RegisterModuleDependences('shs.parser', 'startPars', 'shs.parser', 'ParserEventHandler', 'OnParserStart');
-            RegisterModuleDependences('shs.parser', 'EndPars', 'shs.parser', 'ParserEventHandler', 'OnParserEnd');
+            RegisterModuleDependences('kit.parser', 'startPars', 'kit.parser', 'ParserEventHandler', 'OnParserStart');
+            RegisterModuleDependences('kit.parser', 'EndPars', 'kit.parser', 'ParserEventHandler', 'OnParserEnd');
         }
         return true;
     }
@@ -52,8 +52,8 @@ Class shs_parser extends CModule
             $rsFile = $DB->Query($strSql, false, "File: " . __FILE__ . "<br>Line: " . __LINE__);
             while ($arFile = $rsFile->Fetch()) CFile::Delete($arFile['ID']);
         }
-        UnRegisterModuleDependences('shs.parser', 'startPars', 'shs.parser', 'ParserEventHandler', 'OnParserStart');
-        UnRegisterModuleDependences('shs.parser', 'EndPars', 'shs.parser', 'ParserEventHandler', 'OnParserEnd');
+        UnRegisterModuleDependences('kit.parser', 'startPars', 'kit.parser', 'ParserEventHandler', 'OnParserStart');
+        UnRegisterModuleDependences('kit.parser', 'EndPars', 'kit.parser', 'ParserEventHandler', 'OnParserEnd');
         return true;
     }
 
@@ -79,9 +79,9 @@ Class shs_parser extends CModule
             }
         }
         if ($_ENV['COMPUTERNAME'] != 'BX') {
-            CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/shs.parser/install/images/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/images/shs.parser', false, true);
-            CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/shs.parser/install/themes/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/themes', false, true);
-            CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/shs.parser/install/js/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/js/', false, true);
+            CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/kit.parser/install/images/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/images/kit.parser', false, true);
+            CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/kit.parser/install/themes/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/themes', false, true);
+            CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/kit.parser/install/js/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/js/', false, true);
         }
         return true;
     }
@@ -89,7 +89,7 @@ Class shs_parser extends CModule
     function UnInstallAgent()
     {
         CModule::IncludeModule('main');
-        $dbAgent = CAgent::GetList(array(), array('MODULE_ID' => 'shs.parser'));
+        $dbAgent = CAgent::GetList(array(), array('MODULE_ID' => 'kit.parser'));
         while ($arAgent = $dbAgent->Fetch()) {
             CAgent::Delete($arAgent[ID]);
         }
@@ -121,9 +121,9 @@ Class shs_parser extends CModule
             }
         }
         if ($_ENV['COMPUTERNAME'] != 'BX') {
-            DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/shs.parser/install/themes/.default/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/themes/.default');
-            DeleteDirFilesEx('/bitrix/themes/.default/icons/shs.parser/');
-            DeleteDirFilesEx('/bitrix/images/shs.parser/');
+            DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/kit.parser/install/themes/.default/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/themes/.default');
+            DeleteDirFilesEx('/bitrix/themes/.default/icons/kit.parser/');
+            DeleteDirFilesEx('/bitrix/images/kit.parser/');
         }
         return true;
     }
@@ -132,9 +132,9 @@ Class shs_parser extends CModule
     {
         $event = new CEventType;
         $message = new CEventMessage;
-        $event->Add(array('EVENT_NAME' => 'SOTBIT_PARSER_START', 'NAME' => GetMessage('SOTBIT_PARSER_START'), 'LID' => 'ru', 'DESCRIPTION' => GetMessage('SOTBIT_PARSER_START_DESCRIPTION'),));
+        $event->Add(array('EVENT_NAME' => 'COLLECTED_PARSER_START', 'NAME' => GetMessage('COLLECTED_PARSER_START'), 'LID' => 'ru', 'DESCRIPTION' => GetMessage('COLLECTED_PARSER_START_DESCRIPTION'),));
         $field['ACTIVE'] = 'Y';
-        $field['EVENT_NAME'] = 'SOTBIT_PARSER_START';
+        $field['EVENT_NAME'] = 'COLLECTED_PARSER_START';
         $field['LID'] = array('ru', 'en');
         $field['EMAIL_FROM'] = '#DEFAULT_EMAIL_FROM#';
         $field['EMAIL_TO'] = '#EMAIL_TO#';
@@ -143,9 +143,9 @@ Class shs_parser extends CModule
         $field['BODY_TYPE'] = 'html';
         $field['MESSAGE'] = GetMessage('event_parser_start_text');
         $message->Add($field);
-        $event->Add(array('EVENT_NAME' => 'SOTBIT_PARSER_END', 'NAME' => GetMessage('SOTBIT_PARSER_END'), 'LID' => 'ru', 'DESCRIPTION' => GetMessage('SOTBIT_PARSER_END_DESCRIPTION'),));
+        $event->Add(array('EVENT_NAME' => 'COLLECTED_PARSER_END', 'NAME' => GetMessage('COLLECTED_PARSER_END'), 'LID' => 'ru', 'DESCRIPTION' => GetMessage('COLLECTED_PARSER_END_DESCRIPTION'),));
         $field['ACTIVE'] = 'Y';
-        $field['EVENT_NAME'] = 'SOTBIT_PARSER_END';
+        $field['EVENT_NAME'] = 'COLLECTED_PARSER_END';
         $field['LID'] = array('ru', 'en');
         $field['EMAIL_FROM'] = '#DEFAULT_EMAIL_FROM#';
         $field['EMAIL_TO'] = '#EMAIL_TO#';
@@ -159,8 +159,8 @@ Class shs_parser extends CModule
     function DeleteEventPostType()
     {
         $event = new CEventType;
-        $event->Delete('SOTBIT_PARSER_START');
-        $event->Delete('SOTBIT_PARSER_END');
+        $event->Delete('COLLECTED_PARSER_START');
+        $event->Delete('COLLECTED_PARSER_END');
     }
 
     function DoInstall()

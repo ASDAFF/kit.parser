@@ -1,10 +1,10 @@
 <?php
-namespace Bitrix\Shs;
+namespace Bitrix\Kit;
 
 use Bitrix\Main,
     Bitrix\Main\Localization\Loc,
     Bitrix\Main\Entity,
-    Bitrix\Shs\ParserResultProductTable;
+    Bitrix\Kit\ParserResultProductTable;
 Loc::loadMessages(__FILE__);
 
 /**
@@ -18,7 +18,7 @@ Loc::loadMessages(__FILE__);
  * <li> END_LAST_TIME datetime optional
  * </ul>
  *
- * @package Bitrix\Shs
+ * @package Bitrix\Kit
  **/
 
 class ParserResultTable extends Main\Entity\DataManager
@@ -31,7 +31,7 @@ class ParserResultTable extends Main\Entity\DataManager
      */
     public static function getTableName()
     {
-        return 'b_shs_parser_result';
+        return 'b_kit_parser_result';
     }
 
     /**

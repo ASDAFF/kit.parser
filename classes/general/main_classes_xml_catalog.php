@@ -1,5 +1,5 @@
 <?php
-class SotbitXmlCatalogParser extends SotbitXlsCatalogParser {
+class CollectedXmlCatalogParser extends CollectedXlsCatalogParser {
     
     //public $catalog_detail_settings = array();
     
@@ -31,7 +31,7 @@ class SotbitXmlCatalogParser extends SotbitXlsCatalogParser {
             }
             $this->arFields["LINK"] = trim($detailPage);              
         
-            foreach(GetModuleEvents("shs.parser", "parserCatalogDetailBefore", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserCatalogDetailBefore", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array($this->id, &$el, &$this->arFields));
             $el_detail = $this->getDetailPage();                                              
             
@@ -47,7 +47,7 @@ class SotbitXmlCatalogParser extends SotbitXlsCatalogParser {
             $this->parserOffersDetail($el_detail);
             unset($el_detail);
             
-            foreach(GetModuleEvents("shs.parser", "parserCatalogDetail", true) as $arEvent)
+            foreach(GetModuleEvents("kit.parser", "parserCatalogDetail", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array($this->id, &$el, &$this->arFields)); 
         }         
     }    
