@@ -109,3 +109,10 @@ table.preview-xls-data tr.params-row td {
     padding-bottom: 3px;
     border-bottom: 1px solid black;
 }
+
+#kit_message {
+    color:green;
+    font-size: 14px;
+    font-weight: bold;
+    height: 30px;
+}
